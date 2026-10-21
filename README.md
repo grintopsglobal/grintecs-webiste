@@ -4,7 +4,7 @@ Company profile PT Grintec Solusi Global, *Securing Future Transformation*.
 
 - **Stack:** Astro 7 (output static) + Tailwind CSS 4 (`@tailwindcss/vite`) + Decap CMS 3.16.3
 - **Bahasa:** Indonesia (default, `/id/`) dan English (`/en/`)
-- **Hosting:** GitHub Pages lewat GitHub Actions
+- **Hosting:** GitHub Pages lewat GitHub Actions, domain `https://grintecs.com` (file `public/CNAME`)
 - **Repo:** `grintopsglobal/grintecs-webiste`
 
 ## Menjalankan di komputer lokal
@@ -13,12 +13,12 @@ Butuh Node.js 22.22 atau lebih baru.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321/grintecs-webiste/
+npm run dev        # http://localhost:4321/
 npm run build      # hasil di dist/
 npm run preview    # menyajikan dist/ seperti di produksi
 ```
 
-Situs berjalan di bawah base path `/grintecs-webiste/` agar sama persis dengan GitHub Pages. Root `/` mengarah ke `/id/`.
+Root `/` mengarah ke `/id/`.
 
 ## Memakai CMS secara lokal
 
@@ -29,9 +29,7 @@ npm run dev
 npm run cms        # sama dengan: npx decap-server (port 8081)
 ```
 
-Buka `http://localhost:4321/grintecs-webiste/admin/` lalu klik **Login**. Di localhost, Decap memakai `decap-server` dan langsung menulis ke file di `src/content/` dan `public/uploads/`, tanpa login GitHub.
-
-Catatan: di CMS lokal, thumbnail gambar di editor kadang tidak muncul karena base path. Gambarnya tetap tersimpan dan tampil normal di situs.
+Buka `http://localhost:4321/admin/` lalu klik **Login**. Di localhost, Decap memakai `decap-server` dan langsung menulis ke file di `src/content/` dan `public/uploads/`, tanpa login GitHub.
 
 ## Struktur folder
 
@@ -53,7 +51,7 @@ src/pages/[lang]/              Semua halaman per bahasa
 
 1. Push project ini ke branch `main` di `github.com/grintopsglobal/grintecs-webiste`.
 2. Di GitHub: **Settings > Pages > Build and deployment > Source: GitHub Actions**.
-3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `https://grintopsglobal.github.io/grintecs-webiste/`.
+3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `https://grintecs.com/`.
 
 ## Login CMS di situs live (GitHub OAuth + Cloudflare Worker)
 
@@ -71,7 +69,7 @@ Catat URL-nya, misalnya `https://grintec-decap-oauth.<subdomain-anda>.workers.de
 
 **2. Buat GitHub OAuth App** di *GitHub > Settings > Developer settings > OAuth Apps > New OAuth App* (sebaiknya dari akun organisasi `grintopsglobal`):
 
-- Homepage URL: `https://grintopsglobal.github.io/grintecs-webiste/`
+- Homepage URL: `https://grintecs.com/`
 - Authorization callback URL: `https://grintec-decap-oauth.<subdomain-anda>.workers.dev/callback`
 
 Salin **Client ID** lalu buat **Client secret**.
@@ -83,7 +81,7 @@ npx wrangler secret put GITHUB_CLIENT_ID
 npx wrangler secret put GITHUB_CLIENT_SECRET
 ```
 
-Jika situs memakai custom domain, tambahkan origin-nya ke `ALLOWED_ORIGINS` di `oauth-proxy/wrangler.toml` lalu `npx wrangler deploy` lagi. Token hanya dikirim ke origin di daftar itu.
+Jika domain situs berubah, sesuaikan `ALLOWED_ORIGINS` di `oauth-proxy/wrangler.toml` lalu `npx wrangler deploy` lagi. Token hanya dikirim ke origin di daftar itu.
 
 **4. Isi `base_url`** di `public/admin/config.yml` dengan URL Worker, commit, dan push.
 
@@ -118,15 +116,13 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 - Artikel dengan `draft: true` tidak tampil.
 - Jika terjemahan satu bahasa belum ada, language switcher mengarah ke halaman daftar bahasa tersebut, bukan 404.
 
-## Pindah ke custom domain (mis. www.grintecs.com)
+## Domain
 
-1. `astro.config.mjs`: ubah `SITE` ke `https://www.grintecs.com` dan hapus baris `base: BASE`.
-2. Buat `public/CNAME` berisi `www.grintecs.com`.
-3. DNS: CNAME `www` ke `grintopsglobal.github.io`. Lalu di **Settings > Pages** isi custom domain dan aktifkan *Enforce HTTPS*.
-4. `public/admin/config.yml`: ubah `site_url` dan `display_url`.
-5. Tambahkan `https://www.grintecs.com` ke `ALLOWED_ORIGINS` Worker.
+Situs memakai `grintecs.com` (`public/CNAME`, `SITE` di `astro.config.mjs`, `site_url` di `public/admin/config.yml`, dan `ALLOWED_ORIGINS` di Worker). DNS apex `grintecs.com` sudah mengarah ke GitHub Pages. Aktifkan **Enforce HTTPS** di Settings > Pages setelah sertifikat terbit.
 
-Path media di konten tidak perlu diubah, karena CMS menyimpannya tanpa base (`/uploads/...`) dan `withBase()` menambahkannya saat build. `robots.txt` baru efektif setelah pindah ke custom domain, karena crawler hanya membacanya di root domain.
+Untuk memakai `www.grintecs.com`: ubah keempat tempat di atas ke `www.grintecs.com`, lalu arahkan DNS `www` (CNAME) ke `grintopsglobal.github.io`. Saat ini `www` masih mengarah ke Cloudflare.
+
+Path media di konten tidak perlu diubah karena disimpan sebagai `/uploads/...`, dan `withBase()` tetap aman bila suatu saat dipakai base path lagi.
 
 ## Data yang masih perlu diisi
 

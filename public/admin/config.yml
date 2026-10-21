@@ -16,10 +16,10 @@ backend:
 # Saat dibuka dari localhost, Decap memakai `npx decap-server` (lihat README).
 local_backend: true
 
-site_url: https://grintopsglobal.github.io/grintecs-webiste/
-display_url: https://grintopsglobal.github.io/grintecs-webiste/
+site_url: https://grintecs.com/
+display_url: https://grintecs.com/
 
-# Path media disimpan tanpa base ("/uploads/x.jpg"); situs menambahkan base lewat withBase().
+# Path media disimpan sebagai "/uploads/x.jpg"; withBase() menambahkan base bila suatu saat dipakai.
 media_folder: public/uploads
 public_folder: /uploads
 

@@ -3,15 +3,12 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// GitHub Pages (project site): https://OWNER.github.io/REPO/
-// Jika repo bernama OWNER.github.io atau memakai custom domain:
-// ubah `site` ke domain tersebut, hapus `base`, dan buat public/CNAME.
-const SITE = 'https://grintopsglobal.github.io';
-const BASE = '/grintecs-webiste';
+// Custom domain (public/CNAME). Untuk kembali ke project site GitHub Pages:
+// SITE = 'https://grintopsglobal.github.io', tambahkan `base: '/grintecs-webiste'`, dan hapus public/CNAME.
+const SITE = 'https://grintecs.com';
 
 export default defineConfig({
   site: SITE,
-  base: BASE,
   trailingSlash: 'always',
   output: 'static',
   i18n: {

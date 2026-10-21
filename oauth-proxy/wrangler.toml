@@ -4,7 +4,7 @@ compatibility_date = "2026-09-01"
 
 [vars]
 # Origin situs yang boleh menerima token (pisahkan dengan koma). Tambahkan custom domain jika dipakai.
-ALLOWED_ORIGINS = "https://grintopsglobal.github.io,http://localhost:4321"
+ALLOWED_ORIGINS = "https://grintecs.com,http://localhost:4321"
 # GITHUB_CLIENT_ID dan GITHUB_CLIENT_SECRET diset sebagai secret:
 #   npx wrangler secret put GITHUB_CLIENT_ID
 #   npx wrangler secret put GITHUB_CLIENT_SECRET
