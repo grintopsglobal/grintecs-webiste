@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Custom domain (public/CNAME). Untuk kembali ke project site GitHub Pages:
 // SITE = 'https://grintopsglobal.github.io', tambahkan `base: '/grintecs-webiste'`, dan hapus public/CNAME.
-const SITE = 'https://grintecs.com';
+const SITE = 'http://grintecs.com'; // ganti ke https:// setelah Enforce HTTPS aktif
 
 export default defineConfig({
   site: SITE,

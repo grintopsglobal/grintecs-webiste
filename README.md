@@ -51,7 +51,7 @@ src/pages/[lang]/              Semua halaman per bahasa
 
 1. Push project ini ke branch `main` di `github.com/grintopsglobal/grintecs-webiste`.
 2. Di GitHub: **Settings > Pages > Build and deployment > Source: GitHub Actions**.
-3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `https://grintecs.com/`.
+3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `http://grintecs.com/` (ganti `SITE` dan `site_url` ke `https://` setelah Enforce HTTPS aktif).
 
 ## Login CMS di situs live (GitHub OAuth + Cloudflare Worker)
 
@@ -69,7 +69,7 @@ Catat URL-nya, misalnya `https://grintec-decap-oauth.<subdomain-anda>.workers.de
 
 **2. Buat GitHub OAuth App** di *GitHub > Settings > Developer settings > OAuth Apps > New OAuth App* (sebaiknya dari akun organisasi `grintopsglobal`):
 
-- Homepage URL: `https://grintecs.com/`
+- Homepage URL: `http://grintecs.com/`
 - Authorization callback URL: `https://grintec-decap-oauth.<subdomain-anda>.workers.dev/callback`
 
 Salin **Client ID** lalu buat **Client secret**.
