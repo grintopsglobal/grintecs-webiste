@@ -1,0 +1,36 @@
+type: about
+seo:
+  title: "About"
+  description: "Meet GRINTEC: a technology company that builds, connects, and secures business systems."
+heading: "About GRINTEC"
+intro: "GRINTEC is a technology company that helps businesses build, connect, and secure their digital systems."
+history:
+  heading: "Our story"
+  body: |
+    [REAL DATA] Write the GRINTEC story here: founding year, founders, and key milestones.
+
+    This text is a placeholder and stays on the site until it is replaced in the CMS: Pages > About > History.
+vision:
+  heading: "Vision"
+  body: "To be the technology partner that makes digital transformation for companies in Indonesia secure and sustainable."
+mission:
+  heading: "Mission"
+  items:
+    - "Build software and systems that follow the client's business process, not the other way round."
+    - "Put security into every stage of a project, from design to operations."
+    - "Hand over knowledge and documentation so the client's team can work independently."
+values:
+  heading: "What we stand by"
+  items:
+    - title: "Secure from the start"
+      text: "We treat security as a design requirement, as important as function."
+    - title: "Honest about scope"
+      text: "We state risks and limits up front, including when the answer is not to build something."
+    - title: "Maintainable"
+      text: "We write code, infrastructure, and documentation so another team can pick them up easily."
+    - title: "Measurable results"
+      text: "Every project stage has agreed targets that we can check together."
+team:
+  heading: "Our team"
+  intro: "[REAL DATA] Team profiles have not been added yet. Add team members (name, role, photo) in the CMS: Pages > About > Team."
+  members: []

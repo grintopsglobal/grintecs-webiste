@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import Icon from '../../../components/Icon.astro';
+import CTA from '../../../components/CTA.astro';
+import type { Lang } from '../../../i18n/ui';
+import { localizePath, staticLangPaths, useTranslations } from '../../../i18n/utils';
+import { byLang, getPage } from '../../../lib/content';
+import { withBase } from '../../../lib/url';
+
+export const getStaticPaths = staticLangPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const items = (await byLang('industries', lang)).map((e) => e.data);
+const home = await getPage(lang, 'home');
+---
+
+<BaseLayout lang={lang} title={t('industries.title')} description={t('industries.intro')}>
+  <PageHeader title={t('industries.title')} intro={t('industries.intro')} />
+  <section class="container-x py-14 md:py-20">
+    {
+      items.length === 0 ? (
+        <p class="text-lg text-muted">{t('industries.empty')}</p>
+      ) : (
+        <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((ind) => (
+            <li>
+              <a href={localizePath(lang, `/industries/${ind.slug}/`)} class="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line hover:border-primary-700">
+                {ind.image && <img src={withBase(ind.image)} alt="" loading="lazy" decoding="async" width="800" height="450" class="aspect-[16/9] w-full object-cover" />}
+                <span class="flex flex-1 flex-col p-6">
+                  <Icon name={ind.icon} class="size-8 text-primary" />
+                  <span class="mt-5 block font-display text-xl font-bold group-hover:text-primary-700 group-hover:underline">{ind.title}</span>
+                  <span class="mt-2 block leading-relaxed text-muted">{ind.excerpt}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+  <CTA heading={home.cta.heading} text={home.cta.text} label={home.cta.buttonLabel} href={localizePath(lang, '/contact/')} />
+</BaseLayout>

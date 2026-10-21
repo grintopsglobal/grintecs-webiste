@@ -1,0 +1,53 @@
+---
+import { locales, type Lang } from '../i18n/ui';
+import { localizePath } from '../i18n/utils';
+import { withBase } from '../lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  /** Path tanpa prefix bahasa per locale, mis. { id: '/about/', en: '/about/' } */
+  alternates: Record<Lang, string>;
+  image?: string;
+  type?: 'website' | 'article';
+  siteName: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { title, description, lang, alternates, image, type = 'website', siteName, jsonLd = [], noindex = false } = Astro.props;
+
+const abs = (path: string) => new URL(path, Astro.site).href;
+const canonical = abs(localizePath(lang, alternates[lang]));
+const ogImage = abs(withBase(image || '/uploads/og-default.png'));
+const ogLocale = { id: 'id_ID', en: 'en_US' } as const;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{
+  noindex ? (
+    <meta name="robots" content="noindex" />
+  ) : (
+    <>
+      <link rel="canonical" href={canonical} />
+      {locales.map((l) => <link rel="alternate" hreflang={l} href={abs(localizePath(l, alternates[l]))} />)}
+      <link rel="alternate" hreflang="x-default" href={abs(localizePath('id', alternates.id))} />
+    </>
+  )
+}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={ogLocale[lang]} />
+{locales.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}

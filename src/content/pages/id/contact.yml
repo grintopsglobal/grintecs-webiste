@@ -1,0 +1,8 @@
+type: contact
+seo:
+  title: "Mari Diskusi"
+  description: "Ceritakan kebutuhan sistem Anda kepada tim GRINTEC lewat formulir, email, atau WhatsApp."
+heading: "Mari Diskusi"
+intro: "Ceritakan sistem yang sedang Anda jalankan dan apa yang ingin diubah. Semakin spesifik, semakin cepat kita bisa membahas langkah pertamanya."
+successMessage: "Terima kasih, pesan Anda sudah terkirim. Tim GRINTEC akan menghubungi Anda lewat email."
+errorMessage: "Pesan belum terkirim. Periksa koneksi lalu coba lagi, atau hubungi kami lewat email atau WhatsApp."

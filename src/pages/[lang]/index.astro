@@ -1,0 +1,198 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
+import Icon from '../../components/Icon.astro';
+import ServiceList from '../../components/ServiceList.astro';
+import SolutionGrid from '../../components/SolutionGrid.astro';
+import InsightCard from '../../components/InsightCard.astro';
+import CTA from '../../components/CTA.astro';
+import type { Lang } from '../../i18n/ui';
+import { localizePath, staticLangPaths, useTranslations } from '../../i18n/utils';
+import { byLang, getPage, getSettings, insightsByLang } from '../../lib/content';
+import { withBase } from '../../lib/url';
+
+export const getStaticPaths = staticLangPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const home = await getPage(lang, 'home');
+const settings = await getSettings(lang);
+const services = (await byLang('services', lang)).map((e) => e.data);
+const solutions = (await byLang('solutions', lang)).map((e) => e.data);
+const industries = (await byLang('industries', lang)).map((e) => e.data);
+const latest = (await insightsByLang(lang)).slice(0, 3);
+
+// CTA di CMS boleh ditulis sebagai path internal ("/contact/") atau URL penuh.
+const href = (h: string) => (/^(https?:|mailto:|tel:|#)/.test(h) ? h : localizePath(lang, h));
+
+const homeUrl = new URL(localizePath(lang), Astro.site).href;
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: settings.companyName,
+  ...(settings.legalName && { legalName: settings.legalName }),
+  ...(settings.address && { address: settings.address }),
+  slogan: settings.tagline,
+  description: settings.description,
+  url: homeUrl,
+  logo: new URL(withBase('/images/brand/grintec-logo.png'), Astro.site).href,
+  ...(settings.email && { email: settings.email }),
+  ...(settings.phone && { telephone: settings.phone }),
+  ...(settings.socials.length && { sameAs: settings.socials.map((s) => s.url) }),
+};
+---
+
+<BaseLayout lang={lang} title={home.seo.title} description={home.seo.description} jsonLd={[organization]}>
+  <HeroVideo
+    headline={home.hero.headline}
+    highlight={home.hero.highlight}
+    subheadline={home.hero.subheadline}
+    primary={{ label: home.hero.primaryCta.label, href: href(home.hero.primaryCta.href) }}
+    secondary={{ label: home.hero.secondaryCta.label, href: href(home.hero.secondaryCta.href) }}
+    video={home.hero.video}
+    videoMp4={home.hero.videoMp4}
+    poster={home.hero.poster}
+  />
+
+  <!-- Value proposition: pernyataan di kiri, poin di kanan. Tanpa kartu. -->
+  <section class="container-x grid gap-10 py-16 md:py-24 lg:grid-cols-[5fr_7fr] lg:gap-16">
+    <div>
+      <h2 class="text-3xl font-extrabold md:text-4xl">{home.valueProps.heading}</h2>
+      {home.valueProps.intro && <p class="mt-4 text-lg leading-relaxed text-muted">{home.valueProps.intro}</p>}
+    </div>
+    <ul class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      {
+        home.valueProps.items.map((item) => (
+          <li class="border-t-2 border-primary pt-5">
+            <Icon name={item.icon} class="size-7 text-primary-700" />
+            <h3 class="mt-4 text-lg font-bold">{item.title}</h3>
+            <p class="mt-2 leading-relaxed text-muted">{item.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="services" class="bg-mist py-16 md:py-24">
+    <div class="container-x">
+      <div class="grid gap-4 md:grid-cols-2 md:items-end md:gap-10">
+        <h2 class="text-3xl font-extrabold md:text-4xl">{home.servicesSection.heading}</h2>
+        {home.servicesSection.intro && <p class="text-lg leading-relaxed text-muted">{home.servicesSection.intro}</p>}
+      </div>
+      <div class="mt-10">
+        <ServiceList lang={lang} items={services} />
+      </div>
+    </div>
+  </section>
+
+  <section class="on-dark bg-forest py-16 text-white md:py-24">
+    <div class="container-x">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-extrabold md:text-4xl">{home.solutionsSection.heading}</h2>
+        {home.solutionsSection.intro && <p class="mt-4 text-lg leading-relaxed text-on-forest">{home.solutionsSection.intro}</p>}
+      </div>
+      <div class="mt-10">
+        <SolutionGrid lang={lang} items={solutions} dark />
+      </div>
+    </div>
+  </section>
+
+  {
+    industries.length > 0 && (
+      <section class="container-x grid gap-10 py-16 md:py-24 lg:grid-cols-[4fr_8fr] lg:gap-16">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <h2 class="text-3xl font-extrabold md:text-4xl">{home.industriesSection.heading}</h2>
+          {home.industriesSection.intro && <p class="mt-4 text-lg leading-relaxed text-muted">{home.industriesSection.intro}</p>}
+          <a href={localizePath(lang, '/industries/')} class="link mt-6 inline-flex min-h-11 items-center">
+            {t('nav.allIndustries')}
+          </a>
+        </div>
+        <ul class="grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-line bg-line sm:grid-cols-2">
+          {industries.map((ind) => (
+            <li class="bg-white">
+              <a href={localizePath(lang, `/industries/${ind.slug}/`)} class="group flex h-full gap-4 p-6 hover:bg-mist">
+                <Icon name={ind.icon} class="size-7 shrink-0 text-primary" />
+                <span>
+                  <span class="block font-display text-lg font-bold group-hover:text-primary-700 group-hover:underline">{ind.title}</span>
+                  <span class="mt-1 block text-[0.95rem] leading-relaxed text-muted">{ind.excerpt}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    home.stats.items.length > 0 && (
+      <section class="border-y border-line bg-mist py-14 md:py-16">
+        <div class="container-x">
+          <h2 class="text-2xl font-extrabold md:text-3xl">{home.stats.heading}</h2>
+          <dl class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {home.stats.items.map((s) => (
+              <div class="flex flex-col border-l-2 border-primary pl-5">
+                <dt class="text-muted">{s.label}</dt>
+                <dd class="order-first font-display text-4xl font-extrabold text-forest md:text-5xl">{s.value}</dd>
+                {s.source && <dd class="mt-1 text-sm text-muted">{s.source}</dd>}
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    home.process.steps.length > 0 && (
+      <section class="container-x py-16 md:py-24">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl font-extrabold md:text-4xl">{home.process.heading}</h2>
+          {home.process.intro && <p class="mt-4 text-lg leading-relaxed text-muted">{home.process.intro}</p>}
+        </div>
+        <ol class="mt-12 grid gap-10 border-l-2 border-line pl-6 md:grid-cols-2 md:border-l-0 md:pl-0 lg:grid-cols-4 lg:gap-8">
+          {home.process.steps.map((step, i) => (
+            <li class="relative md:border-t-2 md:border-line md:pt-6">
+              <span class="absolute top-0 -left-[1.95rem] block size-3 rotate-45 bg-primary md:-top-[0.45rem] md:left-0" aria-hidden="true" />
+              <p class="text-sm font-semibold text-primary-700">
+                {t('home.stepLabel')} {i + 1}
+              </p>
+              <h3 class="mt-2 text-xl font-bold">{step.title}</h3>
+              <p class="mt-2 leading-relaxed text-muted">{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {
+    latest.length > 0 && (
+      <section class="bg-mist py-16 md:py-24">
+        <div class="container-x">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div class="max-w-2xl">
+              <h2 class="text-3xl font-extrabold md:text-4xl">{home.insightsSection.heading}</h2>
+              {home.insightsSection.intro && <p class="mt-4 text-lg leading-relaxed text-muted">{home.insightsSection.intro}</p>}
+            </div>
+            <a href={localizePath(lang, '/insights/')} class="link inline-flex min-h-11 items-center">
+              {t('home.allInsights')}
+            </a>
+          </div>
+          <div class="mt-10 grid gap-5 lg:grid-cols-2">
+            <InsightCard lang={lang} entry={latest[0]} featured />
+            {latest.length > 1 && (
+              <div class="grid gap-5">
+                {latest.slice(1).map((entry) => (
+                  <InsightCard lang={lang} entry={entry} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTA heading={home.cta.heading} text={home.cta.text} label={home.cta.buttonLabel} href={localizePath(lang, '/contact/')} />
+</BaseLayout>

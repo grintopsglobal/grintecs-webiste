@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { localizePath } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  items: { title: string; slug: string; icon: string; excerpt: string }[];
+}
+const { lang, items } = Astro.props;
+---
+
+<!-- Daftar bernomor, bukan kartu: delapan layanan dibaca berurutan seperti indeks katalog. -->
+<ol class="grid border-t border-line md:grid-cols-2 md:gap-x-10">
+  {
+    items.map((item, i) => (
+      <li class="border-b border-line">
+        <a href={localizePath(lang, `/services/${item.slug}/`)} class="group grid grid-cols-[2.75rem_1fr_auto] items-start gap-x-3 py-6 sm:grid-cols-[3.5rem_1fr_auto]">
+          <span class="font-display text-2xl font-bold text-primary-700 tabular-nums sm:text-3xl" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span>
+            <span class="block font-display text-lg font-bold group-hover:text-primary-700 group-hover:underline sm:text-xl">{item.title}</span>
+            <span class="mt-1.5 block leading-relaxed text-muted">{item.excerpt}</span>
+          </span>
+          <Icon name={item.icon} class="mt-1 size-7 text-primary" />
+        </a>
+      </li>
+    ))
+  }
+</ol>

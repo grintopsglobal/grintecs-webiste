@@ -1,0 +1,127 @@
+---
+import MegaMenu from './MegaMenu.astro';
+import MobileNav from './MobileNav.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Lang } from '../i18n/ui';
+import { localizePath, pathWithoutLang, useTranslations } from '../i18n/utils';
+import { withBase } from '../lib/url';
+import type { NavItem } from './MobileNav.astro';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  services: NavItem[];
+  solutions: NavItem[];
+}
+const { lang, alternates, services, solutions } = Astro.props;
+const t = useTranslations(lang);
+const current = pathWithoutLang(Astro.url);
+const isActive = (p: string) => current.startsWith(p);
+const plainLinks = [
+  { href: '/industries/', label: t('nav.industries') },
+  { href: '/insights/', label: t('nav.insights') },
+  { href: '/about/', label: t('nav.about') },
+];
+---
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded focus:bg-white focus:px-4 focus:py-3 focus:font-semibold">
+  {t('nav.skip')}
+</a>
+<header class="sticky top-0 z-50 border-b border-line bg-white" data-header>
+  <div class="container-x flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+    <a href={localizePath(lang)} class="inline-flex shrink-0 items-center py-2" aria-label={`GRINTEC, ${t('nav.home')}`}>
+      <img src={withBase('/images/brand/grintec-logo.png')} alt="" width="640" height="148" class="h-8 w-auto lg:h-9" />
+    </a>
+
+    <nav aria-label={t('nav.primary')} class="hidden lg:block">
+      <ul class="flex items-center gap-1 text-[0.95rem]">
+        <MegaMenu id="mega-services" label={t('nav.services')} lang={lang} section="services" items={services} intro={t('services.intro')} allLabel={t('nav.allServices')} active={isActive('/services/')} />
+        <MegaMenu id="mega-solutions" label={t('nav.solutions')} lang={lang} section="solutions" items={solutions} intro={t('solutions.intro')} allLabel={t('nav.allSolutions')} active={isActive('/solutions/')} />
+        {
+          plainLinks.map((l) => (
+            <li>
+              <a
+                href={localizePath(lang, l.href)}
+                aria-current={isActive(l.href) ? 'page' : undefined}
+                class:list={['inline-flex min-h-11 items-center rounded px-3 font-semibold hover:text-primary-700', isActive(l.href) && 'text-primary-700']}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <LanguageSwitcher lang={lang} alternates={alternates} class="hidden sm:flex" />
+      <a href={localizePath(lang, '/contact/')} class="btn-primary hidden lg:inline-flex">{t('nav.cta')}</a>
+      <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-line px-3 font-semibold lg:hidden" aria-expanded="false" aria-controls="mobile-nav" data-mobile-toggle>
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h10" data-icon-open></path>
+          <path d="M6 6l12 12M18 6L6 18" data-icon-close class="hidden"></path>
+        </svg>
+        <span data-label-open>{t('nav.menu')}</span>
+        <span data-label-close class="hidden">{t('nav.close')}</span>
+      </button>
+    </div>
+  </div>
+  <MobileNav lang={lang} alternates={alternates} services={services} solutions={solutions} links={plainLinks} current={current} />
+</header>
+
+<script>
+  // Dropdown desktop: klik untuk buka, Esc / klik di luar / fokus keluar untuk tutup.
+  const dropdowns = [...document.querySelectorAll<HTMLElement>('[data-dropdown]')];
+  const setOpen = (dd: HTMLElement, open: boolean) => {
+    const btn = dd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!;
+    const panel = dd.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.querySelector('svg')?.classList.toggle('rotate-180', open);
+    panel.hidden = !open;
+  };
+  const closeAll = (except?: HTMLElement) => dropdowns.forEach((d) => d !== except && setOpen(d, false));
+
+  dropdowns.forEach((dd) => {
+    const btn = dd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      closeAll(dd);
+      setOpen(dd, open);
+    });
+    dd.addEventListener('focusout', (e) => {
+      if (!dd.contains(e.relatedTarget as Node | null)) setOpen(dd, false);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest('[data-dropdown]')) closeAll();
+  });
+
+  // Menu mobile
+  const toggle = document.querySelector<HTMLButtonElement>('[data-mobile-toggle]')!;
+  const mobile = document.getElementById('mobile-nav')!;
+  const setMobile = (open: boolean) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    mobile.hidden = !open;
+    document.documentElement.classList.toggle('overflow-hidden', open);
+    toggle.querySelector('[data-icon-open]')!.classList.toggle('hidden', open);
+    toggle.querySelector('[data-icon-close]')!.classList.toggle('hidden', !open);
+    toggle.querySelector('[data-label-open]')!.classList.toggle('hidden', open);
+    toggle.querySelector('[data-label-close]')!.classList.toggle('hidden', !open);
+  };
+  toggle.addEventListener('click', () => setMobile(toggle.getAttribute('aria-expanded') !== 'true'));
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches) setMobile(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openDd = dropdowns.find((d) => d.querySelector('[aria-expanded="true"]'));
+    if (openDd) {
+      setOpen(openDd, false);
+      openDd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!.focus();
+    } else if (toggle.getAttribute('aria-expanded') === 'true') {
+      setMobile(false);
+      toggle.focus();
+    }
+  });
+</script>

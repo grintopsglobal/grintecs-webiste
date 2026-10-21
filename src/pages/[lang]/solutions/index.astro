@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import SolutionGrid from '../../../components/SolutionGrid.astro';
+import CTA from '../../../components/CTA.astro';
+import type { Lang } from '../../../i18n/ui';
+import { localizePath, staticLangPaths, useTranslations } from '../../../i18n/utils';
+import { byLang, getPage } from '../../../lib/content';
+
+export const getStaticPaths = staticLangPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const items = (await byLang('solutions', lang)).map((e) => e.data);
+const home = await getPage(lang, 'home');
+---
+
+<BaseLayout lang={lang} title={t('solutions.title')} description={t('solutions.intro')}>
+  <PageHeader title={t('solutions.title')} intro={t('solutions.intro')} />
+  <section class="container-x py-14 md:py-20">
+    <SolutionGrid lang={lang} items={items} />
+  </section>
+  <CTA heading={home.cta.heading} text={home.cta.text} label={home.cta.buttonLabel} href={localizePath(lang, '/contact/')} />
+</BaseLayout>

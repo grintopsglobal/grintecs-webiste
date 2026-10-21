@@ -1,0 +1,14 @@
+companyName: "GRINTEC"
+legalName: "PT Grintec Solusi Global"
+tagline: "Securing Future Transformation"
+description: "GRINTEC builds, connects, and secures software, data, ERP, and business systems for companies in Indonesia."
+ogImage: "/uploads/og-default.png"
+address: "GrintecHub, Cemorokandang, Kedungkandang, Malang 65138"
+email: ""
+phone: "+62 851 6136 4811"
+whatsapp: ""
+socials: []
+form:
+  provider: web3forms
+  web3formsKey: ""
+  formspreeId: ""

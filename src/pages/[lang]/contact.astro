@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import type { Lang } from '../../i18n/ui';
+import { staticLangPaths, useTranslations } from '../../i18n/utils';
+import { byLang, getPage, getSettings } from '../../lib/content';
+
+export const getStaticPaths = staticLangPaths;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const page = await getPage(lang, 'contact');
+const settings = await getSettings(lang);
+const services = await byLang('services', lang);
+
+const { provider, web3formsKey, formspreeId } = settings.form;
+const endpoint = provider === 'formspree' ? (formspreeId ? `https://formspree.io/f/${formspreeId}` : '') : web3formsKey ? 'https://api.web3forms.com/submit' : '';
+const honeypot = provider === 'formspree' ? '_gotcha' : 'botcheck';
+const waNumber = settings.whatsapp.replace(/\D/g, '');
+
+const fields = [
+  { name: 'name', label: t('form.name'), type: 'text', autocomplete: 'name', required: true },
+  { name: 'company', label: t('form.company'), type: 'text', autocomplete: 'organization', required: true },
+  { name: 'email', label: t('form.email'), type: 'email', autocomplete: 'email', required: true },
+  { name: 'phone', label: t('form.phone'), type: 'tel', autocomplete: 'tel', required: false },
+] as const;
+const inputClass =
+  'mt-2 block min-h-12 w-full rounded-lg border border-field bg-white px-4 py-3 text-base text-ink placeholder:text-muted aria-[invalid=true]:border-red-700 aria-[invalid=true]:border-2';
+---
+
+<BaseLayout lang={lang} title={page.seo.title} description={page.seo.description}>
+  <PageHeader title={page.heading} intro={page.intro} />
+
+  <section class="container-x grid gap-12 py-14 md:py-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-16">
+    <form
+      class="grid gap-6 sm:grid-cols-2"
+      novalidate
+      data-contact-form
+      data-endpoint={endpoint}
+      data-provider={provider}
+      data-honeypot={honeypot}
+      data-msg-required={t('form.required')}
+      data-msg-email={t('form.invalidEmail')}
+      data-msg-phone={t('form.invalidPhone')}
+      data-msg-fix={t('form.fixErrors')}
+      data-msg-sending={t('form.sending')}
+      data-msg-success={page.successMessage}
+      data-msg-error={page.errorMessage}
+    >
+      {web3formsKey && provider === 'web3forms' && <input type="hidden" name="access_key" value={web3formsKey} />}
+      <input type="hidden" name="subject" value={`[GRINTEC ${lang.toUpperCase()}] ${t('contact.title')}`} />
+      <!-- Honeypot: disembunyikan dari pengguna dan pembaca layar, bot biasanya mengisinya. -->
+      <div class="absolute -left-[9999px]" aria-hidden="true">
+        <label>Website <input type="text" name={honeypot} tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      {
+        fields.map((f) => (
+          <div>
+            <label for={`f-${f.name}`} class="font-semibold">
+              {f.label} {!f.required && <span class="font-normal text-muted">({t('form.optional')})</span>}
+            </label>
+            <input
+              id={`f-${f.name}`}
+              name={f.name}
+              type={f.type}
+              autocomplete={f.autocomplete}
+              required={f.required}
+              inputmode={f.type === 'tel' ? 'tel' : undefined}
+              aria-describedby={`e-${f.name}`}
+              class={inputClass}
+            />
+            <p id={`e-${f.name}`} class="mt-1.5 text-sm font-semibold text-red-700" data-error-for={f.name} />
+          </div>
+        ))
+      }
+
+      <div class="sm:col-span-2">
+        <label for="f-service" class="font-semibold">
+          {t('form.service')} <span class="font-normal text-muted">({t('form.optional')})</span>
+        </label>
+        <select id="f-service" name="service" class={inputClass}>
+          <option value="">{t('form.servicePlaceholder')}</option>
+          {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
+          <option value={t('form.serviceOther')}>{t('form.serviceOther')}</option>
+        </select>
+      </div>
+
+      <div class="sm:col-span-2">
+        <label for="f-message" class="font-semibold">{t('form.message')}</label>
+        <p id="h-message" class="mt-1 text-sm text-muted">{t('form.messageHint')}</p>
+        <textarea id="f-message" name="message" rows="6" required aria-describedby="h-message e-message" class={inputClass}></textarea>
+        <p id="e-message" class="mt-1.5 text-sm font-semibold text-red-700" data-error-for="message"></p>
+      </div>
+
+      <div class="sm:col-span-2">
+        {!endpoint && <p class="mb-4 rounded-lg border-2 border-primary-700 bg-mist p-4 text-sm leading-relaxed">{t('form.notConfigured')}</p>}
+        <button type="submit" class="btn-primary w-full disabled:cursor-not-allowed disabled:bg-muted sm:w-auto" disabled={!endpoint}>
+          {t('form.submit')}
+        </button>
+        <p class="mt-4 rounded-lg empty:hidden" role="status" aria-live="polite" data-form-status></p>
+      </div>
+    </form>
+
+    <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+      <div class="rounded-[var(--radius-card)] border border-line bg-mist p-6">
+        <h2 class="text-lg font-bold">{t('form.or')}</h2>
+        <div class="mt-4 grid gap-3">
+          {
+            waNumber && (
+              <a href={`https://wa.me/${waNumber}`} rel="noopener" class="btn-primary">
+                {t('form.whatsapp')}
+              </a>
+            )
+          }
+          {
+            settings.email && (
+              <a href={`mailto:${settings.email}`} class="btn border border-primary-700 text-primary-700 hover:bg-white">
+                {t('form.emailUs')}
+              </a>
+            )
+          }
+          {
+            settings.phone && (
+              <a href={`tel:${settings.phone.replace(/\s/g, '')}`} class="btn border border-primary-700 text-primary-700 hover:bg-white">
+                {t('form.call')} {settings.phone}
+              </a>
+            )
+          }
+          {!settings.email && <p class="text-sm text-muted">[REAL DATA] Email: CMS &gt; Pengaturan Situs</p>}
+        </div>
+        <address class="mt-6 space-y-2 text-[0.95rem] leading-relaxed not-italic text-muted">
+          {settings.address && <p>{settings.address}</p>}
+          {settings.email && <p>{settings.email}</p>}
+        </address>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const d = form.dataset;
+    const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const submitLabel = submit.textContent;
+    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[id^="f-"], textarea')];
+
+    const setStatus = (msg: string, kind: 'ok' | 'error' | 'info') => {
+      status.textContent = msg;
+      status.className = `mt-4 rounded-lg p-4 font-semibold empty:hidden ${
+        kind === 'ok' ? 'border-2 border-primary-700 bg-mist text-forest' : kind === 'error' ? 'border-2 border-red-700 bg-red-50 text-red-800' : 'text-muted'
+      }`;
+    };
+
+    const validate = (el: HTMLInputElement | HTMLTextAreaElement) => {
+      const v = el.value.trim();
+      let msg = '';
+      if (el.required && !v) msg = d.msgRequired!;
+      else if (v && el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = d.msgEmail!;
+      else if (v && el.type === 'tel' && !/^\+?[\d\s()-]{8,}$/.test(v)) msg = d.msgPhone!;
+      el.setAttribute('aria-invalid', String(!!msg));
+      form.querySelector(`[data-error-for="${el.name}"]`)!.textContent = msg;
+      return !msg;
+    };
+    fields.forEach((el) => el.addEventListener('blur', () => el.getAttribute('aria-invalid') && validate(el)));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const invalid = fields.filter((el) => !validate(el));
+      if (invalid.length) {
+        setStatus(d.msgFix!, 'error');
+        invalid[0].focus();
+        return;
+      }
+      const data = new FormData(form);
+      // Honeypot terisi: anggap bot, tampilkan sukses tanpa mengirim apa pun.
+      if (String(data.get(d.honeypot!) || '')) {
+        setStatus(d.msgSuccess!, 'ok');
+        form.reset();
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = d.msgSending!;
+      setStatus('', 'info');
+      try {
+        const res = await fetch(d.endpoint!, {
+          method: 'POST',
+          headers: { Accept: 'application/json', ...(d.provider === 'web3forms' && { 'Content-Type': 'application/json' }) },
+          body: d.provider === 'web3forms' ? JSON.stringify(Object.fromEntries(data)) : data,
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success === false) throw new Error(json.message || res.statusText);
+        setStatus(d.msgSuccess!, 'ok');
+        form.reset();
+      } catch {
+        setStatus(d.msgError!, 'error');
+      } finally {
+        submit.disabled = false;
+        submit.textContent = submitLabel;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../i18n/ui';
+import { pathWithoutLang } from '../i18n/utils';
+import { withBase } from '../lib/url';
+import { byLang, getSettings } from '../lib/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  /** Default: path yang sama di kedua bahasa. Isi bila halaman padanan berbeda. */
+  alternates?: Record<Lang, string>;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+const { lang, title, description, image, type, jsonLd, noindex } = Astro.props;
+const here = pathWithoutLang(Astro.url);
+const alternates = Astro.props.alternates ?? { id: here, en: here };
+
+const settings = await getSettings(lang);
+const nav = (e: { data: { title: string; slug: string; icon: string; excerpt: string } }) => ({
+  title: e.data.title,
+  slug: e.data.slug,
+  icon: e.data.icon,
+  excerpt: e.data.excerpt,
+});
+const services = (await byLang('services', lang)).map(nav);
+const solutions = (await byLang('solutions', lang)).map(nav);
+const fullTitle = title.includes(settings.companyName) ? title : `${title} | ${settings.companyName}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#006838" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" />
+    <slot name="head" />
+    <SEO
+      title={fullTitle}
+      description={description || settings.description}
+      lang={lang}
+      alternates={alternates}
+      image={image || settings.ogImage}
+      type={type}
+      siteName={settings.companyName}
+      jsonLd={jsonLd}
+      noindex={noindex}
+    />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <Header lang={lang} alternates={alternates} services={services} solutions={solutions} />
+    <main id="main" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} settings={settings} services={services} />
+  </body>
+</html>

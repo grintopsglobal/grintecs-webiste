@@ -1,0 +1,20 @@
+---
+import Stripes from './Stripes.astro';
+
+interface Props {
+  title: string;
+  intro?: string;
+  back?: { href: string; label: string };
+}
+const { title, intro, back } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden border-b border-line bg-mist">
+  <Stripes id="page-stripes" class="absolute -right-24 bottom-0 -z-10 hidden h-full w-[38%] opacity-25 md:block" />
+  <div class="container-x py-12 md:py-16">
+    {back && <a href={back.href} class="link mb-2 inline-flex min-h-11 items-center text-sm">← {back.label}</a>}
+    <h1 class="max-w-3xl text-4xl font-extrabold md:text-5xl">{title}</h1>
+    {intro && <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">{intro}</p>}
+    <slot />
+  </div>
+</section>

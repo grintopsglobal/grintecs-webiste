@@ -1,0 +1,36 @@
+type: about
+seo:
+  title: "Tentang Kami"
+  description: "Kenali GRINTEC: perusahaan teknologi yang membangun, menghubungkan, dan mengamankan sistem bisnis."
+heading: "Tentang GRINTEC"
+intro: "GRINTEC adalah perusahaan teknologi yang membantu bisnis membangun, menghubungkan, dan mengamankan sistem digitalnya."
+history:
+  heading: "Sejarah"
+  body: |
+    [REAL DATA] Tuliskan sejarah GRINTEC di sini: tahun berdiri, pendiri, dan tonggak penting perusahaan.
+
+    Teks ini placeholder dan tampil di situs sampai diganti lewat CMS: Halaman > Tentang Kami > Sejarah.
+vision:
+  heading: "Visi"
+  body: "Menjadi mitra teknologi yang membuat transformasi digital perusahaan di Indonesia berjalan aman dan berkelanjutan."
+mission:
+  heading: "Misi"
+  items:
+    - "Membangun software dan sistem yang mengikuti proses bisnis klien, bukan sebaliknya."
+    - "Menempatkan keamanan di setiap tahap proyek, dari rancangan sampai operasional."
+    - "Menyerahkan pengetahuan dan dokumentasi agar tim klien bisa mandiri."
+values:
+  heading: "Nilai yang kami pegang"
+  items:
+    - title: "Aman sejak awal"
+      text: "Kami memperlakukan keamanan sebagai syarat rancangan, sama pentingnya dengan fungsi."
+    - title: "Jujur soal ruang lingkup"
+      text: "Kami menyampaikan risiko dan batasan di awal, termasuk ketika jawabannya adalah tidak membangun sesuatu."
+    - title: "Bisa dirawat"
+      text: "Kode, infrastruktur, dan dokumentasi kami tulis agar mudah dilanjutkan oleh tim lain."
+    - title: "Hasil yang terukur"
+      text: "Setiap tahap proyek punya target yang disepakati dan bisa diperiksa bersama."
+team:
+  heading: "Tim kami"
+  intro: "[REAL DATA] Profil tim belum diisi. Tambahkan anggota tim (nama, jabatan, foto) lewat CMS: Halaman > Tentang Kami > Tim."
+  members: []

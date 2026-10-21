@@ -1,0 +1,24 @@
+/* Gaya preview Decap CMS: token yang sama dengan src/styles/global.css */
+:root {
+  --primary-700: #007840;
+  --primary: #00a048;
+  --ink: #0a0a0a;
+  --muted: #4b5650;
+}
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 17px;
+  max-width: 68ch;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+h1, h2, h3 {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+a { color: var(--primary-700); }
+blockquote { border-left: 4px solid var(--primary); padding-left: 1.25rem; color: var(--muted); }
+img { max-width: 100%; border-radius: 10px; }

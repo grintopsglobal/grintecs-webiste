@@ -1,0 +1,399 @@
+# Decap CMS untuk GRINTEC. Nama field di sini HARUS sama dengan schema di src/content.config.ts.
+backend:
+  name: github
+  repo: grintopsglobal/grintecs-webiste # GANTI jika repo pindah: OWNER/REPO
+  branch: main
+  # GANTI dengan URL Cloudflare Worker dari folder oauth-proxy/ (lihat README).
+  base_url: https://grintec-decap-oauth.YOUR-SUBDOMAIN.workers.dev
+  auth_endpoint: auth
+  commit_messages:
+    create: 'cms: tambah {{collection}} "{{slug}}"'
+    update: 'cms: ubah {{collection}} "{{slug}}"'
+    delete: 'cms: hapus {{collection}} "{{slug}}"'
+    uploadMedia: 'cms: unggah "{{path}}"'
+    deleteMedia: 'cms: hapus media "{{path}}"'
+
+# Saat dibuka dari localhost, Decap memakai `npx decap-server` (lihat README).
+local_backend: true
+
+site_url: https://grintopsglobal.github.io/grintecs-webiste/
+display_url: https://grintopsglobal.github.io/grintecs-webiste/
+
+# Path media disimpan tanpa base ("/uploads/x.jpg"); situs menambahkan base lewat withBase().
+media_folder: public/uploads
+public_folder: /uploads
+
+i18n:
+  structure: multiple_folders
+  locales: [id, en]
+  default_locale: id
+
+# Daftar ikon = kunci di src/components/Icon.astro
+_icons: &icons
+  - { label: 'AI / chip', value: automation }
+  - { label: 'Kode', value: code }
+  - { label: 'Arsitektur (lapisan)', value: architecture }
+  - { label: 'Database', value: data }
+  - { label: 'Modul ERP', value: erp }
+  - { label: 'Keranjang belanja', value: commerce }
+  - { label: 'Monitor terkelola', value: managed }
+  - { label: 'Perisai', value: security }
+  - { label: 'Alur operasi', value: operations }
+  - { label: 'Platform / jendela', value: platform }
+  - { label: 'Sistem terhubung', value: connected }
+  - { label: 'Grafik batang', value: analytics }
+  - { label: 'Paket', value: package }
+  - { label: 'Denyut / keandalan', value: reliability }
+  - { label: 'Perisai peringatan', value: risk }
+  - { label: 'Siklus transformasi', value: transformation }
+  - { label: 'Pabrik', value: factory }
+  - { label: 'Toko', value: retail }
+  - { label: 'Bank', value: finance }
+  - { label: 'Kesehatan', value: health }
+  - { label: 'Truk', value: logistics }
+  - { label: 'Gedung publik', value: public }
+  - { label: 'Pertumbuhan', value: growth }
+  - { label: 'Mitra / orang', value: partner }
+
+_slug: &slug
+  label: Slug URL
+  name: slug
+  widget: string
+  i18n: duplicate
+  hint: 'Huruf kecil, angka, dan tanda hubung. Dipakai di URL dan sama untuk kedua bahasa.'
+  pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Gunakan huruf kecil, angka, dan tanda hubung saja']
+
+_seo: &seo
+  label: SEO
+  name: seo
+  widget: object
+  i18n: true
+  fields:
+    - { label: Judul halaman, name: title, widget: string, i18n: true }
+    - { label: Deskripsi, name: description, widget: text, i18n: true }
+
+_section: &section
+  - { label: Judul, name: heading, widget: string, i18n: true }
+  - { label: Pengantar, name: intro, widget: text, required: false, i18n: true }
+
+collections:
+  - name: services
+    label: Layanan
+    label_singular: Layanan
+    folder: src/content/services
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
+      - { label: Ringkasan, name: excerpt, widget: text, i18n: true, hint: 'Satu kalimat, tampil di kartu dan meta description.' }
+      - { label: Gambar utama, name: heroImage, widget: image, required: false, i18n: duplicate }
+      - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
+      - { label: Yang kami kerjakan, name: features, widget: list, required: false, i18n: true, field: { label: Poin, name: item, widget: string } }
+      - { label: Solusi terkait, name: relatedSolutions, widget: relation, collection: solutions, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Isi, name: body, widget: markdown, i18n: true }
+
+  - name: solutions
+    label: Solusi
+    label_singular: Solusi
+    folder: src/content/solutions
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
+      - { label: Ringkasan, name: excerpt, widget: text, i18n: true }
+      - { label: Gambar utama, name: heroImage, widget: image, required: false, i18n: duplicate }
+      - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
+      - { label: Hasil yang dituju, name: outcomes, widget: list, required: false, i18n: true, field: { label: Hasil, name: item, widget: string } }
+      - { label: Layanan pendukung, name: relatedServices, widget: relation, collection: services, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Isi, name: body, widget: markdown, i18n: true }
+
+  - name: industries
+    label: Industri
+    label_singular: Industri
+    folder: src/content/industries
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
+      - { label: Ringkasan, name: excerpt, widget: text, i18n: true }
+      - { label: Gambar, name: image, widget: image, required: false, i18n: duplicate }
+      - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
+      - { label: Isi, name: body, widget: markdown, i18n: true }
+
+  - name: insights
+    label: Insights
+    label_singular: Artikel
+    folder: src/content/insights
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{title}} ({{date}})'
+    sortable_fields: [date, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Tanggal terbit, name: date, widget: datetime, i18n: duplicate }
+      - { label: Penulis, name: author, widget: string, default: 'Tim GRINTEC', i18n: true }
+      - label: Kategori
+        name: category
+        widget: select
+        i18n: duplicate
+        options:
+          - { label: 'AI & Otomasi', value: ai }
+          - { label: 'Rekayasa Perangkat Lunak', value: engineering }
+          - { label: 'Data & Analitik', value: data }
+          - { label: 'Keamanan Siber', value: security }
+          - { label: 'Transformasi Digital', value: transformation }
+      - { label: Tag, name: tags, widget: list, required: false, i18n: true }
+      - { label: Gambar sampul, name: cover, widget: image, required: false, i18n: duplicate }
+      - { label: Ringkasan, name: excerpt, widget: text, i18n: true }
+      - { label: Draft (tidak tampil di situs), name: draft, widget: boolean, default: false, i18n: duplicate }
+      - { label: Isi, name: body, widget: markdown, i18n: true }
+
+  # Halaman & pengaturan memakai folder collection (bukan "files") karena i18n files
+  # di Decap hanya mendukung single_file; ini menjaga struktur <collection>/<locale>/<file>.yml.
+  - name: page_home
+    label: 'Halaman: Beranda'
+    folder: src/content/pages
+    create: false
+    delete: false
+    i18n: true
+    extension: yml
+    format: yml
+    identifier_field: type
+    filter: { field: type, value: home }
+    fields:
+      - { name: type, widget: hidden, default: home, i18n: duplicate }
+      - *seo
+      - label: Hero
+        name: hero
+        widget: object
+        i18n: true
+        fields:
+          - { label: Headline, name: headline, widget: string, i18n: true }
+          - { label: Kata yang digarisbawahi, name: highlight, widget: string, required: false, i18n: true, hint: 'Harus persis ada di headline.' }
+          - { label: Subheadline, name: subheadline, widget: text, i18n: true }
+          - label: Tombol utama
+            name: primaryCta
+            widget: object
+            i18n: true
+            fields:
+              - { label: Teks, name: label, widget: string, i18n: true }
+              - { label: Link, name: href, widget: string, i18n: true, hint: 'Path tanpa bahasa, mis. /contact/, atau URL penuh.' }
+          - label: Tombol sekunder
+            name: secondaryCta
+            widget: object
+            i18n: true
+            fields:
+              - { label: Teks, name: label, widget: string, i18n: true }
+              - { label: Link, name: href, widget: string, i18n: true, hint: 'Path tanpa bahasa, #anchor, atau URL penuh.' }
+          - { label: Video WebM, name: video, widget: file, required: false, i18n: true, hint: 'Disarankan < 5 MB, 1080p, 10 sampai 20 detik, tanpa audio.' }
+          - { label: Video MP4 (fallback), name: videoMp4, widget: file, required: false, i18n: true }
+          - { label: Poster (tampil sebelum video dan untuk reduced motion), name: poster, widget: image, i18n: true }
+      - label: Value proposition
+        name: valueProps
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Pengantar, name: intro, widget: text, required: false, i18n: true }
+          - label: Poin
+            name: items
+            widget: list
+            i18n: true
+            fields:
+              - { label: Ikon, name: icon, widget: select, options: *icons, i18n: true }
+              - { label: Judul, name: title, widget: string, i18n: true }
+              - { label: Teks, name: text, widget: text, i18n: true }
+      - { label: Section Layanan, name: servicesSection, widget: object, i18n: true, fields: *section }
+      - { label: Section Solusi, name: solutionsSection, widget: object, i18n: true, fields: *section }
+      - { label: Section Industri, name: industriesSection, widget: object, i18n: true, fields: *section }
+      - label: Statistik
+        name: stats
+        widget: object
+        i18n: true
+        hint: 'Isi hanya dengan angka asli yang bisa dibuktikan. Section tidak tampil selama daftar kosong.'
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Pengantar, name: intro, widget: text, required: false, i18n: true }
+          - label: Angka
+            name: items
+            widget: list
+            required: false
+            i18n: true
+            fields:
+              - { label: Nilai, name: value, widget: string, i18n: true }
+              - { label: Keterangan, name: label, widget: string, i18n: true }
+              - { label: Sumber / periode data, name: source, widget: string, required: false, i18n: true }
+      - label: Proses kerja
+        name: process
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Pengantar, name: intro, widget: text, required: false, i18n: true }
+          - label: Langkah
+            name: steps
+            widget: list
+            i18n: true
+            fields:
+              - { label: Judul, name: title, widget: string, i18n: true }
+              - { label: Teks, name: text, widget: text, i18n: true }
+      - { label: Section Insights, name: insightsSection, widget: object, i18n: true, fields: *section }
+      - label: CTA penutup
+        name: cta
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Teks, name: text, widget: text, i18n: true }
+          - { label: Teks tombol, name: buttonLabel, widget: string, i18n: true }
+
+  - name: page_about
+    label: 'Halaman: Tentang Kami'
+    folder: src/content/pages
+    create: false
+    delete: false
+    i18n: true
+    extension: yml
+    format: yml
+    identifier_field: type
+    filter: { field: type, value: about }
+    fields:
+      - { name: type, widget: hidden, default: about, i18n: duplicate }
+      - *seo
+      - { label: Judul, name: heading, widget: string, i18n: true }
+      - { label: Pengantar, name: intro, widget: text, i18n: true }
+      - label: Sejarah
+        name: history
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Isi (pisahkan paragraf dengan baris kosong), name: body, widget: text, i18n: true }
+      - label: Visi
+        name: vision
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Isi, name: body, widget: text, i18n: true }
+      - label: Misi
+        name: mission
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Poin misi, name: items, widget: list, i18n: true, field: { label: Misi, name: item, widget: string } }
+      - label: Nilai
+        name: values
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - label: Nilai
+            name: items
+            widget: list
+            i18n: true
+            fields:
+              - { label: Nama nilai, name: title, widget: string, i18n: true }
+              - { label: Penjelasan, name: text, widget: text, i18n: true }
+      - label: Tim
+        name: team
+        widget: object
+        i18n: true
+        fields:
+          - { label: Judul, name: heading, widget: string, i18n: true }
+          - { label: Pengantar, name: intro, widget: text, required: false, i18n: true }
+          - label: Anggota
+            name: members
+            widget: list
+            required: false
+            i18n: true
+            fields:
+              - { label: Nama, name: name, widget: string, i18n: true }
+              - { label: Jabatan, name: role, widget: string, i18n: true }
+              - { label: Foto, name: photo, widget: image, required: false, i18n: true }
+              - { label: Bio singkat, name: bio, widget: text, required: false, i18n: true }
+
+  - name: page_contact
+    label: 'Halaman: Mari Diskusi'
+    folder: src/content/pages
+    create: false
+    delete: false
+    i18n: true
+    extension: yml
+    format: yml
+    identifier_field: type
+    filter: { field: type, value: contact }
+    fields:
+      - { name: type, widget: hidden, default: contact, i18n: duplicate }
+      - *seo
+      - { label: Judul, name: heading, widget: string, i18n: true }
+      - { label: Pengantar, name: intro, widget: text, i18n: true }
+      - { label: Pesan sukses, name: successMessage, widget: text, i18n: true }
+      - { label: Pesan gagal, name: errorMessage, widget: text, i18n: true }
+
+  - name: settings
+    label: 'Pengaturan Situs'
+    folder: src/content/settings
+    create: false
+    delete: false
+    i18n: true
+    extension: yml
+    format: yml
+    identifier_field: companyName
+    fields:
+      - { label: Nama brand (dipakai di judul tab), name: companyName, widget: string, i18n: duplicate }
+      - { label: Nama legal (copyright & data terstruktur), name: legalName, widget: string, required: false, i18n: duplicate }
+      - { label: Tagline, name: tagline, widget: string, i18n: true }
+      - { label: Deskripsi SEO default, name: description, widget: text, i18n: true }
+      - { label: Gambar OG default (1200x630, PNG/JPG), name: ogImage, widget: image, i18n: duplicate }
+      - { label: Alamat, name: address, widget: text, required: false, i18n: true }
+      - { label: Email, name: email, widget: string, required: false, i18n: duplicate }
+      - { label: Telepon, name: phone, widget: string, required: false, i18n: duplicate }
+      - { label: WhatsApp (format internasional, mis. +62 812 0000 0000), name: whatsapp, widget: string, required: false, i18n: duplicate }
+      # List/object hanya menerima i18n boolean; isinya disalin otomatis lewat i18n: duplicate di sub-field.
+      - label: Media sosial
+        name: socials
+        widget: list
+        required: false
+        i18n: true
+        fields:
+          - { label: Platform, name: platform, widget: string, i18n: duplicate }
+          - { label: URL, name: url, widget: string, i18n: duplicate }
+      - label: Formulir kontak
+        name: form
+        widget: object
+        i18n: true
+        fields:
+          - { label: Layanan formulir, name: provider, widget: select, options: [web3forms, formspree], default: web3forms, i18n: duplicate }
+          - { label: Web3Forms access key, name: web3formsKey, widget: string, required: false, i18n: duplicate, hint: 'Dari web3forms.com. Key ini memang publik (dipakai di browser).' }
+          - { label: Formspree form ID, name: formspreeId, widget: string, required: false, i18n: duplicate, hint: 'Bagian akhir URL https://formspree.io/f/XXXXXXX' }

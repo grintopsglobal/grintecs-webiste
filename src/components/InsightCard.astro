@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+import { localizePath, useTranslations } from '../i18n/utils';
+import { withBase } from '../lib/url';
+import Stripes from './Stripes.astro';
+
+interface Props {
+  lang: Lang;
+  entry: CollectionEntry<'insights'>;
+  featured?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { lang, entry, featured = false, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const { title, slug, date, category, cover, excerpt, author } = entry.data;
+const H = headingLevel;
+const dateText = date.toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<article class="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
+  {
+    cover ? (
+      <img src={withBase(cover)} alt="" loading="lazy" decoding="async" width="1200" height="675" class="aspect-[16/9] w-full object-cover" />
+    ) : featured ? (
+      // Tanpa sampul, kartu utama memakai motif garis logo agar tidak kosong.
+      <div class="relative h-40 overflow-hidden bg-forest md:h-56" aria-hidden="true">
+        <Stripes id={`cover-${slug}`} class="absolute inset-0 size-full opacity-90" />
+      </div>
+    ) : (
+      <div class="h-1.5 bg-[linear-gradient(90deg,#B0D030_0%,#30B048_45%,#006838_100%)]" aria-hidden="true" />
+    )
+  }
+  <div class:list={['flex flex-1 flex-col', featured ? 'p-7 md:p-9' : 'p-6']}>
+    <p class="text-sm font-semibold text-primary-700">{t(`cat.${category}`)}</p>
+    <H class:list={['mt-2 font-bold', featured ? 'text-2xl md:text-3xl' : 'text-lg']}>
+      <a href={localizePath(lang, `/insights/${slug}/`)} class="after:absolute after:inset-0 group-hover:underline">{title}</a>
+    </H>
+    <p class:list={['mt-3 leading-relaxed text-muted', !featured && 'line-clamp-3']}>{excerpt}</p>
+    <p class="mt-auto pt-5 text-sm text-muted">
+      <time datetime={date.toISOString()}>{dateText}</time> · {author}
+    </p>
+  </div>
+</article>

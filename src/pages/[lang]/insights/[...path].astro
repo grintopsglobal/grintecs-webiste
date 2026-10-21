@@ -1,0 +1,110 @@
+---
+// Satu route untuk semua halaman listing:
+// /insights/, /insights/page/2/, /insights/category/ai/, /insights/category/ai/page/2/
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import InsightCard from '../../../components/InsightCard.astro';
+import { locales, type Lang } from '../../../i18n/ui';
+import { localizePath, useTranslations } from '../../../i18n/utils';
+import { insightsByLang } from '../../../lib/content';
+
+import { CATEGORIES, type Category } from '../../../lib/categories';
+
+export async function getStaticPaths() {
+  const PER_PAGE = 9;
+  const paths = [];
+  for (const lang of locales) {
+    const all = await insightsByLang(lang);
+    for (const category of [undefined, ...CATEGORIES]) {
+      const items = category ? all.filter((e) => e.data.category === category) : all;
+      const pages = Math.max(1, Math.ceil(items.length / PER_PAGE));
+      for (let page = 1; page <= pages; page++) {
+        const base = category ? `category/${category}/` : '';
+        paths.push({
+          params: { lang, path: (page > 1 ? `${base}page/${page}` : base).replace(/\/$/, '') || undefined },
+          props: { category, page, pages, items: items.slice((page - 1) * PER_PAGE, page * PER_PAGE) },
+        });
+      }
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  category?: Category;
+  page: number;
+  pages: number;
+  items: CollectionEntry<'insights'>[];
+}
+const lang = Astro.params.lang as Lang;
+const { category, page, pages, items } = Astro.props;
+const t = useTranslations(lang);
+const listPath = (cat?: Category, p = 1) => `/insights/${cat ? `category/${cat}/` : ''}${p > 1 ? `page/${p}/` : ''}`;
+// Jumlah halaman bisa berbeda antar bahasa, jadi language switcher diarahkan ke halaman pertama kategori yang sama.
+const alternates = { id: listPath(category), en: listPath(category) };
+const title = category ? `${t(`cat.${category}`)} | ${t('insights.title')}` : t('insights.title');
+---
+
+<BaseLayout lang={lang} title={page > 1 ? `${title}, ${t('insights.page')} ${page}` : title} description={t('insights.intro')} alternates={alternates}>
+  <PageHeader title={t('insights.title')} intro={t('insights.intro')}>
+    <nav aria-label={t('insights.filter')} class="mt-8">
+      <ul class="flex flex-wrap gap-2">
+        {
+          [undefined, ...CATEGORIES].map((cat) => (
+            <li>
+              <a
+                href={localizePath(lang, listPath(cat))}
+                aria-current={cat === category ? 'page' : undefined}
+                class:list={[
+                  'inline-flex min-h-11 items-center rounded-lg border px-4 text-sm font-semibold',
+                  cat === category ? 'border-primary-700 bg-primary-700 text-white' : 'border-line bg-white hover:border-primary-700 hover:text-primary-700',
+                ]}
+              >
+                {cat ? t(`cat.${cat}`) : t('insights.all')}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </PageHeader>
+
+  <section class="container-x py-14 md:py-20">
+    {
+      items.length === 0 ? (
+        <div class="max-w-xl rounded-[var(--radius-card)] border border-line p-8">
+          <p class="text-lg">{t('insights.empty')}</p>
+          <a href={localizePath(lang, '/insights/')} class="link mt-4 inline-flex min-h-11 items-center">{t('insights.seeAll')}</a>
+        </div>
+      ) : (
+        <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((entry) => (
+            <li>
+              <InsightCard lang={lang} entry={entry} headingLevel="h2" />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      pages > 1 && (
+        <nav aria-label={t('insights.page')} class="mt-12 flex flex-wrap items-center gap-2">
+          {page > 1 && <a href={localizePath(lang, listPath(category, page - 1))} rel="prev" class="btn border border-line hover:border-primary-700">{t('insights.prev')}</a>}
+          {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+            <a
+              href={localizePath(lang, listPath(category, p))}
+              aria-current={p === page ? 'page' : undefined}
+              aria-label={`${t('insights.page')} ${p}`}
+              class:list={['btn min-w-11 border', p === page ? 'border-primary-700 bg-primary-700 text-white' : 'border-line hover:border-primary-700']}
+            >
+              {p}
+            </a>
+          ))}
+          {page < pages && <a href={localizePath(lang, listPath(category, page + 1))} rel="next" class="btn border border-line hover:border-primary-700">{t('insights.next')}</a>}
+        </nav>
+      )
+    }
+  </section>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Lang } from '../i18n/ui';
+import { localizePath, useTranslations } from '../i18n/utils';
+
+export interface NavItem {
+  title: string;
+  slug: string;
+  icon: string;
+  excerpt: string;
+}
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  services: NavItem[];
+  solutions: NavItem[];
+  links: { href: string; label: string }[];
+  current: string;
+}
+const { lang, alternates, services, solutions, links, current } = Astro.props;
+const t = useTranslations(lang);
+const groups = [
+  { key: 'services', label: t('nav.services'), items: services, all: t('nav.allServices') },
+  { key: 'solutions', label: t('nav.solutions'), items: solutions, all: t('nav.allSolutions') },
+] as const;
+---
+
+<div id="mobile-nav" hidden class="fixed inset-x-0 top-16 bottom-0 overflow-y-auto overscroll-contain border-t border-line bg-white lg:hidden">
+  <nav aria-label={t('nav.primary')} class="container-x pt-2 pb-[max(2rem,env(safe-area-inset-bottom))]">
+    <ul class="divide-y divide-line text-lg font-semibold">
+      {
+        groups.map((g) => (
+          <li>
+            <details class="group" open={current.startsWith(`/${g.key}/`)}>
+              <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
+                {g.label}
+                <svg class="size-4 transition-transform group-open:rotate-180" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" /></svg>
+              </summary>
+              <ul class="pb-3 text-base font-medium">
+                {g.items.map((item) => (
+                  <li>
+                    <a href={localizePath(lang, `/${g.key}/${item.slug}/`)} class="slash flex min-h-11 items-center text-ink hover:text-primary-700">
+                      {item.title}
+                    </a>
+                  </li>
+                ))}
+                <li>
+                  <a href={localizePath(lang, `/${g.key}/`)} class="link inline-flex min-h-11 items-center">{g.all}</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+        ))
+      }
+      {
+        links.map((l) => (
+          <li>
+            <a href={localizePath(lang, l.href)} aria-current={current.startsWith(l.href) ? 'page' : undefined} class="flex min-h-14 items-center hover:text-primary-700">
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+      <LanguageSwitcher lang={lang} alternates={alternates} />
+      <a href={localizePath(lang, '/contact/')} class="btn-primary w-full sm:w-auto">{t('nav.cta')}</a>
+    </div>
+  </nav>
+</div>

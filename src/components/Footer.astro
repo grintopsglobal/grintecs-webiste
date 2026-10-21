@@ -1,0 +1,72 @@
+---
+import type { Lang } from '../i18n/ui';
+import { localizePath, useTranslations } from '../i18n/utils';
+import { withBase } from '../lib/url';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  lang: Lang;
+  settings: CollectionEntry<'settings'>['data'];
+  services: { title: string; slug: string }[];
+}
+const { lang, settings, services } = Astro.props;
+const t = useTranslations(lang);
+const company = [
+  { href: '/solutions/', label: t('nav.solutions') },
+  { href: '/industries/', label: t('nav.industries') },
+  { href: '/insights/', label: t('nav.insights') },
+  { href: '/about/', label: t('nav.about') },
+  { href: '/contact/', label: t('nav.cta') },
+];
+const waNumber = settings.whatsapp.replace(/\D/g, '');
+const year = new Date().getFullYear();
+---
+
+<footer class="on-dark bg-forest-900 text-on-forest">
+  <div class="h-1 bg-[linear-gradient(90deg,#B0D030_0%,#30B048_45%,#006838_100%)]" aria-hidden="true"></div>
+  <div class="container-x grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_0.8fr] lg:py-16">
+    <div>
+      <img src={withBase('/images/brand/grintec-logo-white.png')} alt="GRINTEC" width="640" height="148" loading="lazy" class="h-9 w-auto" />
+      <p class="mt-4 font-display text-xl font-semibold text-white">{settings.tagline}</p>
+      <address class="mt-6 space-y-2 not-italic">
+        {settings.address && <p class="max-w-sm leading-relaxed">{settings.address}</p>}
+        {settings.email && <p><a class="hover:text-white underline underline-offset-4" href={`mailto:${settings.email}`}>{settings.email}</a></p>}
+        {settings.phone && <p><a class="hover:text-white underline underline-offset-4" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a></p>}
+        {waNumber && <p><a class="hover:text-white underline underline-offset-4" href={`https://wa.me/${waNumber}`} rel="noopener">WhatsApp {settings.whatsapp}</a></p>}
+      </address>
+      {
+        settings.socials.length > 0 && (
+          <div class="mt-6">
+            <p class="text-sm font-semibold text-white">{t('footer.follow')}</p>
+            <ul class="mt-2 flex flex-wrap gap-x-4">
+              {settings.socials.map((s) => (
+                <li>
+                  <a href={s.url} rel="noopener" class="inline-flex min-h-11 items-center hover:text-white underline underline-offset-4">{s.platform}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+    <nav aria-labelledby="footer-services">
+      <p id="footer-services" class="font-semibold text-white">{t('nav.services')}</p>
+      <ul class="mt-3 grid gap-x-6 sm:grid-cols-2 md:grid-cols-1">
+        {services.map((s) => (
+          <li><a href={localizePath(lang, `/services/${s.slug}/`)} class="inline-flex min-h-11 items-center hover:text-white">{s.title}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <nav aria-labelledby="footer-links">
+      <p id="footer-links" class="font-semibold text-white">{t('footer.quickLinks')}</p>
+      <ul class="mt-3">
+        {company.map((l) => (
+          <li><a href={localizePath(lang, l.href)} class="inline-flex min-h-11 items-center hover:text-white">{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div class="border-t border-white/15">
+    <p class="container-x py-5 text-sm">© {year} {settings.legalName || settings.companyName}. {t('footer.rights')}</p>
+  </div>
+</footer>

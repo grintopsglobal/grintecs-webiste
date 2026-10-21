@@ -1,0 +1,66 @@
+type: home
+seo:
+  title: "GRINTEC | Securing Future Transformation"
+  description: "GRINTEC membangun, menghubungkan, dan mengamankan software, data, ERP, dan sistem bisnis untuk perusahaan di Indonesia."
+hero:
+  headline: "Transformasi digital yang aman sejak baris kode pertama"
+  highlight: "aman"
+  subheadline: "GRINTEC merancang, membangun, dan mengamankan software, data, dan sistem bisnis untuk perusahaan yang sedang bertransformasi."
+  primaryCta:
+    label: "Mari Diskusi"
+    href: "/contact/"
+  secondaryCta:
+    label: "Lihat 8 Layanan Kami"
+    href: "#services"
+  video: "/uploads/hero.webm"
+  videoMp4: "/uploads/hero.mp4"
+  poster: "/uploads/hero-poster.jpg"
+valueProps:
+  heading: "Satu mitra untuk membangun dan menjaga sistem Anda"
+  intro: "Kami mengerjakan proyek dari perencanaan arsitektur sampai sistem berjalan di produksi, dengan pemeriksaan keamanan di setiap rilis."
+  items:
+    - icon: security
+      title: "Keamanan di setiap rilis"
+      text: "Review kode, pemindaian dependensi, dan uji hak akses masuk ke alur kerja tim sejak sprint pertama."
+    - icon: connected
+      title: "Sistem yang saling terhubung"
+      text: "ERP, toko online, CRM, dan aplikasi internal kami hubungkan lewat API yang terdokumentasi, sehingga data tidak diketik ulang."
+    - icon: growth
+      title: "Siap untuk tumbuh"
+      text: "Arsitektur dipilih sesuai beban hari ini dan rencana bisnis ke depan, tanpa membangun fitur yang belum dibutuhkan."
+    - icon: partner
+      title: "Satu tim, satu penanggung jawab"
+      text: "Konsultan, engineer, dan tim operasional bekerja dalam satu kontrak, jadi Anda tidak perlu menengahi beberapa vendor."
+servicesSection:
+  heading: "Layanan"
+  intro: "Delapan layanan yang bisa diambil satu per satu atau dirangkai menjadi satu program."
+solutionsSection:
+  heading: "Solusi dari sisi masalah bisnis"
+  intro: "Mulai dari tantangan yang sedang Anda hadapi. Kami merangkai layanan yang dibutuhkan untuk menyelesaikannya."
+industriesSection:
+  heading: "Industri yang kami layani"
+  intro: "Regulasi, ritme operasi, dan risiko di tiap industri berbeda. Rancangan sistem kami menyesuaikan dengan itu."
+stats:
+  heading: "GRINTEC dalam angka"
+  intro: ""
+  # Isi dengan angka asli beserta sumbernya. Selama kosong, section ini tidak tampil.
+  items: []
+process:
+  heading: "Cara kami bekerja"
+  intro: "Setiap proyek melewati empat tahap. Keamanan diperiksa di semuanya, tidak hanya di akhir."
+  steps:
+    - title: "Pemetaan"
+      text: "Kami mempelajari proses, sistem yang berjalan, dan target bisnis bersama tim Anda."
+    - title: "Rancangan"
+      text: "Arsitektur, ruang lingkup, dan rencana kerja disepakati sebelum pembangunan dimulai."
+    - title: "Pembangunan"
+      text: "Software dibangun dalam iterasi pendek dengan pengujian otomatis dan demo rutin."
+    - title: "Operasi & pengamanan"
+      text: "Sistem dipantau, diperbarui, dan diuji keamanannya setelah go-live."
+insightsSection:
+  heading: "Insights terbaru"
+  intro: "Catatan praktis tim GRINTEC untuk tim IT dan pemilik proses bisnis."
+cta:
+  heading: "Punya sistem yang perlu dibangun, dihubungkan, atau diamankan?"
+  text: "Ceritakan kondisi sistem Anda saat ini, lalu kita bahas langkah pertama yang masuk akal."
+  buttonLabel: "Mari Diskusi"

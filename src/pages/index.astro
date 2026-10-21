@@ -1,0 +1,20 @@
+---
+// GitHub Pages tidak punya redirect server, jadi root memakai meta refresh + link manual.
+import { withBase } from '../lib/url';
+const target = withBase('/id/');
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL(target, Astro.site).href} />
+    <title>GRINTEC</title>
+  </head>
+  <body style="font-family: system-ui, sans-serif; padding: 2rem">
+    <p>Mengalihkan ke <a href={target}>{target}</a> · Redirecting to <a href={withBase('/en/')}>English</a></p>
+  </body>
+</html>

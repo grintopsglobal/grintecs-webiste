@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { localizePath } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  items: { title: string; slug: string; icon: string; excerpt: string }[];
+  dark?: boolean;
+}
+const { lang, items, dark = false } = Astro.props;
+---
+
+<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  {
+    items.map((item) => (
+      <li>
+        <a
+          href={localizePath(lang, `/solutions/${item.slug}/`)}
+          class:list={[
+            'group flex h-full flex-col rounded-[var(--radius-card)] border p-6 transition-colors',
+            dark ? 'border-white/20 hover:border-lime hover:bg-white/5' : 'border-line bg-white hover:border-primary-700',
+          ]}
+        >
+          <Icon name={item.icon} class:list={['size-8', dark ? 'text-on-forest' : 'text-primary']} />
+          <span class:list={['mt-6 block font-display text-lg font-bold group-hover:underline', dark ? 'text-white' : 'text-ink']}>{item.title}</span>
+          <span class:list={['mt-2 block text-[0.95rem] leading-relaxed', dark ? 'text-on-forest' : 'text-muted']}>{item.excerpt}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

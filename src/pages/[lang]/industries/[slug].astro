@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import DetailBody from '../../../components/DetailBody.astro';
+import { locales, type Lang } from '../../../i18n/ui';
+import { bodyHtml } from '../../../lib/url';
+import { localizePath, useTranslations } from '../../../i18n/utils';
+import { alternatesFor, byLang } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(
+    locales.map(async (lang) => (await byLang('industries', lang)).map((entry) => ({ params: { lang, slug: entry.data.slug }, props: { entry } }))),
+  );
+  return paths.flat();
+}
+
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props as { entry: CollectionEntry<'industries'> };
+const t = useTranslations(lang);
+const services = (await byLang('services', lang)).map((s) => ({ href: localizePath(lang, `/services/${s.data.slug}/`), label: s.data.title }));
+---
+
+<BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.image} alternates={await alternatesFor('industries', entry.data.slug)}>
+  <PageHeader title={entry.data.title} intro={entry.data.excerpt} back={{ href: localizePath(lang, '/industries/'), label: t('industries.title') }} />
+  <DetailBody heroImage={entry.data.image} related={{ title: t('nav.services'), links: services }} cta={{ href: localizePath(lang, '/contact/'), label: t('common.discussThis') }}>
+    <Fragment set:html={bodyHtml(entry)} />
+  </DetailBody>
+</BaseLayout>

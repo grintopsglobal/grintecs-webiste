@@ -1,0 +1,24 @@
+---
+// Motif identitas: pita lengkung diagonal seperti potongan pada simbol logo.
+interface Props {
+  class?: string;
+  id: string;
+}
+const { class: className = '', id } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 400 400" fill="none" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B0D030" />
+      <stop offset="0.45" stop-color="#30B048" />
+      <stop offset="1" stop-color="#006838" />
+    </linearGradient>
+  </defs>
+  <g stroke={`url(#${id})`} stroke-width="22" stroke-linecap="butt">
+    <path d="M-40 150 C 80 90, 240 60, 460 70" />
+    <path d="M-40 205 C 90 150, 250 125, 460 130" />
+    <path d="M-40 260 C 100 210, 260 190, 460 192" />
+    <path d="M-40 315 C 110 270, 270 255, 460 255" />
+  </g>
+</svg>

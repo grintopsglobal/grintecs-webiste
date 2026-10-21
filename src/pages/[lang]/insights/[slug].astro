@@ -1,0 +1,87 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import InsightCard from '../../../components/InsightCard.astro';
+import CTA from '../../../components/CTA.astro';
+import { locales, type Lang } from '../../../i18n/ui';
+import { localizePath, useTranslations } from '../../../i18n/utils';
+import { alternatesFor, getPage, getSettings, insightsByLang } from '../../../lib/content';
+import { bodyHtml, withBase } from '../../../lib/url';
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(
+    locales.map(async (lang) => (await insightsByLang(lang)).map((entry) => ({ params: { lang, slug: entry.data.slug }, props: { entry } }))),
+  );
+  return paths.flat();
+}
+
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props as { entry: CollectionEntry<'insights'> };
+const t = useTranslations(lang);
+const { title, excerpt, date, author, category, tags, cover, slug } = entry.data;
+const settings = await getSettings(lang);
+const home = await getPage(lang, 'home');
+const more = (await insightsByLang(lang)).filter((e) => e.data.slug !== slug).slice(0, 3);
+const dateText = date.toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const abs = (p: string) => new URL(withBase(p), Astro.site).href;
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: excerpt,
+  datePublished: date.toISOString(),
+  inLanguage: lang,
+  author: { '@type': 'Organization', name: author },
+  publisher: { '@type': 'Organization', name: settings.companyName, logo: { '@type': 'ImageObject', url: abs('/images/brand/grintec-logo.png') } },
+  image: abs(cover || settings.ogImage),
+  mainEntityOfPage: new URL(localizePath(lang, `/insights/${slug}/`), Astro.site).href,
+};
+---
+
+<BaseLayout lang={lang} title={title} description={excerpt} image={cover} type="article" alternates={await alternatesFor('insights', slug)} jsonLd={[article]}>
+  <PageHeader title={title} back={{ href: localizePath(lang, '/insights/'), label: t('insights.title') }}>
+    <p class="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-muted">
+      <a href={localizePath(lang, `/insights/category/${category}/`)} class="link">{t(`cat.${category}`)}</a>
+      <span aria-hidden="true">·</span>
+      <time datetime={date.toISOString()}>{dateText}</time>
+      <span aria-hidden="true">·</span>
+      <span>{t('insights.by')} {author}</span>
+    </p>
+  </PageHeader>
+
+  <article class="container-x py-14 md:py-20">
+    {cover && <img src={withBase(cover)} alt="" width="1200" height="675" decoding="async" class="mb-12 aspect-[16/9] w-full max-w-4xl rounded-[var(--radius-card)] object-cover" />}
+    <div class="prose-grintec max-w-[68ch]">
+      <Fragment set:html={bodyHtml(entry)} />
+    </div>
+    {
+      tags.length > 0 && (
+        <ul class="mt-10 flex max-w-[68ch] flex-wrap gap-2 border-t border-line pt-6 text-sm text-muted">
+          {tags.map((tag) => (
+            <li class="rounded border border-line px-2.5 py-1">#{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+  </article>
+
+  {
+    more.length > 0 && (
+      <section class="bg-mist py-14 md:py-20">
+        <div class="container-x">
+          <h2 class="text-2xl font-extrabold md:text-3xl">{t('insights.latest')}</h2>
+          <ul class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {more.map((e) => (
+              <li>
+                <InsightCard lang={lang} entry={e} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+  <CTA heading={home.cta.heading} text={home.cta.text} label={home.cta.buttonLabel} href={localizePath(lang, '/contact/')} />
+</BaseLayout>

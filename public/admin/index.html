@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>GRINTEC CMS</title>
+    <link rel="icon" type="image/png" href="../favicon.png" />
+  </head>
+  <body>
+    <!-- Versi Decap di-pin. Saat upgrade, ganti angkanya dan tes dulu dengan `npm run cms` + `npm run dev`. -->
+    <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+    <script>
+      // Preview editor memakai warna dan font situs (versi ringkas global.css).
+      CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+      CMS.registerPreviewStyle('preview.css');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+---
+import Icon from './Icon.astro';
+import type { Lang } from '../i18n/ui';
+import { localizePath } from '../i18n/utils';
+
+interface Item {
+  title: string;
+  slug: string;
+  icon: string;
+  excerpt: string;
+}
+interface Props {
+  id: string;
+  label: string;
+  lang: Lang;
+  section: 'services' | 'solutions';
+  items: Item[];
+  intro: string;
+  allLabel: string;
+  active: boolean;
+}
+const { id, label, lang, section, items, intro, allLabel, active } = Astro.props;
+---
+
+<li data-dropdown>
+  <button
+    type="button"
+    class:list={[
+      'inline-flex min-h-11 items-center gap-1.5 rounded px-3 font-semibold hover:text-primary-700',
+      active && 'text-primary-700',
+    ]}
+    aria-expanded="false"
+    aria-controls={id}
+    data-dropdown-trigger
+  >
+    {label}
+    <svg class="size-3.5 transition-transform" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"></path></svg>
+  </button>
+  <div id={id} hidden data-dropdown-panel class="absolute inset-x-0 top-full border-t border-line bg-white shadow-[0_24px_48px_-24px_rgb(0_50_27/0.35)]">
+    <div class="container-x grid gap-8 py-8 lg:grid-cols-[16rem_1fr]">
+      <div class="border-line lg:border-r lg:pr-8">
+        <p class="font-display text-xl font-bold">{label}</p>
+        <p class="mt-2 text-sm leading-relaxed text-muted">{intro}</p>
+        <a href={localizePath(lang, `/${section}/`)} class="link mt-4 inline-flex min-h-11 items-center text-sm">{allLabel}</a>
+      </div>
+      <ul class="grid gap-x-6 gap-y-1 sm:grid-cols-2">
+        {
+          items.map((item) => (
+            <li>
+              <a href={localizePath(lang, `/${section}/${item.slug}/`)} class="group flex gap-3 rounded-lg p-3 hover:bg-mist">
+                <Icon name={item.icon} class="mt-0.5 size-5 shrink-0 text-primary" />
+                <span>
+                  <span class="block font-semibold group-hover:text-primary-700">{item.title}</span>
+                  <span class="mt-0.5 line-clamp-2 block text-sm text-muted">{item.excerpt}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</li>

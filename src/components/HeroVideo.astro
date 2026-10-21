@@ -1,0 +1,66 @@
+---
+import { withBase } from '../lib/url';
+
+interface Props {
+  headline: string;
+  highlight?: string;
+  subheadline: string;
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+  video?: string;
+  videoMp4?: string;
+  poster: string;
+}
+const { headline, highlight, subheadline, primary, secondary, video, videoMp4, poster } = Astro.props;
+
+// Kata `highlight` diberi garis bawah lime: satu-satunya pemakaian lime di halaman.
+const parts = highlight && headline.includes(highlight) ? headline.split(highlight) : [headline];
+---
+
+<section class="on-dark relative isolate flex min-h-[80svh] items-center overflow-hidden bg-forest-900 text-white">
+  <img src={withBase(poster)} alt="" class="absolute inset-0 -z-20 size-full object-cover" fetchpriority="high" decoding="async" />
+  {
+    (video || videoMp4) && (
+      // Sumber dipasang lewat script: poster tampil dulu (LCP aman) dan video tidak diputar untuk prefers-reduced-motion / Save-Data.
+      <video class="absolute inset-0 -z-20 size-full object-cover opacity-0 transition-opacity duration-700" muted loop playsinline preload="none" poster={withBase(poster)} aria-hidden="true" data-hero-video>
+        {video && <source data-src={withBase(video)} type="video/webm" />}
+        {videoMp4 && <source data-src={withBase(videoMp4)} type="video/mp4" />}
+      </video>
+    )
+  }
+  <div class="absolute inset-0 -z-10 bg-forest-900/80 lg:bg-transparent lg:bg-[linear-gradient(90deg,rgb(0_50_27/0.94)_0%,rgb(0_50_27/0.86)_50%,rgb(0_50_27/0.35)_100%)] xl:bg-[linear-gradient(90deg,rgb(0_50_27/0.94)_0%,rgb(0_50_27/0.82)_48%,rgb(0_50_27/0.15)_100%)]" aria-hidden="true"></div>
+
+  <div class="container-x py-20 md:py-28">
+    <div class="max-w-2xl">
+      <h1 class="text-4xl leading-[1.1] font-extrabold sm:text-5xl lg:text-6xl">
+        {parts.length === 2 ? (
+          <>
+            {parts[0]}
+            <span class="underline decoration-lime decoration-[0.12em] underline-offset-[0.18em]">{highlight}</span>
+            {parts[1]}
+          </>
+        ) : (
+          headline
+        )}
+      </h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-on-forest sm:text-xl">{subheadline}</p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <a href={primary.href} class="btn-light">{primary.label}</a>
+        <a href={secondary.href} class="btn-outline-light">{secondary.label}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (video && !reduce.matches && !saveData) {
+    video.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => (s.src = s.dataset.src!));
+    video.load();
+    video.addEventListener('playing', () => video.classList.remove('opacity-0'), { once: true });
+    video.play().catch(() => {});
+    reduce.addEventListener('change', (e) => (e.matches ? video.pause() : video.play().catch(() => {})));
+  }
+</script>

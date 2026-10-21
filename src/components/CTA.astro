@@ -1,0 +1,22 @@
+---
+import Stripes from './Stripes.astro';
+
+interface Props {
+  heading: string;
+  text: string;
+  label: string;
+  href: string;
+}
+const { heading, text, label, href } = Astro.props;
+---
+
+<section class="on-dark relative isolate overflow-hidden bg-forest text-white">
+  <Stripes id="cta-stripes" class="absolute -top-10 right-0 -z-10 h-56 w-full opacity-90 [mask-image:linear-gradient(90deg,transparent,black_35%)] md:inset-y-0 md:h-full md:w-[50%]" />
+  <div class="container-x py-16 pt-48 md:py-20">
+    <div class="max-w-2xl md:max-w-[52%]">
+      <h2 class="text-3xl font-extrabold md:text-4xl">{heading}</h2>
+      <p class="mt-4 text-lg leading-relaxed text-on-forest">{text}</p>
+      <a href={href} class="btn-light mt-8">{label}</a>
+    </div>
+  </div>
+</section>

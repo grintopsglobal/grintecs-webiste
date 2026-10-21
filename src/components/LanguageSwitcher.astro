@@ -1,0 +1,36 @@
+---
+import { languages, locales, type Lang } from '../i18n/ui';
+import { localizePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  class?: string;
+}
+const { lang, alternates, class: className = '' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav aria-label={t('lang.label')} class:list={['flex items-center text-sm font-semibold', className]}>
+  {
+    locales.map((l, i) => (
+      <>
+        {i > 0 && <span class="text-line" aria-hidden="true">|</span>}
+        <a
+          href={localizePath(l, alternates[l])}
+          hreflang={l}
+          lang={l}
+          aria-current={l === lang ? 'true' : undefined}
+          title={languages[l]}
+          class:list={[
+            'inline-flex min-h-11 min-w-11 items-center justify-center rounded px-2 uppercase',
+            l === lang ? 'text-ink underline decoration-primary decoration-2 underline-offset-8' : 'text-muted hover:text-primary-700',
+          ]}
+        >
+          <span class="sr-only">{languages[l]}</span>
+          <span aria-hidden="true">{l}</span>
+        </a>
+      </>
+    ))
+  }
+</nav>
