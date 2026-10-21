@@ -134,7 +134,6 @@ Semua placeholder ditandai `[REAL DATA]` dan tampil di situs sampai diganti:
 
 | Data | Lokasi di CMS |
 |---|---|
-| Email perusahaan | Pengaturan Situs > Email |
 | Nomor WhatsApp (jika ada) | Pengaturan Situs > WhatsApp |
 | Akun media sosial | Pengaturan Situs > Media sosial |
 | Web3Forms access key atau Formspree ID | Pengaturan Situs > Formulir kontak |
