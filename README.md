@@ -90,22 +90,24 @@ Editor perlu akses write ke repo agar bisa menyimpan. Cek cepat Worker tanpa dep
 
 ## Form kontak ke Google Sheets (Apps Script + Turnstile)
 
-Alurnya: browser, lalu Google Apps Script (`apps-script/Code.gs`), yang memverifikasi token Cloudflare Turnstile ke `siteverify`, lalu menulis satu baris ke sheet `Leads`. Tanpa token Turnstile yang valid untuk hostname yang diizinkan, data ditolak dan tidak ditulis.
+Alurnya: browser, lalu Google Apps Script (`apps-script/Code.gs`), yang memverifikasi token Cloudflare Turnstile ke `siteverify`, lalu menulis satu baris ke Google Sheet yang sudah ada (berdasarkan `SHEET_ID`). Tanpa token Turnstile yang valid untuk hostname yang diizinkan, data ditolak dan tidak ditulis.
 
 **1. Buat widget Turnstile.** Cloudflare dashboard > Turnstile > Add widget. Hostname: `grintecs.com` (tambahkan `www.grintecs.com` bila dipakai). Mode: Managed. Catat **Site key** (publik) dan **Secret key** (rahasia).
 
 **2. Siapkan Google Sheet dan Apps Script.**
 
-1. Buat Google Sheet baru, misalnya "GRINTEC Leads".
-2. Extensions > Apps Script. Hapus isi `Code.gs` bawaan, lalu tempel isi `apps-script/Code.gs` dari repo ini. Simpan.
+1. Buka https://script.google.com > New project. Hapus isi `Code.gs` bawaan, lalu tempel isi `apps-script/Code.gs` dari repo ini. Simpan.
+2. Ambil ID Google Sheet yang sudah ada dari URL-nya: `https://docs.google.com/spreadsheets/d/`**`<SHEET_ID>`**`/edit`. Akun yang men-deploy script harus punya akses edit ke Sheet itu.
 3. Project Settings (ikon gerigi) > Script properties > Add script property:
    - `TURNSTILE_SECRET`: secret key Turnstile (wajib)
+   - `SHEET_ID`: ID Sheet dari langkah 2 (wajib untuk project terpisah seperti ini)
+   - `SHEET_NAME`: nama tab tujuan, default `Leads` (opsional; tab dibuat otomatis bila belum ada)
    - `NOTIFY_EMAIL`: misalnya `info@grintecs.com`, untuk menerima email tiap ada pesan (opsional)
    - `ALLOWED_HOSTNAMES`: default `grintecs.com,www.grintecs.com,localhost` (opsional)
 4. Deploy > New deployment > tipe **Web app**. Execute as: **Me**. Who has access: **Anyone**. Klik Deploy dan izinkan akses yang diminta.
 5. Salin URL web app (berakhiran `/exec`). Buka URL itu di browser: harus muncul `{"ok":true}`.
 
-Sheet `Leads` dan baris judulnya dibuat otomatis saat pesan pertama masuk.
+Bila tab tujuan belum ada atau masih kosong, tab dan baris judulnya (Waktu, Bahasa, Nama, Perusahaan, Email, Telepon, Layanan, Pesan, Halaman) dibuat otomatis saat pesan pertama masuk. Data di tab lain tidak disentuh.
 
 **3. Isi di CMS.** Pengaturan Situs > Formulir kontak: isi *URL web app Google Apps Script* dan *Cloudflare Turnstile site key*, lalu Publish.
 

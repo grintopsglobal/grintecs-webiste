@@ -1,14 +1,17 @@
 /**
  * Penerima form kontak grintecs.com -> Google Sheet.
- * Pasang sebagai script yang terikat ke Sheet (Extensions > Apps Script), lalu Deploy > Web app.
+ * Buat project di script.google.com (atau dari Sheet: Extensions > Apps Script), lalu Deploy > Web app.
  *
  * Script Properties (Project Settings > Script properties):
  *   TURNSTILE_SECRET   wajib, secret key widget Cloudflare Turnstile
+ *   SHEET_ID           ID Google Sheet tujuan (bagian URL di antara /d/ dan /edit).
+ *                      Boleh kosong bila script dibuat dari Sheet itu sendiri.
+ *   SHEET_NAME         opsional, nama tab, default "Leads" (dibuat otomatis bila belum ada)
  *   ALLOWED_HOSTNAMES  opsional, default "grintecs.com,www.grintecs.com,localhost"
  *   NOTIFY_EMAIL       opsional, alamat yang menerima email setiap ada pesan baru
  */
 
-const SHEET_NAME = 'Leads';
+const SHEET_NAME = 'Leads'; // default, bisa diganti lewat Script Property SHEET_NAME
 const HEADERS = ['Waktu', 'Bahasa', 'Nama', 'Perusahaan', 'Email', 'Telepon', 'Layanan', 'Pesan', 'Halaman'];
 const LIMITS = { name: 120, company: 160, email: 160, phone: 40, service: 120, message: 5000, lang: 5, page: 200 };
 
@@ -30,7 +33,7 @@ function doPost(e) {
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
-      sheet_().appendRow([new Date(), f.lang, f.name, f.company, f.email, f.phone, f.service, f.message, f.page].map(safeCell_));
+      sheet_(props).appendRow([new Date(), f.lang, f.name, f.company, f.email, f.phone, f.service, f.message, f.page].map(safeCell_));
     } finally {
       lock.releaseLock();
     }
@@ -73,11 +76,12 @@ function verifyTurnstile_(token, props) {
   return out.success === true && allowed.indexOf(out.hostname) !== -1;
 }
 
-function sheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(SHEET_NAME);
-  if (!sh) {
-    sh = ss.insertSheet(SHEET_NAME);
+function sheet_(props) {
+  const id = props.getProperty('SHEET_ID');
+  const ss = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
+  const name = props.getProperty('SHEET_NAME') || SHEET_NAME;
+  const sh = ss.getSheetByName(name) || ss.insertSheet(name);
+  if (sh.getLastRow() === 0) {
     sh.appendRow(HEADERS);
     sh.setFrozenRows(1);
   }
