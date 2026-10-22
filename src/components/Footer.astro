@@ -2,6 +2,7 @@
 import type { Lang } from '../i18n/ui';
 import { localizePath, useTranslations } from '../i18n/utils';
 import { withBase } from '../lib/url';
+import SocialLinks from './SocialLinks.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -18,7 +19,6 @@ const company = [
   { href: '/about/', label: t('nav.about') },
   { href: '/contact/', label: t('nav.cta') },
 ];
-const waNumber = settings.whatsapp.replace(/\D/g, '');
 const year = new Date().getFullYear();
 ---
 
@@ -32,22 +32,10 @@ const year = new Date().getFullYear();
         {settings.address && <p class="max-w-sm leading-relaxed">{settings.address}</p>}
         {settings.email && <p><a class="hover:text-white underline underline-offset-4" href={`mailto:${settings.email}`}>{settings.email}</a></p>}
         {settings.phone && <p><a class="hover:text-white underline underline-offset-4" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a></p>}
-        {waNumber && <p><a class="hover:text-white underline underline-offset-4" href={`https://wa.me/${waNumber}`} rel="noopener">WhatsApp {settings.whatsapp}</a></p>}
       </address>
-      {
-        settings.socials.length > 0 && (
-          <div class="mt-6">
-            <p class="text-sm font-semibold text-white">{t('footer.follow')}</p>
-            <ul class="mt-2 flex flex-wrap gap-x-4">
-              {settings.socials.map((s) => (
-                <li>
-                  <a href={s.url} rel="noopener" class="inline-flex min-h-11 items-center hover:text-white underline underline-offset-4">{s.platform}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )
-      }
+      <div class="mt-6">
+        <SocialLinks settings={settings} lang={lang} />
+      </div>
     </div>
     <nav aria-labelledby="footer-services">
       <p id="footer-services" class="font-semibold text-white">{t('nav.services')}</p>

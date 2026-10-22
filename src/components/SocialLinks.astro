@@ -1,0 +1,56 @@
+---
+// Ikon sosial & kontak di footer. Garis 1.75 seperti Icon.astro, tapi bentuk tiap brand tetap dikenali.
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+type Settings = CollectionEntry<'settings'>['data'];
+interface Props {
+  settings: Settings;
+  lang: Lang;
+}
+const { settings, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const paths = {
+  instagram: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z M17.2 6.8h.01',
+  youtube: 'M5.5 5.5h13a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-13a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z M10 9v6l5-3z',
+  linkedin: 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M8 10.5V17 M8 7.2v.01 M12 17v-6.5 M12 13.5a2.5 2.5 0 0 1 5 0V17',
+  whatsapp: 'M4.2 19.8l1.1-3.9A8.2 8.2 0 1 1 8.4 19z M9.1 8.3c.3-.4.8-.4 1 0l.8 1.6c.1.3 0 .6-.2.8l-.5.5c.6 1.2 1.6 2.2 2.8 2.8l.5-.5c.2-.2.5-.3.8-.2l1.6.8c.4.2.4.7 0 1-.6.6-1.5 1-2.4.7-2.4-.8-4.3-2.7-5.1-5.1-.3-.9.1-1.8.7-2.4z',
+  email: 'M3 5h18v14H3z M3 6l9 7 9-7',
+} as const;
+const labels = { instagram: 'Instagram', youtube: 'YouTube', linkedin: 'LinkedIn', whatsapp: 'WhatsApp', email: 'Email' } as const;
+
+const wa = settings.whatsapp.replace(/\D/g, '');
+const links = [
+  ...settings.socials.filter((s) => s.url).map((s) => ({ key: s.platform, href: s.url })),
+  ...(settings.email ? [{ key: 'email' as const, href: `mailto:${settings.email}` }] : []),
+  ...(wa ? [{ key: 'whatsapp' as const, href: `https://wa.me/${wa}` }] : []),
+];
+---
+
+{
+  links.length > 0 && (
+    <ul class="flex flex-wrap gap-2">
+      {links.map((l) => {
+        const external = l.href.startsWith('http');
+        return (
+          <li>
+            <a
+              href={l.href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+              aria-label={`${labels[l.key]} GRINTEC${external ? ` ${t('common.newTab')}` : ''}`}
+              title={labels[l.key]}
+              class="inline-flex size-11 items-center justify-center rounded-lg border border-white/25 text-on-forest transition-colors hover:border-lime hover:text-white"
+            >
+              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d={paths[l.key]} />
+              </svg>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

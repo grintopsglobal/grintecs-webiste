@@ -388,8 +388,8 @@ collections:
         required: false
         i18n: true
         fields:
-          - { label: Platform, name: platform, widget: string, i18n: duplicate }
-          - { label: URL, name: url, widget: string, i18n: duplicate }
+          - { label: Platform, name: platform, widget: select, options: [instagram, youtube, linkedin], i18n: duplicate }
+          - { label: URL (kosongkan untuk menyembunyikan ikon), name: url, widget: string, required: false, i18n: duplicate }
       - label: Formulir kontak
         name: form
         widget: object

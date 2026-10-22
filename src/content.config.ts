@@ -136,7 +136,7 @@ const settings = defineCollection({
     email: str,
     phone: str,
     whatsapp: str,
-    socials: list(z.object({ platform: z.string(), url: z.string() })),
+    socials: list(z.object({ platform: z.enum(['instagram', 'youtube', 'linkedin']), url: str })),
     form: z.object({
       endpoint: str,
       turnstileSiteKey: str,
