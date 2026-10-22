@@ -51,7 +51,7 @@ src/pages/[lang]/              Semua halaman per bahasa
 
 1. Push project ini ke branch `main` di `github.com/grintopsglobal/grintecs-webiste`.
 2. Di GitHub: **Settings > Pages > Build and deployment > Source: GitHub Actions**.
-3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `http://grintecs.com/` (ganti `SITE` dan `site_url` ke `https://` setelah Enforce HTTPS aktif).
+3. Setiap push ke `main` (termasuk commit dari CMS) menjalankan `.github/workflows/deploy.yml`. Situs tersedia di `https://grintecs.com/`.
 
 ## Login CMS di situs live (GitHub OAuth + Cloudflare Worker)
 
@@ -69,7 +69,7 @@ Catat URL-nya, misalnya `https://grintec-decap-oauth.grintopsglobal.workers.dev`
 
 **2. Buat GitHub OAuth App** di *GitHub > Settings > Developer settings > OAuth Apps > New OAuth App* (sebaiknya dari akun organisasi `grintopsglobal`):
 
-- Homepage URL: `http://grintecs.com/`
+- Homepage URL: `https://grintecs.com/`
 - Authorization callback URL: `https://grintec-decap-oauth.grintopsglobal.workers.dev/callback`
 
 Salin **Client ID** lalu buat **Client secret**.
@@ -118,7 +118,7 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 
 ## Domain
 
-Situs memakai `grintecs.com` (`public/CNAME`, `SITE` di `astro.config.mjs`, `site_url` di `public/admin/config.yml`, dan `ALLOWED_ORIGINS` di Worker). DNS apex `grintecs.com` sudah mengarah ke GitHub Pages. Aktifkan **Enforce HTTPS** di Settings > Pages setelah sertifikat terbit.
+Situs memakai `grintecs.com` (`public/CNAME`, `SITE` di `astro.config.mjs`, `site_url` di `public/admin/config.yml`, dan `ALLOWED_ORIGINS` di Worker). DNS apex `grintecs.com` sudah mengarah ke GitHub Pages.
 
 Untuk memakai `www.grintecs.com`: ubah keempat tempat di atas ke `www.grintecs.com`, lalu arahkan DNS `www` (CNAME) ke `grintopsglobal.github.io`. Saat ini `www` masih mengarah ke Cloudflare.
 
