@@ -5,7 +5,7 @@ icon: "security"
 excerpt: "Security controls installed and tested across your applications, infrastructure, and team practices."
 heroImage: ""
 order: 8
-features: ["Risk assessment and penetration testing", "Hardening servers, cloud, and networks", "Identity, access management, and MFA", "Logging, monitoring, and incident response procedures", "Compliance preparation, including Indonesia's Personal Data Protection Law"]
+features: ["Risk assessment and penetration testing", "Hardening servers, cloud, and networks", "Identity, access management, and MFA", "Logging, monitoring, and incident response procedures", "Compliance preparation for data regulations such as GDPR and Indonesia's PDP Law"]
 relatedSolutions: ["cybersecurity-risk-reduction", "website-application-reliability"]
 ---
 

@@ -34,4 +34,4 @@ Backup yang belum pernah dipulihkan belum terbukti berfungsi. Lakukan satu kali 
 
 ## Kaitannya dengan regulasi
 
-Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi mewajibkan pengendali data menjaga keamanan data yang diprosesnya. Lima pemeriksaan di atas bukan pengganti penilaian kepatuhan lengkap, tetapi menjadi dasar yang baik untuk memulainya.
+Regulasi pelindungan data seperti GDPR di Uni Eropa dan Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi di Indonesia mewajibkan pengendali data menjaga keamanan data yang diprosesnya. Lima pemeriksaan di atas bukan pengganti penilaian kepatuhan lengkap, tetapi menjadi dasar yang baik untuk memulainya.

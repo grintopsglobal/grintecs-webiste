@@ -5,7 +5,7 @@ icon: "security"
 excerpt: "Kontrol keamanan yang dipasang dan diuji di aplikasi, infrastruktur, dan cara tim bekerja."
 heroImage: ""
 order: 8
-features: ["Penilaian risiko dan uji penetrasi", "Hardening server, cloud, dan jaringan", "Manajemen identitas, akses, dan MFA", "Logging, pemantauan, dan prosedur respons insiden", "Persiapan kepatuhan, termasuk UU Pelindungan Data Pribadi"]
+features: ["Penilaian risiko dan uji penetrasi", "Hardening server, cloud, dan jaringan", "Manajemen identitas, akses, dan MFA", "Logging, pemantauan, dan prosedur respons insiden", "Persiapan kepatuhan regulasi data, seperti GDPR dan UU PDP Indonesia"]
 relatedSolutions: ["cybersecurity-risk-reduction", "website-application-reliability"]
 ---
 

@@ -34,4 +34,4 @@ A backup that has never been restored has not been proven to work. Do one restor
 
 ## The regulatory angle
 
-Indonesia's Law No. 27 of 2022 on Personal Data Protection requires data controllers to keep the data they process secure. These five checks do not replace a full compliance assessment, but they are a good place to start one.
+Data protection rules such as the EU's GDPR and Indonesia's Law No. 27 of 2022 on Personal Data Protection require data controllers to keep the data they process secure. These five checks do not replace a full compliance assessment, but they are a good place to start one.
