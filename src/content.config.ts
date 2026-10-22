@@ -138,9 +138,8 @@ const settings = defineCollection({
     whatsapp: str,
     socials: list(z.object({ platform: z.string(), url: z.string() })),
     form: z.object({
-      provider: z.enum(['web3forms', 'formspree']),
-      web3formsKey: str,
-      formspreeId: str,
+      endpoint: str,
+      turnstileSiteKey: str,
     }),
   }),
 });

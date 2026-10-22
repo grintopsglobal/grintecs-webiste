@@ -394,7 +394,7 @@ collections:
         name: form
         widget: object
         i18n: true
+        hint: 'Lihat README bagian "Form kontak ke Google Sheets".'
         fields:
-          - { label: Layanan formulir, name: provider, widget: select, options: [web3forms, formspree], default: web3forms, i18n: duplicate }
-          - { label: Web3Forms access key, name: web3formsKey, widget: string, required: false, i18n: duplicate, hint: 'Dari web3forms.com. Key ini memang publik (dipakai di browser).' }
-          - { label: Formspree form ID, name: formspreeId, widget: string, required: false, i18n: duplicate, hint: 'Bagian akhir URL https://formspree.io/f/XXXXXXX' }
+          - { label: URL web app Google Apps Script, name: endpoint, widget: string, required: false, i18n: duplicate, hint: 'Berakhiran /exec, dari Deploy > Manage deployments.' }
+          - { label: Cloudflare Turnstile site key, name: turnstileSiteKey, widget: string, required: false, i18n: duplicate, hint: 'Site key memang publik. Secret key disimpan di Script Properties Apps Script, bukan di sini.' }

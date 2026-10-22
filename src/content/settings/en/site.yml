@@ -9,6 +9,5 @@ phone: "+62 851 6136 4811"
 whatsapp: ""
 socials: []
 form:
-  provider: web3forms
-  web3formsKey: ""
-  formspreeId: ""
+  endpoint: ""
+  turnstileSiteKey: ""

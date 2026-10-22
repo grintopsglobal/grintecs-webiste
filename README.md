@@ -36,6 +36,7 @@ Buka `http://localhost:4321/admin/` lalu klik **Login**. Di localhost, Decap mem
 ```
 .github/workflows/deploy.yml   Build + deploy ke GitHub Pages setiap push ke main
 oauth-proxy/                   Cloudflare Worker untuk login GitHub di Decap
+apps-script/                   Penerima form kontak (Google Apps Script -> Sheet, verifikasi Turnstile)
 public/admin/                  Decap CMS (index.html, config.yml, preview.css)
 public/images/brand/           Logo (grintec-logo.png, versi putih, versi HD, mark)
 public/uploads/                Media dari CMS (video & poster hero, gambar OG)
@@ -87,6 +88,35 @@ Jika domain situs berubah, sesuaikan `ALLOWED_ORIGINS` di `oauth-proxy/wrangler.
 
 Editor perlu akses write ke repo agar bisa menyimpan. Cek cepat Worker tanpa dependensi: `node oauth-proxy/test.mjs`.
 
+## Form kontak ke Google Sheets (Apps Script + Turnstile)
+
+Alurnya: browser, lalu Google Apps Script (`apps-script/Code.gs`), yang memverifikasi token Cloudflare Turnstile ke `siteverify`, lalu menulis satu baris ke sheet `Leads`. Tanpa token Turnstile yang valid untuk hostname yang diizinkan, data ditolak dan tidak ditulis.
+
+**1. Buat widget Turnstile.** Cloudflare dashboard > Turnstile > Add widget. Hostname: `grintecs.com` (tambahkan `www.grintecs.com` bila dipakai). Mode: Managed. Catat **Site key** (publik) dan **Secret key** (rahasia).
+
+**2. Siapkan Google Sheet dan Apps Script.**
+
+1. Buat Google Sheet baru, misalnya "GRINTEC Leads".
+2. Extensions > Apps Script. Hapus isi `Code.gs` bawaan, lalu tempel isi `apps-script/Code.gs` dari repo ini. Simpan.
+3. Project Settings (ikon gerigi) > Script properties > Add script property:
+   - `TURNSTILE_SECRET`: secret key Turnstile (wajib)
+   - `NOTIFY_EMAIL`: misalnya `info@grintecs.com`, untuk menerima email tiap ada pesan (opsional)
+   - `ALLOWED_HOSTNAMES`: default `grintecs.com,www.grintecs.com,localhost` (opsional)
+4. Deploy > New deployment > tipe **Web app**. Execute as: **Me**. Who has access: **Anyone**. Klik Deploy dan izinkan akses yang diminta.
+5. Salin URL web app (berakhiran `/exec`). Buka URL itu di browser: harus muncul `{"ok":true}`.
+
+Sheet `Leads` dan baris judulnya dibuat otomatis saat pesan pertama masuk.
+
+**3. Isi di CMS.** Pengaturan Situs > Formulir kontak: isi *URL web app Google Apps Script* dan *Cloudflare Turnstile site key*, lalu Publish.
+
+**Mengubah `Code.gs` nanti:** setelah menyimpan, buka Deploy > Manage deployments > Edit > Version: New version > Deploy. URL `/exec` tetap sama.
+
+Catatan teknis:
+- Form mengirim JSON sebagai `text/plain` tanpa header custom, karena Apps Script tidak melayani preflight CORS (`OPTIONS`).
+- Isi yang diawali `=`, `+`, `-`, atau `@` disimpan dengan awalan `'` agar tidak dieksekusi sebagai rumus. Di Sheets tanda itu tidak terlihat.
+- Cek logika tanpa dependensi: `node apps-script/test.mjs`.
+- Uji lokal bisa memakai kunci uji resmi Turnstile: site key `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`. Kunci uji melaporkan hostname `example.com`, jadi tambahkan `example.com` ke `ALLOWED_HOSTNAMES` selama pengujian saja.
+
 ## Mengganti video hero
 
 Lewat CMS: **Halaman: Beranda > Hero**, isi *Video WebM*, *Video MP4 (fallback)*, dan *Poster*. Isi untuk ID dan EN boleh berbeda.
@@ -131,14 +161,14 @@ Semua placeholder ditandai `[REAL DATA]` dan tampil di situs sampai diganti:
 | Data | Lokasi di CMS |
 |---|---|
 | Nomor WhatsApp (jika ada) | Pengaturan Situs > WhatsApp |
-| Web3Forms access key atau Formspree ID | Pengaturan Situs > Formulir kontak |
+| URL Apps Script + site key Turnstile | Pengaturan Situs > Formulir kontak (lihat bagian di atas) |
 | Sejarah perusahaan (section tersembunyi selama kosong) | Halaman: Tentang Kami > Sejarah |
 | Profil tim (section tersembunyi sampai ada anggota) | Halaman: Tentang Kami > Tim |
 | Angka statistik (beserta sumbernya) | Halaman: Beranda > Statistik |
 
 Section statistik sengaja **disembunyikan** sampai ada angka asli. Tidak ada testimoni, logo klien, atau angka yang dikarang. Visi, misi, nilai, deskripsi layanan, dan tiga artikel contoh adalah draft yang perlu ditinjau tim GRINTEC.
 
-Selama key form belum diisi, tombol kirim dinonaktifkan dan pengunjung diarahkan ke kontak alternatif.
+Selama URL Apps Script atau site key Turnstile belum diisi, tombol kirim dinonaktifkan dan pengunjung diarahkan ke kontak alternatif.
 
 ## Keputusan teknis dan alasannya
 

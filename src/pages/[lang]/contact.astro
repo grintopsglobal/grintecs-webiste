@@ -12,9 +12,9 @@ const page = await getPage(lang, 'contact');
 const settings = await getSettings(lang);
 const services = await byLang('services', lang);
 
-const { provider, web3formsKey, formspreeId } = settings.form;
-const endpoint = provider === 'formspree' ? (formspreeId ? `https://formspree.io/f/${formspreeId}` : '') : web3formsKey ? 'https://api.web3forms.com/submit' : '';
-const honeypot = provider === 'formspree' ? '_gotcha' : 'botcheck';
+// Form dikirim ke Google Apps Script (apps-script/Code.gs), yang memverifikasi Turnstile lalu menulis ke Google Sheet.
+const { endpoint, turnstileSiteKey } = settings.form;
+const ready = Boolean(endpoint && turnstileSiteKey);
 const waNumber = settings.whatsapp.replace(/\D/g, '');
 
 const fields = [
@@ -36,21 +36,19 @@ const inputClass =
       novalidate
       data-contact-form
       data-endpoint={endpoint}
-      data-provider={provider}
-      data-honeypot={honeypot}
+      data-lang={lang}
       data-msg-required={t('form.required')}
       data-msg-email={t('form.invalidEmail')}
       data-msg-phone={t('form.invalidPhone')}
       data-msg-fix={t('form.fixErrors')}
+      data-msg-captcha={t('form.captcha')}
       data-msg-sending={t('form.sending')}
       data-msg-success={page.successMessage}
       data-msg-error={page.errorMessage}
     >
-      {web3formsKey && provider === 'web3forms' && <input type="hidden" name="access_key" value={web3formsKey} />}
-      <input type="hidden" name="subject" value={`[GRINTEC ${lang.toUpperCase()}] ${t('contact.title')}`} />
       <!-- Honeypot: disembunyikan dari pengguna dan pembaca layar, bot biasanya mengisinya. -->
       <div class="absolute -left-[9999px]" aria-hidden="true">
-        <label>Website <input type="text" name={honeypot} tabindex="-1" autocomplete="off" /></label>
+        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
       </div>
 
       {
@@ -93,8 +91,9 @@ const inputClass =
       </div>
 
       <div class="sm:col-span-2">
-        {!endpoint && <p class="mb-4 rounded-lg border-2 border-primary-700 bg-mist p-4 text-sm leading-relaxed">{t('form.notConfigured')}</p>}
-        <button type="submit" class="btn-primary w-full disabled:cursor-not-allowed disabled:bg-muted sm:w-auto" disabled={!endpoint}>
+        {!ready && <p class="mb-4 rounded-lg border-2 border-primary-700 bg-mist p-4 text-sm leading-relaxed">{t('form.notConfigured')}</p>}
+        {ready && <div class="cf-turnstile mb-5 min-h-[65px]" data-sitekey={turnstileSiteKey} data-language={lang} data-theme="light" />}
+        <button type="submit" class="btn-primary w-full disabled:cursor-not-allowed disabled:bg-muted sm:w-auto" disabled={!ready}>
           {t('form.submit')}
         </button>
         <p class="mt-4 rounded-lg empty:hidden" role="status" aria-live="polite" data-form-status></p>
@@ -135,6 +134,7 @@ const inputClass =
       </div>
     </aside>
   </section>
+  {ready && <script is:inline slot="head" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </BaseLayout>
 
 <script>
@@ -173,29 +173,46 @@ const inputClass =
         invalid[0].focus();
         return;
       }
-      const data = new FormData(form);
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
       // Honeypot terisi: anggap bot, tampilkan sukses tanpa mengirim apa pun.
-      if (String(data.get(d.honeypot!) || '')) {
+      if (data.website) {
         setStatus(d.msgSuccess!, 'ok');
         form.reset();
+        return;
+      }
+      const token = data['cf-turnstile-response'];
+      if (!token) {
+        setStatus(d.msgCaptcha!, 'error');
         return;
       }
       submit.disabled = true;
       submit.textContent = d.msgSending!;
       setStatus('', 'info');
+      const turnstile = (window as Window & { turnstile?: { reset: () => void } }).turnstile;
       try {
+        // Tanpa header custom (text/plain) agar tidak ada preflight CORS: Apps Script tidak melayani OPTIONS.
         const res = await fetch(d.endpoint!, {
           method: 'POST',
-          headers: { Accept: 'application/json', ...(d.provider === 'web3forms' && { 'Content-Type': 'application/json' }) },
-          body: d.provider === 'web3forms' ? JSON.stringify(Object.fromEntries(data)) : data,
+          body: JSON.stringify({
+            name: data.name,
+            company: data.company,
+            email: data.email,
+            phone: data.phone,
+            service: data.service,
+            message: data.message,
+            lang: d.lang,
+            page: location.pathname,
+            token,
+          }),
         });
         const json = await res.json().catch(() => ({}));
-        if (!res.ok || json.success === false) throw new Error(json.message || res.statusText);
+        if (!res.ok || json.success !== true) throw new Error(json.error || res.statusText);
         setStatus(d.msgSuccess!, 'ok');
         form.reset();
-      } catch {
-        setStatus(d.msgError!, 'error');
+      } catch (err) {
+        setStatus((err as Error).message === 'captcha' ? d.msgCaptcha! : d.msgError!, 'error');
       } finally {
+        turnstile?.reset(); // token Turnstile hanya berlaku sekali
         submit.disabled = false;
         submit.textContent = submitLabel;
       }
