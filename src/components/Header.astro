@@ -30,7 +30,15 @@ const plainLinks = [
 <header class="sticky top-0 z-50 border-b border-line bg-white" data-header>
   <div class="container-x flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
     <a href={localizePath(lang)} class="inline-flex shrink-0 items-center py-2" aria-label={`GRINTEC, ${t('nav.home')}`}>
-      <img src={withBase('/images/brand/grintec-logo.png')} alt="" width="640" height="148" class="h-8 w-auto lg:h-9" />
+      <img
+        src={withBase('/images/brand/grintec-logo-320.png')}
+        srcset={`${withBase('/images/brand/grintec-logo-320.png')} 320w, ${withBase('/images/brand/grintec-logo.png')} 640w`}
+        sizes="160px"
+        alt=""
+        width="320"
+        height="74"
+        class="h-8 w-auto lg:h-9"
+      />
     </a>
 
     <nav aria-label={t('nav.primary')} class="hidden lg:block">

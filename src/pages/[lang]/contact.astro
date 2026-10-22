@@ -130,11 +130,25 @@ const inputClass =
       </div>
     </aside>
   </section>
-  {ready && <script is:inline slot="head" src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </BaseLayout>
 
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  // Script Turnstile baru dimuat saat widget mendekati layar atau form disentuh, agar tidak memperlambat render awal.
+  const widget = document.querySelector('.cf-turnstile');
+  if (widget) {
+    let loaded = false;
+    const load = () => {
+      if (loaded) return;
+      loaded = true;
+      const s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      s.async = true;
+      document.head.append(s);
+    };
+    new IntersectionObserver((entries, io) => entries.some((e) => e.isIntersecting) && (io.disconnect(), load()), { rootMargin: '400px' }).observe(widget);
+    form?.addEventListener('focusin', load, { once: true });
+  }
   if (form) {
     const d = form.dataset;
     const status = form.querySelector<HTMLElement>('[data-form-status]')!;
