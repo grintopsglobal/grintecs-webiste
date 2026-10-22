@@ -3,8 +3,8 @@ backend:
   name: github
   repo: grintopsglobal/grintecs-webiste # GANTI jika repo pindah: OWNER/REPO
   branch: main
-  # GANTI dengan URL Cloudflare Worker dari folder oauth-proxy/ (lihat README).
-  base_url: https://grintec-decap-oauth.YOUR-SUBDOMAIN.workers.dev
+  # Cloudflare Worker dari folder oauth-proxy/ (lihat README).
+  base_url: https://grintec-decap-oauth.grintopsglobal.workers.dev
   auth_endpoint: auth
   commit_messages:
     create: 'cms: tambah {{collection}} "{{slug}}"'

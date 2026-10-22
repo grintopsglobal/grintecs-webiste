@@ -65,12 +65,12 @@ npx wrangler login
 npx wrangler deploy
 ```
 
-Catat URL-nya, misalnya `https://grintec-decap-oauth.<subdomain-anda>.workers.dev`.
+Catat URL-nya, misalnya `https://grintec-decap-oauth.grintopsglobal.workers.dev`.
 
 **2. Buat GitHub OAuth App** di *GitHub > Settings > Developer settings > OAuth Apps > New OAuth App* (sebaiknya dari akun organisasi `grintopsglobal`):
 
 - Homepage URL: `http://grintecs.com/`
-- Authorization callback URL: `https://grintec-decap-oauth.<subdomain-anda>.workers.dev/callback`
+- Authorization callback URL: `https://grintec-decap-oauth.grintopsglobal.workers.dev/callback`
 
 Salin **Client ID** lalu buat **Client secret**.
 
