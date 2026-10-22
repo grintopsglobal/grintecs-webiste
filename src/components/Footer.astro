@@ -28,11 +28,6 @@ const year = new Date().getFullYear();
     <div>
       <img src={withBase('/images/brand/grintec-logo-white.png')} alt="GRINTEC" width="640" height="148" loading="lazy" class="h-9 w-auto" />
       <p class="mt-4 font-display text-xl font-semibold text-white">{settings.tagline}</p>
-      <address class="mt-6 space-y-2 not-italic">
-        {settings.address && <p class="max-w-sm leading-relaxed">{settings.address}</p>}
-        {settings.email && <p><a class="hover:text-white underline underline-offset-4" href={`mailto:${settings.email}`}>{settings.email}</a></p>}
-        {settings.phone && <p><a class="hover:text-white underline underline-offset-4" href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a></p>}
-      </address>
       <div class="mt-6">
         <SocialLinks settings={settings} lang={lang} />
       </div>
