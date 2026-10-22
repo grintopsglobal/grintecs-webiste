@@ -10,4 +10,4 @@ whatsapp: ""
 socials: []
 form:
   endpoint: ""
-  turnstileSiteKey: ""
+  turnstileSiteKey: "0x4AAAAAAFgAgd37YxXQbAwA"
