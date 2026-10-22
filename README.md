@@ -132,8 +132,8 @@ Semua placeholder ditandai `[REAL DATA]` dan tampil di situs sampai diganti:
 |---|---|
 | Nomor WhatsApp (jika ada) | Pengaturan Situs > WhatsApp |
 | Web3Forms access key atau Formspree ID | Pengaturan Situs > Formulir kontak |
-| Sejarah perusahaan | Halaman: Tentang Kami > Sejarah |
-| Profil tim (nama, jabatan, foto) | Halaman: Tentang Kami > Tim |
+| Sejarah perusahaan (section tersembunyi selama kosong) | Halaman: Tentang Kami > Sejarah |
+| Profil tim (section tersembunyi sampai ada anggota) | Halaman: Tentang Kami > Tim |
 | Angka statistik (beserta sumbernya) | Halaman: Beranda > Statistik |
 
 Section statistik sengaja **disembunyikan** sampai ada angka asli. Tidak ada testimoni, logo klien, atau angka yang dikarang. Visi, misi, nilai, deskripsi layanan, dan tiga artikel contoh adalah draft yang perlu ditinjau tim GRINTEC.

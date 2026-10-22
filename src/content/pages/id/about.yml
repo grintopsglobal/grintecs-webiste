@@ -6,10 +6,7 @@ heading: "Tentang GRINTEC"
 intro: "GRINTEC adalah perusahaan teknologi yang membantu bisnis membangun, menghubungkan, dan mengamankan sistem digitalnya."
 history:
   heading: "Sejarah"
-  body: |
-    [REAL DATA] Tuliskan sejarah GRINTEC di sini: tahun berdiri, pendiri, dan tonggak penting perusahaan.
-
-    Teks ini placeholder dan tampil di situs sampai diganti lewat CMS: Halaman > Tentang Kami > Sejarah.
+  body: ""
 vision:
   heading: "Visi"
   body: "Menjadi mitra teknologi yang membuat transformasi digital perusahaan berjalan aman dan berkelanjutan, di mana pun mereka beroperasi."
@@ -32,5 +29,5 @@ values:
       text: "Setiap tahap proyek punya target yang disepakati dan bisa diperiksa bersama."
 team:
   heading: "Tim kami"
-  intro: "[REAL DATA] Profil tim belum diisi. Tambahkan anggota tim (nama, jabatan, foto) lewat CMS: Halaman > Tentang Kami > Tim."
+  intro: ""
   members: []

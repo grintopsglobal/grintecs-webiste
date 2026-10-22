@@ -297,7 +297,7 @@ collections:
         i18n: true
         fields:
           - { label: Judul, name: heading, widget: string, i18n: true }
-          - { label: Isi (pisahkan paragraf dengan baris kosong), name: body, widget: text, i18n: true }
+          - { label: Isi (pisahkan paragraf dengan baris kosong; kosongkan untuk menyembunyikan), name: body, widget: text, required: false, i18n: true }
       - label: Visi
         name: vision
         widget: object
@@ -327,6 +327,7 @@ collections:
               - { label: Penjelasan, name: text, widget: text, i18n: true }
       - label: Tim
         name: team
+        hint: 'Section tim tampil setelah minimal satu anggota ditambahkan.'
         widget: object
         i18n: true
         fields:

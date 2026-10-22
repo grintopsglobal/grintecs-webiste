@@ -6,10 +6,7 @@ heading: "About GRINTEC"
 intro: "GRINTEC is a technology company that helps businesses build, connect, and secure their digital systems."
 history:
   heading: "Our story"
-  body: |
-    [REAL DATA] Write the GRINTEC story here: founding year, founders, and key milestones.
-
-    This text is a placeholder and stays on the site until it is replaced in the CMS: Pages > About > History.
+  body: ""
 vision:
   heading: "Vision"
   body: "To be the technology partner that makes digital transformation secure and sustainable for companies, wherever they operate."
@@ -32,5 +29,5 @@ values:
       text: "Every project stage has agreed targets that we can check together."
 team:
   heading: "Our team"
-  intro: "[REAL DATA] Team profiles have not been added yet. Add team members (name, role, photo) in the CMS: Pages > About > Team."
+  intro: ""
   members: []
