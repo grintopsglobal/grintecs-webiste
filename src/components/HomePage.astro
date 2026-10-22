@@ -40,7 +40,7 @@ const organization = {
   logo: new URL(withBase('/images/brand/grintec-logo.png'), Astro.site).href,
   ...(settings.email && { email: settings.email }),
   ...(settings.phone && { telephone: settings.phone }),
-  ...(settings.socials.length && { sameAs: settings.socials.map((s) => s.url) }),
+  ...(settings.socials.some((s) => s.url) && { sameAs: settings.socials.map((s) => s.url).filter(Boolean) }),
 };
 ---
 

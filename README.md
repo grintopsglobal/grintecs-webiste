@@ -119,6 +119,23 @@ Catatan teknis:
 - Cek logika tanpa dependensi: `node apps-script/test.mjs`.
 - Uji lokal bisa memakai kunci uji resmi Turnstile: site key `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`. Kunci uji melaporkan hostname `example.com`, jadi tambahkan `example.com` ke `ALLOWED_HOSTNAMES` selama pengujian saja.
 
+## SEO & tracking (Search Console, GTM, GA4, Meta Pixel)
+
+Semua diisi lewat CMS: **Pengaturan Situs > SEO & Tracking**. Field yang kosong tidak memuat apa pun.
+
+| Field | Isi | Dari mana |
+|---|---|---|
+| Google Search Console | hanya kode di `content="..."` | Search Console > Add property (URL prefix `https://grintecs.com/`) > HTML tag |
+| Google Tag Manager ID | `GTM-XXXXXXX` | tagmanager.google.com |
+| Google Analytics 4 ID | `G-XXXXXXXXXX` | GA4 > Admin > Data streams |
+| Meta Pixel ID | angka saja | Meta Events Manager |
+| Meta tag tambahan | pasangan `name` / `content` | mis. `msvalidate.01` (Bing), `facebook-domain-verification` |
+
+- Pilih satu jalur: **GTM saja** (GA4 dan Meta Pixel dipasang sebagai tag di dalam GTM), atau GA4/Pixel langsung tanpa GTM. Jangan dua-duanya, nanti page view tercatat ganda.
+- Format ID dikunci: build gagal dengan pesan jelas bila formatnya salah, sehingga isian tidak bisa menyisipkan script lain.
+- Setelah Search Console terverifikasi, kirim sitemap `https://grintecs.com/sitemap-index.xml` di menu Sitemaps.
+- Untuk pengunjung dari Uni Eropa, GA4 dan Meta Pixel umumnya memerlukan persetujuan cookie (GDPR). Situs belum memiliki banner consent.
+
 ## Mengganti video hero
 
 Lewat CMS: **Halaman: Beranda > Hero**, isi *Video WebM*, *Video MP4 (fallback)*, dan *Poster*. Isi untuk ID dan EN boleh berbeda.

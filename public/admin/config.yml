@@ -390,6 +390,26 @@ collections:
         fields:
           - { label: Platform, name: platform, widget: select, options: [instagram, youtube, linkedin], i18n: duplicate }
           - { label: URL (kosongkan untuk menyembunyikan ikon), name: url, widget: string, required: false, i18n: duplicate }
+      - label: SEO & Tracking
+        name: tracking
+        widget: object
+        i18n: true
+        collapsed: true
+        hint: 'Kosongkan yang tidak dipakai. Jika memakai GTM, sebaiknya pasang GA4 dan Meta Pixel di dalam GTM saja agar data tidak tercatat dua kali.'
+        fields:
+          - { label: Google Search Console (kode verifikasi), name: gscVerification, widget: string, required: false, i18n: duplicate, hint: 'Isi bagian content="..." dari meta tag google-site-verification saja.', pattern: ['^$|^[A-Za-z0-9_-]{10,100}$', 'Hanya kode verifikasinya, tanpa tag'] }
+          - { label: Google Tag Manager ID, name: gtmId, widget: string, required: false, i18n: duplicate, pattern: ['^$|^GTM-[A-Z0-9]{4,12}$', 'Format: GTM-XXXXXXX'] }
+          - { label: Google Analytics 4 Measurement ID, name: ga4Id, widget: string, required: false, i18n: duplicate, hint: 'Hanya jika tidak dipasang lewat GTM.', pattern: ['^$|^G-[A-Z0-9]{4,15}$', 'Format: G-XXXXXXXXXX'] }
+          - { label: Meta Pixel ID, name: metaPixelId, widget: string, required: false, i18n: duplicate, hint: 'Hanya jika tidak dipasang lewat GTM.', pattern: ['^$|^[0-9]{10,20}$', 'Hanya angka'] }
+          - label: Meta tag tambahan
+            name: metaTags
+            widget: list
+            required: false
+            i18n: true
+            hint: 'Untuk verifikasi lain, mis. msvalidate.01 (Bing) atau facebook-domain-verification.'
+            fields:
+              - { label: name, name: name, widget: string, i18n: duplicate, pattern: ['^[A-Za-z0-9:._-]{1,80}$', 'Huruf, angka, titik, titik dua, garis'] }
+              - { label: content, name: content, widget: string, i18n: duplicate }
       - label: Formulir kontak
         name: form
         widget: object

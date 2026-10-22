@@ -12,6 +12,13 @@ const loader = (dir: string, pattern = '**/*.md') =>
 const str = z.string().nullish().transform((v) => v ?? '');
 const list = <T extends z.ZodType>(item: T) => z.array(item).nullish().transform((v) => v ?? []);
 const cta = z.object({ label: z.string(), href: z.string() });
+// ID tracking dari CMS disisipkan ke script inline, jadi formatnya dikunci ketat (atau kosong).
+const trackingId = (re: RegExp, hint: string) =>
+  z
+    .string()
+    .nullish()
+    .transform((v) => (v ?? '').trim())
+    .refine((v) => v === '' || re.test(v), { message: `Format tidak valid, contoh: ${hint}` });
 
 const services = defineCollection({
   loader: loader('services'),
@@ -140,6 +147,13 @@ const settings = defineCollection({
     form: z.object({
       endpoint: str,
       turnstileSiteKey: str,
+    }),
+    tracking: z.object({
+      gscVerification: trackingId(/^[A-Za-z0-9_-]{10,100}$/, 'kode dari content="..." Search Console'),
+      gtmId: trackingId(/^GTM-[A-Z0-9]{4,12}$/, 'GTM-ABC1234'),
+      ga4Id: trackingId(/^G-[A-Z0-9]{4,15}$/, 'G-ABC123XYZ'),
+      metaPixelId: trackingId(/^\d{10,20}$/, '1234567890123456'),
+      metaTags: list(z.object({ name: z.string().regex(/^[A-Za-z0-9:._-]{1,80}$/), content: z.string().max(300) })),
     }),
   }),
 });

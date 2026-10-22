@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Tracking from '../components/Tracking.astro';
 import type { Lang } from '../i18n/ui';
 import { pathWithoutLang } from '../i18n/utils';
 import { withBase } from '../lib/url';
@@ -48,6 +49,7 @@ const fullTitle = title.includes(settings.companyName) ? title : `${title} | ${s
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" />
     <slot name="head" />
+    <Tracking tracking={settings.tracking} part="head" />
     <SEO
       title={fullTitle}
       description={description || settings.description}
@@ -61,6 +63,7 @@ const fullTitle = title.includes(settings.companyName) ? title : `${title} | ${s
     />
   </head>
   <body class="flex min-h-dvh flex-col">
+    <Tracking tracking={settings.tracking} part="body" />
     <Header lang={lang} alternates={alternates} services={services} solutions={solutions} />
     <main id="main" class="flex-1" tabindex="-1">
       <slot />

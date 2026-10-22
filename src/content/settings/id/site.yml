@@ -17,3 +17,9 @@ socials:
 form:
   endpoint: "https://script.google.com/macros/s/AKfycbxanG-H3EjtzFh8ELxz4Tw8cdrd-iQbU44raXhPqN88-M9qS3J-eHcrSelS8PxMvb-l/exec"
   turnstileSiteKey: "0x4AAAAAAFgAgd37YxXQbAwA"
+tracking:
+  gscVerification: ""
+  gtmId: ""
+  ga4Id: ""
+  metaPixelId: ""
+  metaTags: []
