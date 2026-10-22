@@ -1,20 +1,7 @@
 ---
-// GitHub Pages tidak punya redirect server, jadi root memakai meta refresh + link manual.
-import { withBase } from '../lib/url';
-const target = withBase('/en/');
+// Root langsung menampilkan homepage bahasa default (GitHub Pages tidak punya redirect server).
+import HomePage from '../components/HomePage.astro';
+import { defaultLang } from '../i18n/ui';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="refresh" content={`0; url=${target}`} />
-    <meta name="robots" content="noindex" />
-    <link rel="canonical" href={new URL(target, Astro.site).href} />
-    <title>GRINTEC</title>
-  </head>
-  <body style="font-family: system-ui, sans-serif; padding: 2rem">
-    <p>Redirecting to <a href={target}>English</a> · <a href={withBase('/id/')}>Bahasa Indonesia</a></p>
-  </body>
-</html>
+<HomePage lang={defaultLang} />
