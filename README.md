@@ -1,6 +1,6 @@
 # Website GRINTEC
 
-Company profile PT Grintec Solusi Global, *Securing Future Transformation*.
+Company profile GRINTEC, *Securing Future Transformation*.
 
 - **Stack:** Astro 7 (output static) + Tailwind CSS 4 (`@tailwindcss/vite`) + Decap CMS 3.16.3
 - **Bahasa:** Indonesia (default, `/id/`) dan English (`/en/`)
