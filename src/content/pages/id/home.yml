@@ -10,7 +10,7 @@ hero:
     label: "Mari Diskusi"
     href: "/contact/"
   secondaryCta:
-    label: "Lihat 8 Layanan Kami"
+    label: "Jelajahi Layanan Kami"
     href: "#services"
   video: "/uploads/hero.webm"
   videoMp4: "/uploads/hero.mp4"

@@ -10,7 +10,7 @@ hero:
     label: "Let's Discuss"
     href: "/contact/"
   secondaryCta:
-    label: "See Our 8 Services"
+    label: "Explore Our Services"
     href: "#services"
   video: "/uploads/hero.webm"
   videoMp4: "/uploads/hero.mp4"
