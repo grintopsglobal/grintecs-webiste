@@ -13,12 +13,12 @@ export default defineConfig({
   output: 'static',
   i18n: {
     locales: ['id', 'en'],
-    defaultLocale: 'id',
+    defaultLocale: 'en',
     routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
   },
   integrations: [
     sitemap({
-      i18n: { defaultLocale: 'id', locales: { id: 'id-ID', en: 'en-US' } },
+      i18n: { defaultLocale: 'en', locales: { id: 'id-ID', en: 'en-US' } },
       filter: (page) => /\/(id|en)\//.test(page),
     }),
   ],

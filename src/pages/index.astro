@@ -1,11 +1,11 @@
 ---
 // GitHub Pages tidak punya redirect server, jadi root memakai meta refresh + link manual.
 import { withBase } from '../lib/url';
-const target = withBase('/id/');
+const target = withBase('/en/');
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,6 +15,6 @@ const target = withBase('/id/');
     <title>GRINTEC</title>
   </head>
   <body style="font-family: system-ui, sans-serif; padding: 2rem">
-    <p>Mengalihkan ke <a href={target}>{target}</a> · Redirecting to <a href={withBase('/en/')}>English</a></p>
+    <p>Redirecting to <a href={target}>English</a> · <a href={withBase('/id/')}>Bahasa Indonesia</a></p>
   </body>
 </html>

@@ -1,6 +1,6 @@
 export const languages = { id: 'Indonesia', en: 'English' } as const;
 export type Lang = keyof typeof languages;
-export const defaultLang: Lang = 'id';
+export const defaultLang: Lang = 'en';
 export const locales = Object.keys(languages) as Lang[];
 
 export const ui = {

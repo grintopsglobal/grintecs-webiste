@@ -3,7 +3,7 @@
 Company profile GRINTEC, *Securing Future Transformation*.
 
 - **Stack:** Astro 7 (output static) + Tailwind CSS 4 (`@tailwindcss/vite`) + Decap CMS 3.16.3
-- **Bahasa:** Indonesia (default, `/id/`) dan English (`/en/`)
+- **Bahasa:** English (default, `/en/`) dan Indonesia (`/id/`)
 - **Hosting:** GitHub Pages lewat GitHub Actions, domain `https://grintecs.com` (file `public/CNAME`)
 - **Repo:** `grintopsglobal/grintecs-webiste`
 
@@ -18,7 +18,7 @@ npm run build      # hasil di dist/
 npm run preview    # menyajikan dist/ seperti di produksi
 ```
 
-Root `/` mengarah ke `/id/`.
+Root `/` mengarah ke `/en/`.
 
 ## Memakai CMS secara lokal
 

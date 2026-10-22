@@ -25,8 +25,8 @@ public_folder: /uploads
 
 i18n:
   structure: multiple_folders
-  locales: [id, en]
-  default_locale: id
+  locales: [en, id]
+  default_locale: en
 
 # Daftar ikon = kunci di src/components/Icon.astro
 _icons: &icons
