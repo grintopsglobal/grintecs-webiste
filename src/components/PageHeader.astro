@@ -12,7 +12,7 @@ interface Props {
 const { title, intro, back, image } = Astro.props;
 ---
 
-<section class="relative isolate overflow-hidden border-b border-line bg-mist">
+<section class:list={['relative isolate overflow-hidden border-b border-line', image ? 'bg-white' : 'bg-mist']}>
   {!image && <Stripes id="page-stripes" class="absolute -right-24 bottom-0 -z-10 hidden h-full w-[38%] opacity-25 md:block" />}
   <div class:list={['container-x py-12 md:py-16', image && 'grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,42%)] md:gap-12']}>
     <div>
@@ -30,7 +30,7 @@ const { title, intro, back, image } = Astro.props;
           height="1000"
           fetchpriority="high"
           decoding="async"
-          class="aspect-[8/5] w-full rounded-[var(--radius-card)] object-contain"
+          class="aspect-[8/5] w-full object-contain [mask-composite:intersect] [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent),linear-gradient(180deg,transparent,#000_10%,#000_90%,transparent)] [-webkit-mask-composite:source-in]"
         />
       )
     }
