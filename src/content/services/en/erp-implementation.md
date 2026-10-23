@@ -3,7 +3,7 @@ title: "ERP Implementation"
 slug: "erp-implementation"
 icon: "erp"
 excerpt: "ERP implementation and migration, from process mapping until users actually work in it."
-heroImage: ""
+heroImage: "/uploads/services/erp-implementation.webp"
 order: 5
 features: ["Mapping finance, inventory, purchasing, and sales processes", "Module configuration and customisation", "Migration of master data and opening balances", "Integration with other systems", "User training and post go-live support"]
 relatedSolutions: ["connected-business-systems", "digital-commerce-operations"]

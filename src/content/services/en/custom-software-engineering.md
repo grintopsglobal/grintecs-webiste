@@ -3,7 +3,7 @@ title: "Custom Software Engineering"
 slug: "custom-software-engineering"
 icon: "code"
 excerpt: "Web, mobile, and backend applications built around your business process instead of a package default."
-heroImage: ""
+heroImage: "/uploads/services/custom-software-engineering.webp"
 order: 2
 features: ["Requirements analysis and UX design", "Web and mobile applications", "Backend, APIs, and integrations", "Automated testing and CI/CD pipelines", "Technical documentation and handover to your team"]
 relatedSolutions: ["custom-business-platforms", "digital-transformation"]

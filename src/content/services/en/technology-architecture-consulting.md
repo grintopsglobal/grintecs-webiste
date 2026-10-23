@@ -3,7 +3,7 @@ title: "Technology Architecture & Consulting"
 slug: "technology-architecture-consulting"
 icon: "architecture"
 excerpt: "A technology roadmap and architecture design before the big budget is committed."
-heroImage: ""
+heroImage: "/uploads/services/technology-architecture-consulting.webp"
 order: 3
 features: ["Assessment of current systems", "Target architecture and migration stages", "Choosing cloud, on-premise, or hybrid platforms", "Vendor evaluation and total cost of ownership", "Guiding your internal team during execution"]
 relatedSolutions: ["digital-transformation", "connected-business-systems"]

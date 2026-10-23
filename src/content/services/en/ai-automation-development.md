@@ -3,7 +3,7 @@ title: "AI & Automation Development"
 slug: "ai-automation-development"
 icon: "automation"
 excerpt: "Automation for repetitive workflows and AI features connected to the data and systems you already use."
-heroImage: ""
+heroImage: "/uploads/services/ai-automation-development.webp"
 order: 1
 features: ["Mapping which processes are worth automating", "Connecting language models (LLMs) to internal documents and databases", "Automating approvals, data entry, and reporting", "Human review steps for high-risk decisions", "Monitoring accuracy and cost after release"]
 relatedSolutions: ["ai-powered-business-operations", "data-analytics-enablement"]

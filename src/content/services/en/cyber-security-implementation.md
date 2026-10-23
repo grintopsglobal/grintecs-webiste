@@ -3,7 +3,7 @@ title: "Cyber Security Implementation"
 slug: "cyber-security-implementation"
 icon: "security"
 excerpt: "Security controls installed and tested across your applications, infrastructure, and team practices."
-heroImage: ""
+heroImage: "/uploads/services/cyber-security-implementation.webp"
 order: 8
 features: ["Risk assessment and penetration testing", "Hardening servers, cloud, and networks", "Identity, access management, and MFA", "Logging, monitoring, and incident response procedures", "Compliance preparation for data regulations such as GDPR and Indonesia's PDP Law"]
 relatedSolutions: ["cybersecurity-risk-reduction", "website-application-reliability"]

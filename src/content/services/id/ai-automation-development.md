@@ -3,7 +3,7 @@ title: "Pengembangan AI & Otomasi"
 slug: "ai-automation-development"
 icon: "automation"
 excerpt: "Otomasi alur kerja berulang dan fitur AI yang terhubung ke data serta sistem yang sudah Anda pakai."
-heroImage: ""
+heroImage: "/uploads/services/ai-automation-development.webp"
 order: 1
 features: ["Pemetaan proses yang layak diotomasi", "Integrasi model bahasa besar (LLM) dengan dokumen dan database internal", "Otomasi alur persetujuan, input data, dan pelaporan", "Langkah review manusia untuk keputusan berisiko", "Pemantauan akurasi dan biaya setelah rilis"]
 relatedSolutions: ["ai-powered-business-operations", "data-analytics-enablement"]

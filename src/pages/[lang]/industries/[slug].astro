@@ -22,8 +22,8 @@ const services = (await byLang('services', lang)).map((s) => ({ href: localizePa
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.image} alternates={await alternatesFor('industries', entry.data.slug)}>
-  <PageHeader title={entry.data.title} intro={entry.data.excerpt} back={{ href: localizePath(lang, '/industries/'), label: t('industries.title') }} />
-  <DetailBody heroImage={entry.data.image} related={{ title: t('nav.services'), links: services }} cta={{ href: localizePath(lang, '/contact/'), label: t('common.discussThis') }}>
+  <PageHeader title={entry.data.title} intro={entry.data.excerpt} image={entry.data.image} back={{ href: localizePath(lang, '/industries/'), label: t('industries.title') }} />
+  <DetailBody related={{ title: t('nav.services'), links: services }} cta={{ href: localizePath(lang, '/contact/'), label: t('common.discussThis') }}>
     <Fragment set:html={bodyHtml(entry)} />
   </DetailBody>
 </BaseLayout>

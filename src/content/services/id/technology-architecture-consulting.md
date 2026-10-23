@@ -3,7 +3,7 @@ title: "Arsitektur & Konsultasi Teknologi"
 slug: "technology-architecture-consulting"
 icon: "architecture"
 excerpt: "Peta jalan teknologi dan rancangan arsitektur sebelum anggaran besar dikeluarkan."
-heroImage: ""
+heroImage: "/uploads/services/technology-architecture-consulting.webp"
 order: 3
 features: ["Penilaian kondisi sistem saat ini", "Rancangan arsitektur target dan tahapan migrasi", "Pemilihan platform cloud, on-premise, atau hybrid", "Evaluasi vendor dan estimasi biaya kepemilikan", "Pendampingan tim internal selama eksekusi"]
 relatedSolutions: ["digital-transformation", "connected-business-systems"]

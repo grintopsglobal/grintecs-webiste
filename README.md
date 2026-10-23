@@ -160,6 +160,7 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 
 **Manual:** buat file dengan nama yang sama di kedua folder bahasa, misalnya `src/content/services/id/nama-layanan.md` dan `src/content/services/en/nama-layanan.md`. Contoh frontmatter ada di file yang sudah ada. Field yang wajib bisa dilihat di `src/content.config.ts`. Build akan gagal dengan pesan jelas bila ada field yang salah.
 
+- Ilustrasi header layanan (`heroImage`) diambil dari company profile 2026, disimpan di `public/uploads/services/<slug>.webp` (1600px, rasio sekitar 8:5, teks di gambar sudah dipotong). Gambar yang sama dipakai sebagai gambar share (OG) halaman itu. Ganti lewat CMS di field *Ilustrasi header*.
 - Ikon dipilih dari set sendiri di `src/components/Icon.astro`. Daftar yang sama ada di `public/admin/config.yml` (`_icons`).
 - Kategori artikel ada di `src/lib/categories.ts`. Jika menambah kategori, perbarui juga label di `src/i18n/ui.ts` dan opsi di `config.yml`.
 - Artikel dengan `draft: true` tidak tampil.

@@ -3,7 +3,7 @@ title: "Rekayasa Data & Analitik"
 slug: "data-engineering-analytics"
 icon: "data"
 excerpt: "Pipeline data, data warehouse, dan dashboard yang angkanya sama di setiap divisi."
-heroImage: ""
+heroImage: "/uploads/services/data-engineering-analytics.webp"
 order: 4
 features: ["Pipeline ETL/ELT dari ERP, CRM, dan aplikasi lain", "Data warehouse dan data lake", "Pemodelan data dan definisi metrik bersama", "Dashboard untuk manajemen dan tim operasional", "Pemeriksaan kualitas data otomatis"]
 relatedSolutions: ["data-analytics-enablement", "ai-powered-business-operations"]

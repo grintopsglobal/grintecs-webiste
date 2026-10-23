@@ -3,7 +3,7 @@ title: "Data Engineering & Analytics"
 slug: "data-engineering-analytics"
 icon: "data"
 excerpt: "Data pipelines, a data warehouse, and dashboards that show the same numbers to every department."
-heroImage: ""
+heroImage: "/uploads/services/data-engineering-analytics.webp"
 order: 4
 features: ["ETL/ELT pipelines from ERP, CRM, and other applications", "Data warehouse and data lake", "Data modelling and shared metric definitions", "Dashboards for management and operations teams", "Automated data quality checks"]
 relatedSolutions: ["data-analytics-enablement", "ai-powered-business-operations"]

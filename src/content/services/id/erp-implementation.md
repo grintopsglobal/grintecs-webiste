@@ -3,7 +3,7 @@ title: "Implementasi ERP"
 slug: "erp-implementation"
 icon: "erp"
 excerpt: "Implementasi dan migrasi ERP, mulai dari pemetaan proses sampai pengguna benar-benar memakainya."
-heroImage: ""
+heroImage: "/uploads/services/erp-implementation.webp"
 order: 5
 features: ["Pemetaan proses keuangan, persediaan, pembelian, dan penjualan", "Konfigurasi dan kustomisasi modul", "Migrasi data master dan saldo awal", "Integrasi dengan sistem lain", "Pelatihan pengguna dan pendampingan pasca go-live"]
 relatedSolutions: ["connected-business-systems", "digital-commerce-operations"]

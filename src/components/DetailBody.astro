@@ -1,19 +1,15 @@
 ---
-import { withBase } from '../lib/url';
-
 interface Props {
-  heroImage?: string;
   listTitle?: string;
   list?: string[];
   related?: { title: string; links: { href: string; label: string }[] };
   cta: { href: string; label: string };
 }
-const { heroImage, listTitle, list = [], related, cta } = Astro.props;
+const { listTitle, list = [], related, cta } = Astro.props;
 ---
 
 <section class="container-x grid gap-12 py-14 md:py-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-16">
   <div>
-    {heroImage && <img src={withBase(heroImage)} alt="" width="1200" height="675" decoding="async" class="mb-10 aspect-[16/9] w-full rounded-[var(--radius-card)] object-cover" />}
     <div class="prose-grintec max-w-[68ch]">
       <slot />
     </div>

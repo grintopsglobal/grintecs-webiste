@@ -3,7 +3,7 @@ title: "Managed Website & Application"
 slug: "managed-website-application"
 icon: "managed"
 excerpt: "Hosting, monitoring, updates, and routine fixes for websites and applications already in production."
-heroImage: ""
+heroImage: "/uploads/services/managed-website-application.webp"
 order: 7
 features: ["Hosting and server or cloud management", "Uptime and performance monitoring", "Security and dependency updates", "Scheduled backups and restore tests", "Bug fixes and small ongoing improvements"]
 relatedSolutions: ["website-application-reliability", "cybersecurity-risk-reduction"]

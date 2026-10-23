@@ -27,9 +27,8 @@ const related = entry.data.relatedSolutions
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.heroImage} alternates={await alternatesFor('services', entry.data.slug)}>
-  <PageHeader title={entry.data.title} intro={entry.data.excerpt} back={{ href: localizePath(lang, '/services/'), label: t('services.title') }} />
+  <PageHeader title={entry.data.title} intro={entry.data.excerpt} image={entry.data.heroImage} back={{ href: localizePath(lang, '/services/'), label: t('services.title') }} />
   <DetailBody
-    heroImage={entry.data.heroImage}
     listTitle={t('common.features')}
     list={entry.data.features}
     related={{ title: t('common.relatedSolutions'), links: related }}

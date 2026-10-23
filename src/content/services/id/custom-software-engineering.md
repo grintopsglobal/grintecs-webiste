@@ -3,7 +3,7 @@ title: "Rekayasa Perangkat Lunak Kustom"
 slug: "custom-software-engineering"
 icon: "code"
 excerpt: "Aplikasi web, mobile, dan backend yang dibangun untuk proses bisnis Anda, bukan proses bawaan paket software."
-heroImage: ""
+heroImage: "/uploads/services/custom-software-engineering.webp"
 order: 2
 features: ["Analisis kebutuhan dan desain UX", "Aplikasi web dan mobile", "Backend, API, dan integrasi", "Pengujian otomatis dan pipeline CI/CD", "Dokumentasi teknis dan serah terima ke tim internal"]
 relatedSolutions: ["custom-business-platforms", "digital-transformation"]

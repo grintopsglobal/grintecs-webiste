@@ -94,7 +94,7 @@ collections:
       - *slug
       - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
       - { label: Ringkasan, name: excerpt, widget: text, i18n: true, hint: 'Satu kalimat, tampil di kartu dan meta description.' }
-      - { label: Gambar utama, name: heroImage, widget: image, required: false, i18n: duplicate }
+      - { label: Ilustrasi header, name: heroImage, widget: image, required: false, i18n: duplicate, hint: 'Tampil di kanan judul. Disarankan rasio 8:5 (mis. 1600x1000), latar terang, tanpa teks di dalam gambar.' }
       - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
       - { label: Yang kami kerjakan, name: features, widget: list, required: false, i18n: true, field: { label: Poin, name: item, widget: string } }
       - { label: Solusi terkait, name: relatedSolutions, widget: relation, collection: solutions, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
