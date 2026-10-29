@@ -1,12 +1,20 @@
 ---
-title: "Managed Website & Application"
-slug: "managed-website-application"
-icon: "managed"
-excerpt: "Hosting, monitoring, updates, and routine fixes for websites and applications already in production."
-heroImage: "/uploads/services/managed-website-application.webp"
+title: Managed DevOps & Infrastructure
+slug: managed-devops-infrastructure
+icon: managed
+excerpt: Server, cloud, and on-premise operations, deployment automation,
+  monitoring, backups and IT support.
+heroImage: /uploads/services/managed-website-application.webp
 order: 7
-features: ["Hosting and server or cloud management", "Uptime and performance monitoring", "Security and dependency updates", "Scheduled backups and restore tests", "Bug fixes and small ongoing improvements"]
-relatedSolutions: ["website-application-reliability", "cybersecurity-risk-reduction"]
+features:
+  - Hosting and server or cloud management
+  - Uptime and performance monitoring
+  - Security and dependency updates
+  - Scheduled backups and restore tests
+  - Bug fixes and small ongoing improvements
+relatedSolutions:
+  - website-application-reliability
+  - cybersecurity-risk-reduction
 ---
 
 Websites and applications need care after launch. Without regular updates, security gaps pile up and small problems only surface when customers complain.

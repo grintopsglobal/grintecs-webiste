@@ -1,12 +1,20 @@
 ---
-title: "Pengelolaan Website & Aplikasi"
-slug: "managed-website-application"
-icon: "managed"
-excerpt: "Hosting, pemantauan, pembaruan, dan perbaikan rutin untuk website dan aplikasi yang sudah berjalan."
-heroImage: "/uploads/services/managed-website-application.webp"
+title: Pengelolaan DevOps & Infrastruktur
+slug: managed-devops-infrastructure
+icon: managed
+excerpt: Operasi server, cloud, dan on-premise, deployment otomatis, monitoring,
+  backup, dan dukungan harian.
+heroImage: /uploads/services/managed-website-application.webp
 order: 7
-features: ["Hosting dan pengelolaan server atau cloud", "Pemantauan uptime dan performa", "Pembaruan keamanan dan dependensi", "Backup terjadwal dan uji pemulihan", "Perbaikan bug dan pengembangan kecil berkelanjutan"]
-relatedSolutions: ["website-application-reliability", "cybersecurity-risk-reduction"]
+features:
+  - Hosting dan pengelolaan server atau cloud
+  - Pemantauan uptime dan performa
+  - Pembaruan keamanan dan dependensi
+  - Backup terjadwal dan uji pemulihan
+  - Perbaikan bug dan pengembangan kecil berkelanjutan
+relatedSolutions:
+  - website-application-reliability
+  - cybersecurity-risk-reduction
 ---
 
 Website dan aplikasi perlu dirawat setelah diluncurkan. Tanpa pembaruan rutin, celah keamanan menumpuk dan masalah kecil baru ketahuan ketika pelanggan mengeluh.
