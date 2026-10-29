@@ -5,7 +5,7 @@ icon: commerce
 excerpt: Online stores and marketplaces whose stock, prices, and orders are
   connected to your internal systems.
 heroImage: /uploads/grintec-content_ig_5c-1-.webp
-order: 6
+order: 3
 features:
   - Building or migrating online stores
   - Marketplace and payment gateway integration

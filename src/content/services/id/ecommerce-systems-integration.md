@@ -5,7 +5,7 @@ icon: commerce
 excerpt: Toko online dan marketplace yang stok, harga, dan pesanannya tersambung
   ke sistem internal.
 heroImage: /uploads/grintec-content_ig_5c-1-.webp
-order: 6
+order: 3
 features:
   - Pembangunan atau migrasi toko online
   - Integrasi marketplace dan payment gateway
