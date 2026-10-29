@@ -1,12 +1,20 @@
 ---
-title: "Pengembangan AI & Otomasi"
-slug: "ai-automation-development"
-icon: "automation"
-excerpt: "Otomasi alur kerja berulang dan fitur AI yang terhubung ke data serta sistem yang sudah Anda pakai."
-heroImage: "/uploads/services/ai-automation-development.webp"
-order: 1
-features: ["Pemetaan proses yang layak diotomasi", "Integrasi model bahasa besar (LLM) dengan dokumen dan database internal", "Otomasi alur persetujuan, input data, dan pelaporan", "Langkah review manusia untuk keputusan berisiko", "Pemantauan akurasi dan biaya setelah rilis"]
-relatedSolutions: ["ai-powered-business-operations", "data-analytics-enablement"]
+title: Pengembangan AI & Otomasi
+slug: ai-automation-development
+icon: automation
+excerpt: Otomasi alur kerja berulang dan fitur AI yang terhubung ke data serta
+  sistem yang sudah Anda pakai.
+heroImage: /uploads/services/ai-automation-development.webp
+order: -5
+features:
+  - Pemetaan proses yang layak diotomasi
+  - Integrasi model bahasa besar (LLM) dengan dokumen dan database internal
+  - Otomasi alur persetujuan, input data, dan pelaporan
+  - Langkah review manusia untuk keputusan berisiko
+  - Pemantauan akurasi dan biaya setelah rilis
+relatedSolutions:
+  - ai-powered-business-operations
+  - data-analytics-enablement
 ---
 
 Banyak pekerjaan kantor masih berupa menyalin data dari email ke spreadsheet, lalu dari spreadsheet ke ERP. Kami mulai dari pekerjaan seperti itu: volumenya tinggi, aturannya jelas, dan hasilnya mudah diukur.
