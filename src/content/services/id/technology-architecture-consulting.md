@@ -5,7 +5,7 @@ icon: architecture
 excerpt: Peta jalan teknologi dan rancangan arsitektur sebelum anggaran besar
   dikeluarkan.
 heroImage: /uploads/services/technology-architecture-consulting.webp
-order: 3
+order: 33
 features:
   - Penilaian kondisi sistem saat ini
   - Rancangan arsitektur target dan tahapan migrasi

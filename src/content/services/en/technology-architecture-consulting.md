@@ -5,7 +5,7 @@ icon: architecture
 excerpt: A technology roadmap and architecture design before the big budget is
   committed.
 heroImage: /uploads/services/technology-architecture-consulting.webp
-order: 3
+order: 33
 features:
   - Assessment of current systems
   - Target architecture and migration stages
