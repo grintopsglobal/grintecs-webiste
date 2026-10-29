@@ -4,7 +4,7 @@ slug: custom-software-engineering
 icon: code
 excerpt: Aplikasi web, mobile, dan backend yang dibangun untuk proses bisnis
   Anda, bukan proses bawaan paket software.
-heroImage: /uploads/grintec-content_ig_6d.webp
+heroImage: /uploads/grintec-content_ig_6c.webp
 order: 8
 features:
   - Analisis kebutuhan dan desain UX

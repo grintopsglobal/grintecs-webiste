@@ -4,7 +4,7 @@ slug: custom-software-engineering
 icon: code
 excerpt: Web, mobile, and backend applications built around your business
   process instead of a package default.
-heroImage: /uploads/grintec-content_ig_6d.webp
+heroImage: /uploads/grintec-content_ig_6c.webp
 order: 8
 features:
   - Requirements analysis and UX design
