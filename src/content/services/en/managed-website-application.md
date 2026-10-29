@@ -5,7 +5,7 @@ icon: managed
 excerpt: Server, cloud, and on-premise operations, deployment automation,
   monitoring, backups and IT support.
 heroImage: /uploads/services/managed-website-application.webp
-order: 7
+order: 6
 features:
   - Hosting and server or cloud management
   - Uptime and performance monitoring

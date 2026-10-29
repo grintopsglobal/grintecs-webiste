@@ -5,7 +5,7 @@ icon: managed
 excerpt: Operasi server, cloud, dan on-premise, deployment otomatis, monitoring,
   backup, dan dukungan harian.
 heroImage: /uploads/services/managed-website-application.webp
-order: 7
+order: 6
 features:
   - Hosting dan pengelolaan server atau cloud
   - Pemantauan uptime dan performa
