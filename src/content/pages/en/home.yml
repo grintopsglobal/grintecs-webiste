@@ -1,66 +1,79 @@
 type: home
 seo:
-  title: "GRINTEC | Securing Future Transformation"
-  description: "GRINTEC builds, connects, and secures software, data, ERP, and business systems for companies across industries and countries."
+  title: GRINTEC | Securing Future Transformation
+  description: GRINTEC builds, connects, and secures software, data, ERP, and
+    business systems for companies across industries and countries.
 hero:
-  headline: "Digital transformation that is secure from the first line of code"
-  highlight: "secure"
-  subheadline: "GRINTEC designs, builds, and secures software, data, and business systems for companies in the middle of transformation."
+  headline: Digital transformation that is secure from the first line of code
+  highlight: secure
+  subheadline: GRINTEC designs, builds, and secures software, data, and business
+    systems for companies in the middle of transformation.
   primaryCta:
-    label: "Let's Discuss"
-    href: "/contact/"
+    label: Let's Discuss
+    href: /contact/
   secondaryCta:
-    label: "Explore Our Services"
+    label: Explore Our Services
     href: "#services"
-  video: "/uploads/hero.webm"
-  videoMp4: "/uploads/hero.mp4"
-  poster: "/uploads/hero-poster.jpg"
+  video: /uploads/hero.webm
+  videoMp4: /uploads/hero.mp4
+  poster: /uploads/hero-poster.jpg
 valueProps:
-  heading: "One partner to build and look after your systems"
-  intro: "We take projects from architecture planning to systems running in production, with security checks in every release."
+  heading: One partner to build and look after your systems
+  intro: We take projects from architecture planning to systems running in
+    production, with security checks in every release.
   items:
     - icon: security
-      title: "Security in every release"
-      text: "Code review, dependency scanning, and access testing are part of the team's workflow from the first sprint."
+      title: Security in every release
+      text: Code review, dependency scanning, and access testing are part of the
+        team's workflow from the first sprint.
     - icon: connected
-      title: "Systems that talk to each other"
-      text: "We connect the ERP, online store, CRM, and internal apps through documented APIs, so nobody retypes data."
+      title: Systems that talk to each other
+      text: We connect the ERP, online store, CRM, and internal apps through
+        documented APIs, so nobody retypes data.
     - icon: growth
-      title: "Ready to grow"
-      text: "Architecture is chosen for today's load and your business plans, without building features you do not need yet."
+      title: Ready to grow
+      text: Architecture is chosen for today's load and your business plans, without
+        building features you do not need yet.
     - icon: partner
-      title: "One team, one point of accountability"
-      text: "Consultants, engineers, and operations work under one contract, so you never have to referee between vendors."
+      title: One team, one point of accountability
+      text: Consultants, engineers, and operations work under one contract, so you
+        never have to referee between vendors.
 servicesSection:
-  heading: "Services"
-  intro: "Eight services you can take one at a time or combine into one programme."
+  heading: Services
+  intro: Our services you can take one at a time or combine into one programme.
 solutionsSection:
-  heading: "Solutions, starting from the business problem"
-  intro: "Start with the challenge in front of you. We put together the services needed to solve it."
+  heading: Solutions, starting from the business problem
+  intro: Start with the challenge in front of you. We put together the services
+    needed to solve it.
 industriesSection:
-  heading: "Industries we serve"
-  intro: "Regulation, operating rhythm, and risk differ in every industry. Our system designs adapt to that."
+  heading: Industries we serve
+  intro: Regulation, operating rhythm, and risk differ in every industry. Our
+    system designs adapt to that.
 stats:
-  heading: "GRINTEC in numbers"
+  heading: GRINTEC in numbers
   intro: ""
-  # Fill with real numbers and their source. While empty, this section stays hidden.
   items: []
 process:
-  heading: "How we work"
-  intro: "Every project moves through four stages. Security is checked in all of them, not only at the end."
+  heading: How we work
+  intro: Every project moves through four stages. Security is checked in all of
+    them, not only at the end.
   steps:
-    - title: "Discovery"
-      text: "We study your processes, current systems, and business targets with your team."
-    - title: "Design"
-      text: "Architecture, scope, and the work plan are agreed before building starts."
-    - title: "Build"
-      text: "Software is built in short iterations with automated tests and regular demos."
-    - title: "Operate & secure"
-      text: "Systems are monitored, updated, and security tested after go-live."
+    - title: Discovery
+      text: We study your processes, current systems, and business targets with your
+        team.
+    - title: Design
+      text: Architecture, scope, and the work plan are agreed before building starts.
+    - title: Build
+      text: Software is built in short iterations with automated tests and regular
+        demos.
+    - title: Operate & secure
+      text: Systems are monitored, updated, and security tested after go-live.
 insightsSection:
-  heading: "Latest insights"
-  intro: "Practical notes from the GRINTEC team for IT teams and business process owners."
+  heading: Latest insights
+  intro: Practical notes from the GRINTEC team for IT teams and business process
+    owners.
 cta:
-  heading: "Have a system that needs building, connecting, or securing?"
-  text: "Tell us where your systems stand today, and we will work out a sensible first step together."
-  buttonLabel: "Let's Discuss"
+  heading: Have a system that needs building, connecting, or securing?
+  text: Tell us where your systems stand today, and we will work out a sensible
+    first step together.
+  buttonLabel: Let's Discuss
