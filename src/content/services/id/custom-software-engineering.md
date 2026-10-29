@@ -1,12 +1,20 @@
 ---
-title: "Rekayasa Perangkat Lunak Kustom"
-slug: "custom-software-engineering"
-icon: "code"
-excerpt: "Aplikasi web, mobile, dan backend yang dibangun untuk proses bisnis Anda, bukan proses bawaan paket software."
-heroImage: "/uploads/services/custom-software-engineering.webp"
-order: 2
-features: ["Analisis kebutuhan dan desain UX", "Aplikasi web dan mobile", "Backend, API, dan integrasi", "Pengujian otomatis dan pipeline CI/CD", "Dokumentasi teknis dan serah terima ke tim internal"]
-relatedSolutions: ["custom-business-platforms", "digital-transformation"]
+title: Rekayasa Perangkat Lunak Kustom
+slug: custom-software-engineering
+icon: code
+excerpt: Aplikasi web, mobile, dan backend yang dibangun untuk proses bisnis
+  Anda, bukan proses bawaan paket software.
+heroImage: /uploads/services/custom-software-engineering.webp
+order: 8
+features:
+  - Analisis kebutuhan dan desain UX
+  - Aplikasi web dan mobile
+  - Backend, API, dan integrasi
+  - Pengujian otomatis dan pipeline CI/CD
+  - Dokumentasi teknis dan serah terima ke tim internal
+relatedSolutions:
+  - custom-business-platforms
+  - digital-transformation
 ---
 
 Software siap pakai cocok untuk proses yang umum. Ketika proses Anda yang membedakan bisnis dari pesaing, memaksanya masuk ke paket standar biasanya berakhir dengan banyak kerja manual di sekitarnya.
