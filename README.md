@@ -133,7 +133,7 @@ Semua diisi lewat CMS: **Pengaturan Situs > SEO & Tracking**. Field yang kosong 
 
 - Pilih satu jalur: **GTM saja** (GA4 dan Meta Pixel dipasang sebagai tag di dalam GTM), atau GA4/Pixel langsung tanpa GTM. Jangan dua-duanya, nanti page view tercatat ganda.
 - Format ID dikunci: build gagal dengan pesan jelas bila formatnya salah, sehingga isian tidak bisa menyisipkan script lain.
-- Setelah Search Console terverifikasi, kirim sitemap `https://grintecs.com/sitemap-index.xml` di menu Sitemaps.
+- Setelah Search Console terverifikasi, kirim `https://grintecs.com/sitemap.xml` di menu Sitemaps (alias dari `sitemap-index.xml` yang dibuat Astro).
 - Untuk pengunjung dari Uni Eropa, GA4 dan Meta Pixel umumnya memerlukan persetujuan cookie (GDPR). Situs belum memiliki banner consent.
 
 ## Mengganti video hero
