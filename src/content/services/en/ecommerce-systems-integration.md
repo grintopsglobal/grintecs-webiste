@@ -1,12 +1,20 @@
 ---
-title: "eCommerce & Systems Integration"
-slug: "ecommerce-systems-integration"
-icon: "commerce"
-excerpt: "Online stores and marketplaces whose stock, prices, and orders are connected to your internal systems."
-heroImage: "/uploads/services/ecommerce-systems-integration.webp"
+title: eCommerce & Systems Integration
+slug: ecommerce-systems-integration
+icon: commerce
+excerpt: Online stores and marketplaces whose stock, prices, and orders are
+  connected to your internal systems.
+heroImage: /uploads/grintec-content_ig_5b.png
 order: 6
-features: ["Building or migrating online stores", "Marketplace and payment gateway integration", "Stock, price, and order sync with the ERP", "Logistics integration and shipment tracking", "Middleware and APIs between systems"]
-relatedSolutions: ["digital-commerce-operations", "connected-business-systems"]
+features:
+  - Building or migrating online stores
+  - Marketplace and payment gateway integration
+  - Stock, price, and order sync with the ERP
+  - Logistics integration and shipment tracking
+  - Middleware and APIs between systems
+relatedSolutions:
+  - digital-commerce-operations
+  - connected-business-systems
 ---
 
 Selling on several channels quickly gets complicated when stock and orders are still recorded by hand. Missed orders and out-of-sync stock reach customers straight away.
