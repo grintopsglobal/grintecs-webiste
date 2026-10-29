@@ -1,12 +1,20 @@
 ---
-title: "Technology Architecture & Consulting"
-slug: "technology-architecture-consulting"
-icon: "architecture"
-excerpt: "A technology roadmap and architecture design before the big budget is committed."
-heroImage: "/uploads/services/technology-architecture-consulting.webp"
-order: 3
-features: ["Assessment of current systems", "Target architecture and migration stages", "Choosing cloud, on-premise, or hybrid platforms", "Vendor evaluation and total cost of ownership", "Guiding your internal team during execution"]
-relatedSolutions: ["digital-transformation", "connected-business-systems"]
+title: Technology Architecture & Consulting
+slug: technology-architecture-consulting
+icon: architecture
+excerpt: A technology roadmap and architecture design before the big budget is
+  committed.
+heroImage: /uploads/services/technology-architecture-consulting.webp
+order: 39
+features:
+  - Assessment of current systems
+  - Target architecture and migration stages
+  - Choosing cloud, on-premise, or hybrid platforms
+  - Vendor evaluation and total cost of ownership
+  - Guiding your internal team during execution
+relatedSolutions:
+  - digital-transformation
+  - connected-business-systems
 ---
 
 A wrong architecture decision rarely hurts in the first month. It usually shows up a year later, when the system is hard to change and infrastructure costs keep rising.

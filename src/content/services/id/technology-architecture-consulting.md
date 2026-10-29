@@ -1,12 +1,20 @@
 ---
-title: "Arsitektur & Konsultasi Teknologi"
-slug: "technology-architecture-consulting"
-icon: "architecture"
-excerpt: "Peta jalan teknologi dan rancangan arsitektur sebelum anggaran besar dikeluarkan."
-heroImage: "/uploads/services/technology-architecture-consulting.webp"
-order: 3
-features: ["Penilaian kondisi sistem saat ini", "Rancangan arsitektur target dan tahapan migrasi", "Pemilihan platform cloud, on-premise, atau hybrid", "Evaluasi vendor dan estimasi biaya kepemilikan", "Pendampingan tim internal selama eksekusi"]
-relatedSolutions: ["digital-transformation", "connected-business-systems"]
+title: Arsitektur & Konsultasi Teknologi
+slug: technology-architecture-consulting
+icon: architecture
+excerpt: Peta jalan teknologi dan rancangan arsitektur sebelum anggaran besar
+  dikeluarkan.
+heroImage: /uploads/services/technology-architecture-consulting.webp
+order: 39
+features:
+  - Penilaian kondisi sistem saat ini
+  - Rancangan arsitektur target dan tahapan migrasi
+  - Pemilihan platform cloud, on-premise, atau hybrid
+  - Evaluasi vendor dan estimasi biaya kepemilikan
+  - Pendampingan tim internal selama eksekusi
+relatedSolutions:
+  - digital-transformation
+  - connected-business-systems
 ---
 
 Keputusan arsitektur yang keliru jarang terasa di bulan pertama. Biasanya baru terasa setahun kemudian, ketika sistem sulit diubah dan biaya infrastruktur terus naik.
