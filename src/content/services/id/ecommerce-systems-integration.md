@@ -4,7 +4,7 @@ slug: ecommerce-systems-integration
 icon: commerce
 excerpt: Toko online dan marketplace yang stok, harga, dan pesanannya tersambung
   ke sistem internal.
-heroImage: /uploads/grintec-content_ig_5c.jpg
+heroImage: /uploads/grintec-content_ig_5c.webp
 order: 6
 features:
   - Pembangunan atau migrasi toko online
