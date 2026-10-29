@@ -5,7 +5,7 @@ icon: automation
 excerpt: Otomasi alur kerja berulang dan fitur AI yang terhubung ke data serta
   sistem yang sudah Anda pakai.
 heroImage: /uploads/services/ai-automation-development.webp
-order: -5
+order: 2
 features:
   - Pemetaan proses yang layak diotomasi
   - Integrasi model bahasa besar (LLM) dengan dokumen dan database internal

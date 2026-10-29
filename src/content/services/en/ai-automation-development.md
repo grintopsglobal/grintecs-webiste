@@ -5,7 +5,7 @@ icon: automation
 excerpt: Automation for repetitive workflows and AI features connected to the
   data and systems you already use.
 heroImage: /uploads/services/ai-automation-development.webp
-order: -5
+order: 2
 features:
   - Mapping which processes are worth automating
   - Connecting language models (LLMs) to internal documents and databases
