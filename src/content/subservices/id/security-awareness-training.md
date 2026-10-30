@@ -1,5 +1,5 @@
 ---
-title: Security Awareness Training
+title: Pelatihan Keamanan Siber
 slug: security-awareness-training
 parent: cyber-security-implementation
 icon: partner
