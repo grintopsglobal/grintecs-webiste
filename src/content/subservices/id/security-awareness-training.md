@@ -1,31 +1,29 @@
 ---
-title: Security Awareness & Training
+title: Security Awareness Training
 slug: security-awareness-training
 parent: cyber-security-implementation
 icon: partner
-excerpt: Pelatihan praktis yang menjadikan karyawan lapisan pertahanan aktif, dibangun dari contoh serangan nyata dan diukur dari perubahan perilaku, bukan sekadar kehadiran.
-tagline: Teknologi menghentikan sebagian besar serangan. Orang-orang Anda menghentikan sisanya.
+excerpt: Edukasi keamanan siber interaktif berbasis peran yang dirancang untuk mengubah tenaga kerja Anda dari risiko keamanan menjadi aset pertahanan terkuat.
+tagline: Bangun budaya cerdas siber. Pelatihan kesadaran keamanan yang menarik untuk tim modern.
 heroImage: /uploads/subservices/security-awareness-training.webp
-order: 4
+order: 6
 process:
-  - Pemetaan risiko dan peran
-  - Penyusunan kurikulum
-  - Pelaksanaan pelatihan
-  - Pengukuran dan penyegaran
+  - Tes dasar pengetahuan
+  - Pelatihan video modular
+  - Kuis interaktif
+  - Sertifikasi dan pelacakan
 deliverables:
-  - Modul pelatihan per peran (staf, manajer, IT, keuangan)
-  - Sesi langsung atau rekaman dengan tanya jawab
-  - Panduan ringkas dan rangkuman kebijakan
-  - Laporan penyelesaian dan uji pemahaman
-pricing: Per sesi atau program tahunan, dihitung berdasarkan jumlah peserta.
+  - Akses platform LMS
+  - Sertifikat penyelesaian karyawan
+  - Penilaian risiko tingkat departemen
+  - Laporan kepatuhan
+pricing: Langganan tahunan per pengguna (model SaaS).
 faq:
-  - q: Berapa lama satu sesi?
-    a: Sesi inti berlangsung 60 sampai 90 menit. Modul per peran lebih singkat dan bisa dilakukan daring.
-  - q: Bisa digabung dengan simulasi phishing?
-    a: Bisa. Hasil simulasi menunjukkan topik dan kelompok yang perlu diprioritaskan, dan simulasi lanjutan memperlihatkan peningkatannya.
-ctaLabel: Rencanakan Program Pelatihan
+  - q: Bisa melacak siapa yang belum menyelesaikan kursus?
+    a: Bisa. Dasbor admin lengkap disediakan.
+ctaLabel: Mulai Uji Coba Gratis
 ---
 
-Kebijakan yang tidak diingat siapa pun tidak melindungi apa pun. Pelatihan berhasil kalau spesifik: email yang diterima tim keuangan, tautan yang diklik tim penjualan, perangkat yang dibawa staf lapangan.
+Kebijakan yang tidak diingat siapa pun tidak melindungi apa pun. Pelatihan berhasil kalau singkat, spesifik untuk tiap peran, dan diukur setelahnya.
 
-Kami menyusun kurikulum dari profil risiko dan insiden terakhir Anda, menyampaikannya dalam sesi singkat, lalu mengukur apa yang berubah setelahnya.
+Karyawan belajar lewat video modular dan kuis di LMS, manajer melihat penyelesaian dan skor risiko per departemen, dan tes dasar menunjukkan seberapa jauh tim sudah berkembang.

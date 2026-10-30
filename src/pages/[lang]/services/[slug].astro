@@ -34,7 +34,7 @@ const related = entry.data.relatedSolutions
     children.length > 0 && (
       <section class="container-x pt-14 md:pt-20" aria-labelledby="sub-heading">
         <h2 id="sub-heading" class="text-2xl font-extrabold md:text-3xl">{t('sub.heading')}</h2>
-        <ul class="mt-8 grid gap-4 md:grid-cols-2">
+        <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {children.map((c) => (
             <li>
               <a href={localizePath(lang, `/services/${entry.data.slug}/${c.data.slug}/`)} class="group flex h-full gap-4 rounded-[var(--radius-card)] border border-line p-6 hover:border-primary hover:bg-mist">
