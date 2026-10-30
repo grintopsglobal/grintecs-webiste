@@ -6,7 +6,7 @@ icon: data
 excerpt: Strategic legal and technical alignment to ensure your data processing
   operations comply with Indonesia's PDP Law and global GDPR mandates, avoiding
   severe regulatory fines.
-tagline: Protect user privacy. Prevent regulatory fines. Expert UU PDP and GDPR
+tagline: Protect user privacy. Prevent regulatory fines. Expert PDP Law and GDPR
   compliance services.
 heroImage: /uploads/gemini_generated_image_uki4u8uki4u8uki4.webp
 order: 8
