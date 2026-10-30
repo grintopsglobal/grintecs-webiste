@@ -3,9 +3,12 @@ title: Cloud Security & Hardening
 slug: cloud-security-hardening
 parent: cyber-security-implementation
 icon: platform
-excerpt: Optimalisasi postur keamanan khusus untuk AWS, Azure, dan Google Cloud, memitigasi miskonfigurasi dan menegakkan kontrol keamanan cloud-native yang ketat.
-tagline: Maksimalkan nilai cloud, minimalkan risikonya. Manajemen postur keamanan cloud oleh ahli.
-heroImage: /uploads/subservices/cloud-security-hardening.webp
+excerpt: Optimalisasi postur keamanan khusus untuk AWS, Azure, dan Google Cloud,
+  memitigasi miskonfigurasi dan menegakkan kontrol keamanan cloud-native yang
+  ketat.
+tagline: Maksimalkan nilai cloud, minimalkan risikonya. Manajemen postur
+  keamanan cloud oleh ahli.
+heroImage: /uploads/gemini_generated_image_c9z6xkc9z6xkc9z6.webp
 order: 4
 process:
   - Penemuan aset cloud

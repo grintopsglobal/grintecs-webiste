@@ -3,9 +3,12 @@ title: Cloud Security & Hardening
 slug: cloud-security-hardening
 parent: cyber-security-implementation
 icon: platform
-excerpt: Specialised security posture optimisation for AWS, Azure, and Google Cloud, mitigating misconfigurations and enforcing strict cloud-native security controls.
-tagline: Maximise cloud value, minimise cloud risks. Expert cloud security posture management.
-heroImage: /uploads/subservices/cloud-security-hardening.webp
+excerpt: Specialised security posture optimisation for AWS, Azure, and Google
+  Cloud, mitigating misconfigurations and enforcing strict cloud-native security
+  controls.
+tagline: Maximise cloud value, minimise cloud risks. Expert cloud security
+  posture management.
+heroImage: /uploads/gemini_generated_image_c9z6xkc9z6xkc9z6.webp
 order: 4
 process:
   - Cloud asset discovery
