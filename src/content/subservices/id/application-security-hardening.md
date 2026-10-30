@@ -8,7 +8,7 @@ excerpt: Pengerasan keamanan end-to-end untuk aplikasi web dan seluler,
   perangkat lunak yang tangguh.
 tagline: Amankan aplikasi dari kode hingga cloud. Layanan keamanan aplikasi
   tahan banting.
-heroImage: /uploads/gemini_generated_image_5hy5xv5hy5xv5hy5.webp
+heroImage: /uploads/gemini_generated_image_ovdzccovdzccovdz.webp
 order: 3
 process:
   - Tinjauan arsitektur

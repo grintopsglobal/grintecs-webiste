@@ -7,7 +7,7 @@ excerpt: End-to-end security hardening for web and mobile applications,
   integrating secure code reviews and DevSecOps to ensure resilient software
   architecture.
 tagline: Secure your apps from code to cloud. Bulletproof application security services.
-heroImage: /uploads/gemini_generated_image_5hy5xv5hy5xv5hy5.webp
+heroImage: /uploads/gemini_generated_image_ovdzccovdzccovdz.webp
 order: 3
 process:
   - Architecture review
