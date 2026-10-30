@@ -1,5 +1,5 @@
 ---
-title: Vulnerability Assessment & Penetration Test (VAPT)
+title: Vulnerability Assessment & Penetration Test
 slug: vapt
 parent: cyber-security-implementation
 icon: security
