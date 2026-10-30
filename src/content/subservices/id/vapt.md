@@ -7,7 +7,7 @@ excerpt: Pengujian keamanan komprehensif yang menggabungkan pemindaian
   kerentanan otomatis dan uji penetrasi manual untuk mengekspos dan
   mengeksploitasi celah keamanan tersembunyi di infrastruktur IT Anda.
 tagline: Layanan VAPT enterprise. Temukan celah keamanan Anda sebelum peretas.
-heroImage: /uploads/grintec-vapt.webp
+heroImage: /uploads/grintec-vapt_2.webp
 order: 2
 process:
   - Pengumpulan data

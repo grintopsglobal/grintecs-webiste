@@ -7,7 +7,7 @@ excerpt: Comprehensive security testing combining automated vulnerability
   scanning and manual penetration testing to expose and exploit hidden security
   flaws in your IT infrastructure.
 tagline: Enterprise VAPT services. Find your vulnerabilities before hackers do.
-heroImage: /uploads/grintec-vapt.webp
+heroImage: /uploads/grintec-vapt_2.webp
 order: 2
 process:
   - Reconnaissance
