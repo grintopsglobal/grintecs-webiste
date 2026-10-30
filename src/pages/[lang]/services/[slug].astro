@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import DetailBody from '../../../components/DetailBody.astro';
+import Icon from '../../../components/Icon.astro';
 import type { Lang } from '../../../i18n/ui';
 import { bodyHtml } from '../../../lib/url';
 import { localizePath, useTranslations } from '../../../i18n/utils';
@@ -20,6 +21,7 @@ const lang = Astro.params.lang as Lang;
 const { entry } = Astro.props as { entry: CollectionEntry<'services'> };
 const t = useTranslations(lang);
 const solutions = await byLang('solutions', lang);
+const children = (await byLang('subservices', lang)).filter((s) => s.data.parent === entry.data.slug);
 const related = entry.data.relatedSolutions
   .map((slug) => solutions.find((s) => s.data.slug === slug))
   .filter((s) => s !== undefined)
@@ -28,6 +30,27 @@ const related = entry.data.relatedSolutions
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.heroImage} alternates={await alternatesFor('services', entry.data.slug)}>
   <PageHeader title={entry.data.title} intro={entry.data.excerpt} image={entry.data.heroImage} back={{ href: localizePath(lang, '/services/'), label: t('services.title') }} />
+  {
+    children.length > 0 && (
+      <section class="container-x pt-14 md:pt-20" aria-labelledby="sub-heading">
+        <h2 id="sub-heading" class="text-2xl font-extrabold md:text-3xl">{t('sub.heading')}</h2>
+        <ul class="mt-8 grid gap-4 md:grid-cols-2">
+          {children.map((c) => (
+            <li>
+              <a href={localizePath(lang, `/services/${entry.data.slug}/${c.data.slug}/`)} class="group flex h-full gap-4 rounded-[var(--radius-card)] border border-line p-6 hover:border-primary hover:bg-mist">
+                <Icon name={c.data.icon} class="mt-1 size-7 shrink-0 text-primary" />
+                <span>
+                  <span class="block font-display text-lg font-bold group-hover:text-primary-700">{c.data.title}</span>
+                  <span class="mt-2 block leading-relaxed text-muted">{c.data.excerpt}</span>
+                  <span class="link mt-4 inline-flex min-h-11 items-center">{t('common.viewDetail')}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
   <DetailBody
     listTitle={t('common.features')}
     list={entry.data.features}

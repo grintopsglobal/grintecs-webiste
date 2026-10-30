@@ -100,6 +100,41 @@ collections:
       - { label: Solusi terkait, name: relatedSolutions, widget: relation, collection: solutions, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
       - { label: Isi, name: body, widget: markdown, i18n: true }
 
+  - name: subservices
+    label: Sub-layanan
+    label_singular: Sub-layanan
+    folder: src/content/subservices
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Layanan induk, name: parent, widget: relation, collection: services, value_field: slug, search_fields: [title], display_fields: [title], i18n: duplicate, hint: 'Sub-layanan tampil sebagai kartu di halaman layanan ini. URL: /services/<induk>/<slug>/' }
+      - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
+      - { label: Ringkasan, name: excerpt, widget: text, i18n: true, hint: 'Deskripsi satu-dua kalimat, juga dipakai sebagai meta description.' }
+      - { label: Tagline (hero banner), name: tagline, widget: string, required: false, i18n: true }
+      - { label: Ilustrasi header, name: heroImage, widget: image, required: false, i18n: duplicate, hint: 'Rasio 8:5 (mis. 1600x1000), latar terang, tanpa teks di dalam gambar.' }
+      - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
+      - { label: Alur kerja, name: process, widget: list, required: false, i18n: true, field: { label: Langkah, name: item, widget: string } }
+      - { label: Yang Anda terima, name: deliverables, widget: list, required: false, i18n: true, field: { label: Item, name: item, widget: string } }
+      - { label: Model harga, name: pricing, widget: string, required: false, i18n: true }
+      - label: Pertanyaan umum
+        name: faq
+        widget: list
+        required: false
+        i18n: true
+        fields:
+          - { label: Pertanyaan, name: q, widget: string, i18n: true }
+          - { label: Jawaban, name: a, widget: text, i18n: true }
+      - { label: Label tombol CTA, name: ctaLabel, widget: string, required: false, i18n: true, hint: 'Mis. "Ajukan Uji Dasar Gratis". Kosong = teks default.' }
+      - { label: Isi, name: body, widget: markdown, i18n: true, required: false }
+
   - name: solutions
     label: Solusi
     label_singular: Solusi

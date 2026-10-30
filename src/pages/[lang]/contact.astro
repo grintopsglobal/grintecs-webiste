@@ -11,6 +11,7 @@ const t = useTranslations(lang);
 const page = await getPage(lang, 'contact');
 const settings = await getSettings(lang);
 const services = await byLang('services', lang);
+const subservices = await byLang('subservices', lang);
 
 // Form dikirim ke Google Apps Script (apps-script/Code.gs), yang memverifikasi Turnstile lalu menulis ke Google Sheet.
 const { endpoint, turnstileSiteKey } = settings.form;
@@ -79,6 +80,13 @@ const inputClass =
         <select id="f-service" name="service" class={inputClass}>
           <option value="">{t('form.servicePlaceholder')}</option>
           {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
+          {services
+            .filter((s) => subservices.some((c) => c.data.parent === s.data.slug))
+            .map((s) => (
+              <optgroup label={s.data.title}>
+                {subservices.filter((c) => c.data.parent === s.data.slug).map((c) => <option value={c.data.title}>{c.data.title}</option>)}
+              </optgroup>
+            ))}
           <option value={t('form.serviceOther')}>{t('form.serviceOther')}</option>
         </select>
       </div>
@@ -134,6 +142,10 @@ const inputClass =
 
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  // CTA sub-layanan membawa ?service=<judul>; pilih otomatis bila ada di daftar.
+  const preset = new URLSearchParams(location.search).get('service');
+  const serviceSelect = document.querySelector<HTMLSelectElement>('#f-service');
+  if (preset && serviceSelect && [...serviceSelect.options].some((o) => o.value === preset)) serviceSelect.value = preset;
   // Script Turnstile baru dimuat saat widget mendekati layar atau form disentuh, agar tidak memperlambat render awal.
   const widget = document.querySelector('.cf-turnstile');
   if (widget) {

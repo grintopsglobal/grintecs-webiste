@@ -34,6 +34,26 @@ const services = defineCollection({
   }),
 });
 
+// Sub-layanan di bawah satu layanan (mis. Phishing Simulation di bawah Cyber Security). URL: /services/<parent>/<slug>/
+const subservices = defineCollection({
+  loader: loader('subservices'),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    parent: z.string(),
+    icon: z.string(),
+    excerpt: z.string(),
+    tagline: str,
+    heroImage: str,
+    order: z.number().default(99),
+    process: list(z.string()),
+    deliverables: list(z.string()),
+    pricing: str,
+    faq: list(z.object({ q: z.string(), a: z.string() })),
+    ctaLabel: str,
+  }),
+});
+
 const solutions = defineCollection({
   loader: loader('solutions'),
   schema: z.object({
@@ -158,4 +178,4 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { services, solutions, industries, insights, pages, settings };
+export const collections = { services, subservices, solutions, industries, insights, pages, settings };

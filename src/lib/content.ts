@@ -1,7 +1,7 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n/ui';
 
-type Ordered = 'services' | 'solutions' | 'industries';
+type Ordered = 'services' | 'subservices' | 'solutions' | 'industries';
 
 export async function byLang<C extends Ordered>(collection: C, lang: Lang) {
   const items = (await getCollection(collection, (e) => e.id.startsWith(`${lang}/`))) as CollectionEntry<C>[];
