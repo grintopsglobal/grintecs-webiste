@@ -3,9 +3,12 @@ title: Security Awareness Training
 slug: security-awareness-training
 parent: cyber-security-implementation
 icon: partner
-excerpt: Edukasi keamanan siber interaktif berbasis peran yang dirancang untuk mengubah tenaga kerja Anda dari risiko keamanan menjadi aset pertahanan terkuat.
-tagline: Bangun budaya cerdas siber. Pelatihan kesadaran keamanan yang menarik untuk tim modern.
-heroImage: /uploads/subservices/security-awareness-training.webp
+excerpt: Edukasi keamanan siber interaktif berbasis peran yang dirancang untuk
+  mengubah tenaga kerja Anda dari risiko keamanan menjadi aset pertahanan
+  terkuat.
+tagline: Bangun budaya cerdas siber. Pelatihan kesadaran keamanan yang menarik
+  untuk tim modern.
+heroImage: /uploads/gemini_generated_image_m1qj6wm1qj6wm1qj.webp
 order: 6
 process:
   - Tes dasar pengetahuan

@@ -3,9 +3,11 @@ title: Security Awareness Training
 slug: security-awareness-training
 parent: cyber-security-implementation
 icon: partner
-excerpt: Interactive, role-based cybersecurity education designed to transform your workforce from a security risk into your strongest defensive asset.
-tagline: Build a cyber-smart culture. Engaging security awareness training for modern teams.
-heroImage: /uploads/subservices/security-awareness-training.webp
+excerpt: Interactive, role-based cybersecurity education designed to transform
+  your workforce from a security risk into your strongest defensive asset.
+tagline: Build a cyber-smart culture. Engaging security awareness training for
+  modern teams.
+heroImage: /uploads/gemini_generated_image_m1qj6wm1qj6wm1qj.webp
 order: 6
 process:
   - Knowledge baseline test
