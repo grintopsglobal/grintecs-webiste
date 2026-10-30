@@ -3,9 +3,11 @@ title: Application Security & Hardening
 slug: application-security-hardening
 parent: cyber-security-implementation
 icon: architecture
-excerpt: End-to-end security hardening for web and mobile applications, integrating secure code reviews and DevSecOps to ensure resilient software architecture.
+excerpt: End-to-end security hardening for web and mobile applications,
+  integrating secure code reviews and DevSecOps to ensure resilient software
+  architecture.
 tagline: Secure your apps from code to cloud. Bulletproof application security services.
-heroImage: /uploads/subservices/application-security-hardening.webp
+heroImage: /uploads/gemini_generated_image_5hy5xv5hy5xv5hy5.webp
 order: 3
 process:
   - Architecture review
@@ -16,7 +18,8 @@ deliverables:
   - Code security report
   - CI/CD pipeline integration scripts
   - Web Application Firewall (WAF) configurations
-pricing: Hybrid. One-time hardening plus a monthly retainer for WAF and DevSecOps monitoring.
+pricing: Hybrid. One-time hardening plus a monthly retainer for WAF and
+  DevSecOps monitoring.
 faq:
   - q: Do you support Next.js or Laravel?
     a: Yes. We secure modern monolithic and microservices frameworks.

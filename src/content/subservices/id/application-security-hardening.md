@@ -3,9 +3,12 @@ title: Application Security & Hardening
 slug: application-security-hardening
 parent: cyber-security-implementation
 icon: architecture
-excerpt: Pengerasan keamanan end-to-end untuk aplikasi web dan seluler, mengintegrasikan tinjauan kode aman dan DevSecOps untuk memastikan arsitektur perangkat lunak yang tangguh.
-tagline: Amankan aplikasi dari kode hingga cloud. Layanan keamanan aplikasi tahan banting.
-heroImage: /uploads/subservices/application-security-hardening.webp
+excerpt: Pengerasan keamanan end-to-end untuk aplikasi web dan seluler,
+  mengintegrasikan tinjauan kode aman dan DevSecOps untuk memastikan arsitektur
+  perangkat lunak yang tangguh.
+tagline: Amankan aplikasi dari kode hingga cloud. Layanan keamanan aplikasi
+  tahan banting.
+heroImage: /uploads/gemini_generated_image_5hy5xv5hy5xv5hy5.webp
 order: 3
 process:
   - Tinjauan arsitektur
@@ -16,7 +19,8 @@ deliverables:
   - Laporan keamanan kode
   - Skrip integrasi pipeline CI/CD
   - Konfigurasi Web Application Firewall (WAF)
-pricing: Hibrida. Pengerasan satu kali ditambah retainer bulanan untuk pemantauan WAF dan DevSecOps.
+pricing: Hibrida. Pengerasan satu kali ditambah retainer bulanan untuk
+  pemantauan WAF dan DevSecOps.
 faq:
   - q: Apakah mendukung Next.js atau Laravel?
     a: Ya. Kami mengamankan framework monolitik dan layanan mikro modern.
