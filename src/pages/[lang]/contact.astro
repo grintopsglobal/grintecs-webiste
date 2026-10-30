@@ -17,6 +17,8 @@ const subservices = await byLang('subservices', lang);
 const { endpoint, turnstileSiteKey } = settings.form;
 const ready = Boolean(endpoint && turnstileSiteKey);
 const waNumber = settings.whatsapp.replace(/\D/g, '');
+// Template pesan terisi otomatis saat chat dibuka; teksnya di src/i18n/ui.ts (form.whatsappText).
+const waHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(t('form.whatsappText'))}`;
 
 const fields = [
   { name: 'name', label: t('form.name'), type: 'text', autocomplete: 'name', required: true },
@@ -114,7 +116,7 @@ const inputClass =
         <div class="mt-4 grid gap-3">
           {
             waNumber && (
-              <a href={`https://wa.me/${waNumber}`} rel="noopener" class="btn-primary">
+              <a href={waHref} rel="noopener" class="btn-primary">
                 {t('form.whatsapp')}
               </a>
             )

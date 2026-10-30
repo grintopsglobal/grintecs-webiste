@@ -25,7 +25,7 @@ const wa = settings.whatsapp.replace(/\D/g, '');
 const links = [
   ...settings.socials.filter((s) => s.url).map((s) => ({ key: s.platform, href: s.url })),
   ...(settings.email ? [{ key: 'email' as const, href: `mailto:${settings.email}` }] : []),
-  ...(wa ? [{ key: 'whatsapp' as const, href: `https://wa.me/${wa}` }] : []),
+  ...(wa ? [{ key: 'whatsapp' as const, href: `https://wa.me/${wa}?text=${encodeURIComponent(t('form.whatsappText'))}` }] : []),
 ];
 ---
 
