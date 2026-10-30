@@ -4,7 +4,7 @@ slug: cyber-security-implementation
 icon: security
 excerpt: Security controls installed and tested across your applications,
   infrastructure, and team practices.
-heroImage: /uploads/services/cyber-security-implementation.webp
+heroImage: /uploads/isometric-cybersecurity-operations-infographic.webp
 order: 1
 features:
   - Risk assessment and penetration testing

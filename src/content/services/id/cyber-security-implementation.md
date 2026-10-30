@@ -4,7 +4,7 @@ slug: cyber-security-implementation
 icon: security
 excerpt: Kontrol keamanan yang dipasang dan diuji di aplikasi, infrastruktur,
   dan cara tim bekerja.
-heroImage: /uploads/services/cyber-security-implementation.webp
+heroImage: /uploads/isometric-cybersecurity-operations-infographic.webp
 order: 1
 features:
   - Penilaian risiko dan uji penetrasi
