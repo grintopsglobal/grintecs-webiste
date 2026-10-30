@@ -3,9 +3,11 @@ title: Vulnerability Assessment & Penetration Test (VAPT)
 slug: vapt
 parent: cyber-security-implementation
 icon: security
-excerpt: Comprehensive security testing combining automated vulnerability scanning and manual penetration testing to expose and exploit hidden security flaws in your IT infrastructure.
+excerpt: Comprehensive security testing combining automated vulnerability
+  scanning and manual penetration testing to expose and exploit hidden security
+  flaws in your IT infrastructure.
 tagline: Enterprise VAPT services. Find your vulnerabilities before hackers do.
-heroImage: /uploads/subservices/vapt.webp
+heroImage: /uploads/grintec-vapt.webp
 order: 2
 process:
   - Reconnaissance
@@ -20,7 +22,8 @@ deliverables:
 pricing: Project-based. A fixed fee based on IP count or application scope.
 faq:
   - q: Is VAPT safe for production systems?
-    a: Yes. We use controlled methods and agree the scope and timing with you to prevent downtime.
+    a: Yes. We use controlled methods and agree the scope and timing with you to
+      prevent downtime.
 ctaLabel: Get a VAPT Quote Today
 ---
 

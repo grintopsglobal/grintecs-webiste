@@ -3,9 +3,11 @@ title: Vulnerability Assessment & Penetration Test (VAPT)
 slug: vapt
 parent: cyber-security-implementation
 icon: security
-excerpt: Pengujian keamanan komprehensif yang menggabungkan pemindaian kerentanan otomatis dan uji penetrasi manual untuk mengekspos dan mengeksploitasi celah keamanan tersembunyi di infrastruktur IT Anda.
+excerpt: Pengujian keamanan komprehensif yang menggabungkan pemindaian
+  kerentanan otomatis dan uji penetrasi manual untuk mengekspos dan
+  mengeksploitasi celah keamanan tersembunyi di infrastruktur IT Anda.
 tagline: Layanan VAPT enterprise. Temukan celah keamanan Anda sebelum peretas.
-heroImage: /uploads/subservices/vapt.webp
+heroImage: /uploads/grintec-vapt.webp
 order: 2
 process:
   - Pengumpulan data
@@ -20,7 +22,8 @@ deliverables:
 pricing: Berbasis proyek. Biaya tetap berdasarkan jumlah IP atau cakupan aplikasi.
 faq:
   - q: Apakah VAPT aman untuk sistem produksi?
-    a: Ya. Kami memakai metode terkendali serta menyepakati cakupan dan waktu pengujian bersama Anda untuk mencegah downtime.
+    a: Ya. Kami memakai metode terkendali serta menyepakati cakupan dan waktu
+      pengujian bersama Anda untuk mencegah downtime.
 ctaLabel: Dapatkan Penawaran VAPT Hari Ini
 ---
 
