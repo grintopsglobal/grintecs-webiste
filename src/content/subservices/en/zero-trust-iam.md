@@ -3,9 +3,12 @@ title: Zero Trust & IAM Implementation
 slug: zero-trust-iam
 parent: cyber-security-implementation
 icon: managed
-excerpt: Modernise access management with "never trust, always verify" architectures through Single Sign-On (SSO), Multi-Factor Authentication (MFA), and strict identity governance.
-tagline: Never trust, always verify. Seamless Zero Trust and IAM implementations for the enterprise.
-heroImage: /uploads/subservices/zero-trust-iam.webp
+excerpt: Modernise access management with "never trust, always verify"
+  architectures through Single Sign-On (SSO), Multi-Factor Authentication (MFA),
+  and strict identity governance.
+tagline: Never trust, always verify. Seamless Zero Trust and IAM implementations
+  for the enterprise.
+heroImage: /uploads/gemini_generated_image_50k83x50k83x50k8.webp
 order: 9
 process:
   - Identity directory integration
@@ -17,7 +20,8 @@ deliverables:
   - MFA enforcement policies
   - Identity lifecycle automation scripts
   - Privileged Access Management (PAM) setup
-pricing: Implementation fee plus per-user licensing, depending on the platform (for example Okta or Entra ID).
+pricing: Implementation fee plus per-user licensing, depending on the platform
+  (for example Okta or Entra ID).
 faq:
   - q: Will this slow down employee logins?
     a: No. SSO actually streamlines access while improving security.

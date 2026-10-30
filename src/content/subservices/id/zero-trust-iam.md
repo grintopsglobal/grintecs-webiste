@@ -3,9 +3,12 @@ title: Implementasi Zero Trust & IAM
 slug: zero-trust-iam
 parent: cyber-security-implementation
 icon: managed
-excerpt: Modernisasi manajemen akses dengan arsitektur "jangan pernah percaya, selalu verifikasi" melalui Single Sign-On (SSO), Autentikasi Multi-Faktor (MFA), dan tata kelola identitas yang ketat.
-tagline: Jangan pernah percaya, selalu verifikasi. Implementasi Zero Trust dan IAM enterprise yang mulus.
-heroImage: /uploads/subservices/zero-trust-iam.webp
+excerpt: Modernisasi manajemen akses dengan arsitektur "jangan pernah percaya,
+  selalu verifikasi" melalui Single Sign-On (SSO), Autentikasi Multi-Faktor
+  (MFA), dan tata kelola identitas yang ketat.
+tagline: Jangan pernah percaya, selalu verifikasi. Implementasi Zero Trust dan
+  IAM enterprise yang mulus.
+heroImage: /uploads/gemini_generated_image_50k83x50k83x50k8.webp
 order: 9
 process:
   - Integrasi direktori identitas
@@ -17,7 +20,8 @@ deliverables:
   - Kebijakan penegakan MFA
   - Skrip otomatisasi siklus hidup identitas
   - Setup Privileged Access Management (PAM)
-pricing: Biaya implementasi ditambah lisensi per pengguna, tergantung platform (misalnya Okta atau Entra ID).
+pricing: Biaya implementasi ditambah lisensi per pengguna, tergantung platform
+  (misalnya Okta atau Entra ID).
 faq:
   - q: Apakah ini memperlambat login karyawan?
     a: Tidak. SSO justru melancarkan akses sekaligus meningkatkan keamanan.
