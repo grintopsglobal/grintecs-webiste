@@ -3,9 +3,12 @@ title: Phishing Simulation
 slug: phishing-simulation
 parent: cyber-security-implementation
 icon: risk
-excerpt: A controlled, realistic simulation designed to test your employees' susceptibility to phishing attacks, identifying human vulnerabilities before cybercriminals do.
-tagline: Empower your first line of defense. Stop phishing attacks before they breach your network.
-heroImage: /uploads/subservices/phishing-simulation.webp
+excerpt: A controlled, realistic simulation designed to test your employees'
+  susceptibility to phishing attacks, identifying human vulnerabilities before
+  cybercriminals do.
+tagline: Empower your first line of defense. Stop phishing attacks before they
+  breach your network.
+heroImage: /uploads/gemini_generated_image_ars0jdars0jdars0.jpg
 order: 1
 process:
   - Baseline assessment
@@ -20,7 +23,8 @@ deliverables:
 pricing: Pay-per-user or annual subscription model.
 faq:
   - q: Will this disrupt daily work?
-    a: No. Campaigns run seamlessly in the background, and employees keep working as usual.
+    a: No. Campaigns run seamlessly in the background, and employees keep working as
+      usual.
 ctaLabel: Request a Free Baseline Test
 ---
 

@@ -3,9 +3,12 @@ title: Simulasi Phishing
 slug: phishing-simulation
 parent: cyber-security-implementation
 icon: risk
-excerpt: Simulasi terkendali dan realistis yang dirancang untuk menguji kerentanan karyawan terhadap serangan phishing, mengidentifikasi celah keamanan manusia sebelum dieksploitasi oleh peretas.
-tagline: Perkuat garis pertahanan utama Anda. Hentikan serangan phishing sebelum menembus jaringan Anda.
-heroImage: /uploads/subservices/phishing-simulation.webp
+excerpt: Simulasi terkendali dan realistis yang dirancang untuk menguji
+  kerentanan karyawan terhadap serangan phishing, mengidentifikasi celah
+  keamanan manusia sebelum dieksploitasi oleh peretas.
+tagline: Perkuat garis pertahanan utama Anda. Hentikan serangan phishing sebelum
+  menembus jaringan Anda.
+heroImage: /uploads/gemini_generated_image_ars0jdars0jdars0.jpg
 order: 1
 process:
   - Penilaian awal
@@ -20,7 +23,8 @@ deliverables:
 pricing: Model harga per pengguna atau berlangganan tahunan.
 faq:
   - q: Apakah ini mengganggu pekerjaan harian?
-    a: Tidak. Kampanye berjalan di latar belakang dan karyawan tetap bekerja seperti biasa.
+    a: Tidak. Kampanye berjalan di latar belakang dan karyawan tetap bekerja seperti
+      biasa.
 ctaLabel: Ajukan Uji Dasar Gratis
 ---
 
