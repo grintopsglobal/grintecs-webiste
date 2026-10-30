@@ -3,9 +3,12 @@ title: Asesmen Kesiapan UU PDP & GDPR
 slug: pdp-gdpr-readiness
 parent: cyber-security-implementation
 icon: data
-excerpt: Penyelarasan strategis hukum dan teknis untuk memastikan operasi pemrosesan data Anda mematuhi UU PDP Indonesia dan mandat GDPR global, menghindari denda regulasi yang berat.
-tagline: Lindungi privasi pengguna. Cegah denda regulasi. Layanan kepatuhan UU PDP dan GDPR oleh ahli.
-heroImage: /uploads/subservices/pdp-gdpr-readiness.webp
+excerpt: Penyelarasan strategis hukum dan teknis untuk memastikan operasi
+  pemrosesan data Anda mematuhi UU PDP Indonesia dan mandat GDPR global,
+  menghindari denda regulasi yang berat.
+tagline: Lindungi privasi pengguna. Cegah denda regulasi. Layanan kepatuhan UU
+  PDP dan GDPR oleh ahli.
+heroImage: /uploads/gemini_generated_image_uki4u8uki4u8uki4.webp
 order: 8
 process:
   - Pemetaan data
@@ -20,7 +23,8 @@ deliverables:
 pricing: Biaya proyek konsultasi, dihitung dari jumlah sistem dan aliran data.
 faq:
   - q: Apakah kami wajib mematuhi UU PDP?
-    a: Ya. Semua entitas di Indonesia yang memproses data pribadi wajib patuh, dengan masa transisi 2024 sampai 2026.
+    a: Ya. Semua entitas di Indonesia yang memproses data pribadi wajib patuh,
+      dengan masa transisi 2024 sampai 2026.
 ctaLabel: Cek Status Kepatuhan Anda
 ---
 
