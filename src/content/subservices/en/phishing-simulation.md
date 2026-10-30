@@ -8,7 +8,7 @@ excerpt: A controlled, realistic simulation designed to test your employees'
   cybercriminals do.
 tagline: Empower your first line of defense. Stop phishing attacks before they
   breach your network.
-heroImage: /uploads/gemini_generated_image_ars0jdars0jdars0.jpg
+heroImage: /uploads/gemini_generated_image_kfqzvrkfqzvrkfqz.webp
 order: 1
 process:
   - Baseline assessment

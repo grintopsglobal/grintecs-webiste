@@ -8,7 +8,7 @@ excerpt: Simulasi terkendali dan realistis yang dirancang untuk menguji
   keamanan manusia sebelum dieksploitasi oleh peretas.
 tagline: Perkuat garis pertahanan utama Anda. Hentikan serangan phishing sebelum
   menembus jaringan Anda.
-heroImage: /uploads/gemini_generated_image_ars0jdars0jdars0.jpg
+heroImage: /uploads/gemini_generated_image_kfqzvrkfqzvrkfqz.webp
 order: 1
 process:
   - Penilaian awal
