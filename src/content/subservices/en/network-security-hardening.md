@@ -3,9 +3,11 @@ title: Network Security & Hardening
 slug: network-security-hardening
 parent: cyber-security-implementation
 icon: connected
-excerpt: Fortify your corporate infrastructure with next-gen firewalls, microsegmentation, and rigorous protocol hardening to prevent lateral movement and unauthorised access.
+excerpt: Fortify your corporate infrastructure with next-gen firewalls,
+  microsegmentation, and rigorous protocol hardening to prevent lateral movement
+  and unauthorised access.
 tagline: Ironclad network defences. Enterprise network hardening and NGFW deployment.
-heroImage: /uploads/subservices/network-security-hardening.webp
+heroImage: /uploads/gemini_generated_image_u6bggku6bggku6bg.webp
 order: 5
 process:
   - Network topology mapping
@@ -17,7 +19,8 @@ deliverables:
   - Firewall rulebase audit
   - Network segmentation architecture
   - Network traffic logs
-pricing: Project fee plus hardware and licence costs, depending on the firewall platform chosen.
+pricing: Project fee plus hardware and licence costs, depending on the firewall
+  platform chosen.
 faq:
   - q: Do you manage the firewalls after installation?
     a: Yes, through our SOC-as-a-Service offering.
