@@ -171,7 +171,7 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 Koleksi **Sub-layanan** di CMS (`src/content/subservices/`). Pilih *Layanan induk*; sub-layanan tampil sebagai kartu di halaman layanan itu dan punya landing page sendiri di `/services/<induk>/<slug>/`. Tidak masuk mega menu atau footer. Field: ringkasan, tagline, alur kerja, yang Anda terima, model harga, FAQ, label tombol CTA (tombolnya membuka form kontak dengan layanan sudah terpilih).
 
 - Ilustrasi di `public/uploads/subservices/<slug>.webp`, dipotong dari ilustrasi keamanan siber di company profile 2026. Ganti lewat CMS bila ada ilustrasi khusus (rasio 8:5, latar terang).
-- Konten **Phishing Simulation** dan **VAPT** dari Pak Dwi (30 Okt 2026). **Security Awareness & Training** dan **Security Hardening** adalah draft yang perlu direview di CMS (deskripsi, harga, FAQ).
+- Konten **Phishing Simulation**, **VAPT**, dan **Application Security & Hardening** dari Pak Dwi (30 Okt 2026). **Security Awareness & Training** adalah draft yang perlu direview di CMS (deskripsi, harga, FAQ).
 
 ## Domain
 

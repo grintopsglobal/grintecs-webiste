@@ -6,7 +6,7 @@ icon: partner
 excerpt: Pelatihan praktis yang menjadikan karyawan lapisan pertahanan aktif, dibangun dari contoh serangan nyata dan diukur dari perubahan perilaku, bukan sekadar kehadiran.
 tagline: Teknologi menghentikan sebagian besar serangan. Orang-orang Anda menghentikan sisanya.
 heroImage: /uploads/subservices/security-awareness-training.webp
-order: 3
+order: 4
 process:
   - Pemetaan risiko dan peran
   - Penyusunan kurikulum

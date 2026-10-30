@@ -6,7 +6,7 @@ icon: partner
 excerpt: Practical training that turns employees into an active layer of defense, built on real attack examples and measured by behavior change, not attendance.
 tagline: Technology stops most attacks. Your people stop the rest.
 heroImage: /uploads/subservices/security-awareness-training.webp
-order: 3
+order: 4
 process:
   - Risk and role mapping
   - Curriculum design
