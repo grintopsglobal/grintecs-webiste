@@ -3,9 +3,12 @@ title: ISO 27001 Certification Assistance
 slug: iso-27001-certification
 parent: cyber-security-implementation
 icon: operations
-excerpt: Expert consultative guidance to design, implement, and audit your Information Security Management System (ISMS), guaranteeing readiness for ISO 27001 certification.
-tagline: Achieve ISO 27001 certification with confidence. Streamlined ISMS implementation.
-heroImage: /uploads/subservices/iso-27001-certification.webp
+excerpt: Expert consultative guidance to design, implement, and audit your
+  Information Security Management System (ISMS), guaranteeing readiness for ISO
+  27001 certification.
+tagline: Achieve ISO 27001 certification with confidence. Streamlined ISMS
+  implementation.
+heroImage: /uploads/gemini_generated_image_rzc711rzc711rzc7.webp
 order: 7
 process:
   - Gap analysis

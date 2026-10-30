@@ -3,9 +3,11 @@ title: Pendampingan Sertifikasi ISO 27001
 slug: iso-27001-certification
 parent: cyber-security-implementation
 icon: operations
-excerpt: Panduan konsultatif ahli untuk merancang, mengimplementasikan, dan mengaudit Sistem Manajemen Keamanan Informasi (SMKI) Anda, menjamin kesiapan sertifikasi ISO 27001.
+excerpt: Panduan konsultatif ahli untuk merancang, mengimplementasikan, dan
+  mengaudit Sistem Manajemen Keamanan Informasi (SMKI) Anda, menjamin kesiapan
+  sertifikasi ISO 27001.
 tagline: Raih sertifikasi ISO 27001 dengan percaya diri. Implementasi SMKI yang efisien.
-heroImage: /uploads/subservices/iso-27001-certification.webp
+heroImage: /uploads/gemini_generated_image_rzc711rzc711rzc7.webp
 order: 7
 process:
   - Analisis kesenjangan
