@@ -6,7 +6,7 @@ import InsightCard from '../../../components/InsightCard.astro';
 import CTA from '../../../components/CTA.astro';
 import { locales, type Lang } from '../../../i18n/ui';
 import { localizePath, useTranslations } from '../../../i18n/utils';
-import { alternatesFor, getPage, getSettings, insightsByLang } from '../../../lib/content';
+import { alternatesFor, getPage, getSettings, insightsByLang, keyOf } from '../../../lib/content';
 import { bodyHtml, withBase } from '../../../lib/url';
 
 export async function getStaticPaths() {
@@ -40,7 +40,7 @@ const article = {
 };
 ---
 
-<BaseLayout lang={lang} title={title} description={excerpt} image={cover} type="article" alternates={await alternatesFor('insights', slug)} jsonLd={[article]}>
+<BaseLayout lang={lang} title={title} description={excerpt} image={cover} type="article" alternates={await alternatesFor('insights', keyOf(entry))} jsonLd={[article]}>
   <PageHeader title={title} back={{ href: localizePath(lang, '/insights/'), label: t('insights.title') }}>
     <p class="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-muted">
       <a href={localizePath(lang, `/insights/category/${category}/`)} class="link">{t(`cat.${category}`)}</a>

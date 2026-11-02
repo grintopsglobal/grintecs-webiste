@@ -27,13 +27,30 @@ export async function getSettings(lang: Lang) {
   return entry.data;
 }
 
+/** Kunci pasangan terjemahan = nama file tanpa bahasa, mis. "erp-implementation". Slug boleh beda per bahasa. */
+export const keyOf = (entry: { id: string }) => entry.id.replace(/^[a-z]{2}\//, '');
+
+/** Cari entry berdasarkan kunci file; nilai lama yang menyimpan slug tetap dikenali. */
+export function findByKey<T extends { id: string; data: { slug: string } }>(items: T[], key: string) {
+  return items.find((e) => keyOf(e) === key || e.data.slug === key);
+}
+
 /**
- * Path padanan untuk language switcher / hreflang. Jika terjemahan belum ada,
- * arahkan ke halaman listing bahasa tersebut agar tidak 404.
+ * Path padanan untuk language switcher / hreflang, dipasangkan lewat kunci file.
+ * Jika terjemahan belum ada, arahkan ke halaman listing bahasa tersebut agar tidak 404.
  */
-export async function alternatesFor(collection: 'services' | 'solutions' | 'industries' | 'insights', slug: string) {
+export async function alternatesFor(collection: 'services' | 'solutions' | 'industries' | 'insights', key: string) {
   const all = await getCollection(collection);
-  const has = (lang: Lang) => all.some((e) => e.id.startsWith(`${lang}/`) && e.data.slug === slug);
-  const pick = (lang: Lang) => (has(lang) ? `/${collection}/${slug}/` : `/${collection}/`);
+  const pick = (lang: Lang) => {
+    const entry = all.find((e) => e.id === `${lang}/${key}`);
+    return entry ? `/${collection}/${entry.data.slug}/` : `/${collection}/`;
+  };
   return { id: pick('id'), en: pick('en') } satisfies Record<Lang, string>;
+}
+
+/** Layanan induk sebuah sub-layanan di bahasa yang sama. Slug boleh beda per bahasa, jadi dicari lewat kunci file. */
+export async function parentOf(lang: Lang, entry: CollectionEntry<'subservices'>) {
+  const parent = findByKey(await byLang('services', lang), entry.data.parent);
+  if (!parent) throw new Error(`Layanan induk "${entry.data.parent}" untuk sub-layanan "${entry.id}" tidak ditemukan.`);
+  return parent;
 }

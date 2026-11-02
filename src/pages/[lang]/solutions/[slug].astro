@@ -6,7 +6,7 @@ import DetailBody from '../../../components/DetailBody.astro';
 import type { Lang } from '../../../i18n/ui';
 import { bodyHtml } from '../../../lib/url';
 import { localizePath, useTranslations } from '../../../i18n/utils';
-import { alternatesFor, byLang } from '../../../lib/content';
+import { alternatesFor, byLang, findByKey, keyOf } from '../../../lib/content';
 import { locales } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
@@ -21,12 +21,12 @@ const { entry } = Astro.props as { entry: CollectionEntry<'solutions'> };
 const t = useTranslations(lang);
 const services = await byLang('services', lang);
 const related = entry.data.relatedServices
-  .map((slug) => services.find((s) => s.data.slug === slug))
+  .map((key) => findByKey(services, key))
   .filter((s) => s !== undefined)
   .map((s) => ({ href: localizePath(lang, `/services/${s.data.slug}/`), label: s.data.title }));
 ---
 
-<BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.heroImage} alternates={await alternatesFor('solutions', entry.data.slug)}>
+<BaseLayout lang={lang} title={entry.data.title} description={entry.data.excerpt} image={entry.data.heroImage} alternates={await alternatesFor('solutions', keyOf(entry))}>
   <PageHeader title={entry.data.title} intro={entry.data.excerpt} image={entry.data.heroImage} back={{ href: localizePath(lang, '/solutions/'), label: t('solutions.title') }} />
   <DetailBody
     listTitle={t('common.outcomes')}

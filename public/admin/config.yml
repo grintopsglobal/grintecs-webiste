@@ -59,8 +59,8 @@ _slug: &slug
   label: Slug URL
   name: slug
   widget: string
-  i18n: duplicate
-  hint: 'Huruf kecil, angka, dan tanda hubung. Dipakai di URL dan sama untuk kedua bahasa.'
+  i18n: true
+  hint: 'Huruf kecil, angka, dan tanda hubung. Boleh berbeda per bahasa untuk SEO (permalink ID dan EN masing-masing). Nama file mengikuti slug EN saat dibuat. Mengubah slug halaman yang sudah tayang membuat URL lama 404.'
   pattern: ['^[a-z0-9]+(-[a-z0-9]+)*$', 'Gunakan huruf kecil, angka, dan tanda hubung saja']
 
 _seo: &seo
@@ -97,7 +97,7 @@ collections:
       - { label: Ilustrasi header, name: heroImage, widget: image, required: false, i18n: duplicate, hint: 'Tampil di kanan judul. Disarankan rasio 8:5 (mis. 1600x1000), latar terang, tanpa teks di dalam gambar.' }
       - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
       - { label: Yang kami kerjakan, name: features, widget: list, required: false, i18n: true, field: { label: Poin, name: item, widget: string } }
-      - { label: Solusi terkait, name: relatedSolutions, widget: relation, collection: solutions, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Solusi terkait, name: relatedSolutions, widget: relation, collection: solutions, value_field: '{{slug}}', search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
       - { label: Isi, name: body, widget: markdown, i18n: true }
 
   - name: subservices
@@ -115,7 +115,7 @@ collections:
     fields:
       - { label: Judul, name: title, widget: string, i18n: true }
       - *slug
-      - { label: Layanan induk, name: parent, widget: relation, collection: services, value_field: slug, search_fields: [title], display_fields: [title], i18n: duplicate, hint: 'Sub-layanan tampil sebagai kartu di halaman layanan ini. URL: /services/<induk>/<slug>/' }
+      - { label: Layanan induk, name: parent, widget: relation, collection: services, value_field: '{{slug}}', search_fields: [title], display_fields: [title], i18n: duplicate, hint: 'Sub-layanan tampil sebagai kartu di halaman layanan ini. URL: /services/<induk>/<slug>/' }
       - { label: Ikon, name: icon, widget: select, options: *icons, i18n: duplicate }
       - { label: Ringkasan, name: excerpt, widget: text, i18n: true, hint: 'Deskripsi satu-dua kalimat, juga dipakai sebagai meta description.' }
       - { label: Tagline (hero banner), name: tagline, widget: string, required: false, i18n: true }
@@ -155,7 +155,7 @@ collections:
       - { label: Gambar utama, name: heroImage, widget: image, required: false, i18n: duplicate }
       - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
       - { label: Hasil yang dituju, name: outcomes, widget: list, required: false, i18n: true, field: { label: Hasil, name: item, widget: string } }
-      - { label: Layanan pendukung, name: relatedServices, widget: relation, collection: services, value_field: slug, search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Layanan pendukung, name: relatedServices, widget: relation, collection: services, value_field: '{{slug}}', search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
       - { label: Isi, name: body, widget: markdown, i18n: true }
 
   - name: industries

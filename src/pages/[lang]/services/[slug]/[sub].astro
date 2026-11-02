@@ -8,12 +8,17 @@ import type { Lang } from '../../../../i18n/ui';
 import { locales } from '../../../../i18n/ui';
 import { bodyHtml } from '../../../../lib/url';
 import { localizePath, useTranslations } from '../../../../i18n/utils';
-import { byLang, getPage } from '../../../../lib/content';
+import { byLang, getPage, keyOf, parentOf } from '../../../../lib/content';
 
 export async function getStaticPaths() {
   const paths = await Promise.all(
     locales.map(async (lang) =>
-      (await byLang('subservices', lang)).map((entry) => ({ params: { lang, slug: entry.data.parent, sub: entry.data.slug }, props: { entry } })),
+      Promise.all(
+        (await byLang('subservices', lang)).map(async (entry) => ({
+          params: { lang, slug: (await parentOf(lang, entry)).data.slug, sub: entry.data.slug },
+          props: { entry },
+        })),
+      ),
     ),
   );
   return paths.flat();
@@ -23,15 +28,20 @@ const lang = Astro.params.lang as Lang;
 const { entry } = Astro.props as { entry: CollectionEntry<'subservices'> };
 const t = useTranslations(lang);
 const { data } = entry;
-const parent = (await byLang('services', lang)).find((s) => s.data.slug === data.parent);
-if (!parent) throw new Error(`Layanan induk "${data.parent}" untuk sub-layanan "${data.slug}" tidak ditemukan.`);
-const parentPath = `/services/${data.parent}/`;
+const parent = await parentOf(lang, entry);
+const parentPath = `/services/${parent.data.slug}/`;
 const home = await getPage(lang, 'home');
 
-// Bahasa lain: ke sub-layanan yang sama bila ada terjemahannya, kalau tidak ke layanan induk.
+// Bahasa lain: ke sub-layanan yang sama (dipasangkan lewat kunci file) bila ada terjemahannya, kalau tidak ke layanan induk.
 const all = await getCollection('subservices');
 const alternates = Object.fromEntries(
-  locales.map((l) => [l, all.some((e) => e.id === `${l}/${entry.id.split('/')[1]}`) ? `${parentPath}${data.slug}/` : parentPath]),
+  await Promise.all(
+    locales.map(async (l) => {
+      const twin = all.find((e) => e.id === `${l}/${keyOf(entry)}`);
+      const twinParent = twin ? (await parentOf(l, twin)).data.slug : parent.data.slug;
+      return [l, twin ? `/services/${twinParent}/${twin.data.slug}/` : `/services/${twinParent}/`];
+    }),
+  ),
 ) as Record<Lang, string>;
 
 const contactHref = `${localizePath(lang, '/contact/')}?service=${encodeURIComponent(data.title)}`;

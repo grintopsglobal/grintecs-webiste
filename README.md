@@ -156,7 +156,7 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 
 ## Menambah layanan, solusi, industri, atau artikel
 
-**Lewat CMS:** buka koleksinya, klik tombol tambah, lalu isi kedua bahasa (panel kiri ID, kanan EN). *Slug URL* sama untuk kedua bahasa. Field *Urutan* menentukan posisi di menu dan grid.
+**Lewat CMS:** buka koleksinya, klik tombol tambah, lalu isi kedua bahasa (panel kiri ID, kanan EN). *Slug URL* boleh berbeda per bahasa (permalink ID dan EN dioptimasi masing-masing, permintaan Pak Dwi 2 Nov 2026). Pasangan terjemahan dikaitkan lewat nama file, yang mengikuti slug EN saat entry dibuat; relasi antar-entry (solusi terkait, layanan induk) juga menyimpan nama file itu. Mengubah slug halaman yang sudah tayang membuat URL lama 404, jadi lakukan sebelum halaman diindeks atau minta redirect dibuat. Field *Urutan* menentukan posisi di menu dan grid.
 
 **Manual:** buat file dengan nama yang sama di kedua folder bahasa, misalnya `src/content/services/id/nama-layanan.md` dan `src/content/services/en/nama-layanan.md`. Contoh frontmatter ada di file yang sudah ada. Field yang wajib bisa dilihat di `src/content.config.ts`. Build akan gagal dengan pesan jelas bila ada field yang salah.
 

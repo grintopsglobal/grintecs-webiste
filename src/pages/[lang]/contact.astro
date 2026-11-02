@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import type { Lang } from '../../i18n/ui';
 import { staticLangPaths, useTranslations } from '../../i18n/utils';
-import { byLang, getPage, getSettings } from '../../lib/content';
+import { byLang, getPage, getSettings, keyOf } from '../../lib/content';
 
 export const getStaticPaths = staticLangPaths;
 const lang = Astro.params.lang as Lang;
@@ -83,10 +83,10 @@ const inputClass =
           <option value="">{t('form.servicePlaceholder')}</option>
           {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
           {services
-            .filter((s) => subservices.some((c) => c.data.parent === s.data.slug))
+            .filter((s) => subservices.some((c) => c.data.parent === keyOf(s) || c.data.parent === s.data.slug))
             .map((s) => (
               <optgroup label={s.data.title}>
-                {subservices.filter((c) => c.data.parent === s.data.slug).map((c) => <option value={c.data.title}>{c.data.title}</option>)}
+                {subservices.filter((c) => c.data.parent === keyOf(s) || c.data.parent === s.data.slug).map((c) => <option value={c.data.title}>{c.data.title}</option>)}
               </optgroup>
             ))}
           <option value={t('form.serviceOther')}>{t('form.serviceOther')}</option>

@@ -18,7 +18,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      i18n: { defaultLocale: 'en', locales: { id: 'id-ID', en: 'en-US' } },
+      // Tanpa opsi i18n: hreflang di sitemap mengasumsikan path yang sama di semua bahasa,
+      // padahal slug boleh beda per bahasa. hreflang tetap ada di <head> tiap halaman (SEO.astro).
       filter: (page) => /\/(id|en)\//.test(page),
     }),
   ],
