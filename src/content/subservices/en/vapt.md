@@ -20,6 +20,7 @@ deliverables:
   - Executive dashboard
   - Patching guidelines
 pricing: Project-based. A fixed fee based on IP count or application scope.
+priceGate: true
 faq:
   - q: Is VAPT safe for production systems?
     a: Yes. We use controlled methods and agree the scope and timing with you to

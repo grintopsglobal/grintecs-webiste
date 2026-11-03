@@ -21,6 +21,7 @@ deliverables:
   - Campaign metrics (open, click, and submit rates)
   - Remediation recommendations
 pricing: Pay-per-user or annual subscription model.
+priceGate: true
 faq:
   - q: Will this disrupt daily work?
     a: No. Campaigns run seamlessly in the background, and employees keep working as

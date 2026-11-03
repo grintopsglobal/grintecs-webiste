@@ -21,6 +21,7 @@ deliverables:
   - Metrik kampanye (tingkat buka, klik, dan kirim)
   - Rekomendasi perbaikan
 pricing: Model harga per pengguna atau berlangganan tahunan.
+priceGate: true
 faq:
   - q: Apakah ini mengganggu pekerjaan harian?
     a: Tidak. Kampanye berjalan di latar belakang dan karyawan tetap bekerja seperti

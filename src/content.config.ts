@@ -49,6 +49,7 @@ const subservices = defineCollection({
     process: list(z.string()),
     deliverables: list(z.string()),
     pricing: str,
+    priceGate: z.boolean().default(false),
     faq: list(z.object({ q: z.string(), a: z.string() })),
     ctaLabel: str,
   }),

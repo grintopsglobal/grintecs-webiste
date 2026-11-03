@@ -20,6 +20,7 @@ deliverables:
   - Dasbor eksekutif
   - Panduan patching
 pricing: Berbasis proyek. Biaya tetap berdasarkan jumlah IP atau cakupan aplikasi.
+priceGate: true
 faq:
   - q: Apakah VAPT aman untuk sistem produksi?
     a: Ya. Kami memakai metode terkendali serta menyepakati cakupan dan waktu

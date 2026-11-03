@@ -1,0 +1,220 @@
+---
+// Tombol "Lihat Harga": buka dialog, minta email + persetujuan + Turnstile,
+// lalu harga diambil dari Apps Script (tab "Prices") dan dirender di sini.
+// Harga tidak pernah ikut dibundel ke HTML statis, jadi benar-benar tersembunyi
+// sampai pengunjung mengisi email. Pakai endpoint & site key yang sama dengan form kontak.
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  priceKey: string; // slug sub-layanan, dicocokkan dengan kolom "Key" di tab Prices
+  endpoint: string;
+  siteKey: string;
+  caption?: string; // model harga ringkas yang tetap boleh tampil (mis. "Berbasis proyek")
+  contactHref: string;
+}
+
+const { lang, priceKey, endpoint, siteKey, caption, contactHref } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  class="rounded-[var(--radius-card)] border border-line bg-white p-6"
+  data-price-gate
+  data-endpoint={endpoint}
+  data-sitekey={siteKey}
+  data-key={priceKey}
+  data-lang={lang}
+  data-msg-email={t('form.invalidEmail')}
+  data-msg-consent={t('price.consentRequired')}
+  data-msg-captcha={t('form.captcha')}
+  data-msg-sending={t('price.loading')}
+  data-msg-error={t('price.error')}
+  data-msg-noprice={t('price.noprice')}
+  data-msg-popular={t('price.popular')}
+>
+  <h2 class="text-lg font-bold">{t('sub.pricing')}</h2>
+  {caption && <p class="mt-3 leading-relaxed text-muted">{caption}</p>}
+  <button type="button" class="btn-primary mt-5 w-full" data-price-open>{t('price.view')}</button>
+
+  <dialog
+    data-price-dialog
+    class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-[var(--radius-card)] border border-line p-0 backdrop:bg-ink/50"
+  >
+    <div class="relative p-6 md:p-8">
+      <button
+        type="button"
+        data-price-close
+        aria-label={t('price.close')}
+        class="absolute top-4 right-4 flex size-9 items-center justify-center rounded-full text-muted hover:bg-mist"
+      >
+        <svg class="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
+      </button>
+
+      <!-- Langkah 1: opt-in email -->
+      <div data-price-step="form">
+        <h3 class="pr-8 text-xl font-extrabold">{t('price.title')}</h3>
+        <p class="mt-2 leading-relaxed text-muted">{t('price.intro')}</p>
+
+        <label for="pg-email" class="mt-6 block font-semibold">{t('form.email')}</label>
+        <input
+          id="pg-email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          data-price-email
+          class="mt-2 block min-h-12 w-full rounded-lg border border-field bg-white px-4 py-3 text-base text-ink placeholder:text-muted aria-[invalid=true]:border-2 aria-[invalid=true]:border-red-700"
+        />
+        <p class="mt-1.5 text-sm font-semibold text-red-700 empty:hidden" data-price-email-error></p>
+
+        <label class="mt-4 flex items-start gap-3 text-sm leading-relaxed text-muted">
+          <input type="checkbox" data-price-consent class="mt-1 size-4 shrink-0" />
+          <span>{t('price.consent')}</span>
+        </label>
+
+        <div class="cf-turnstile mt-5 min-h-[65px]" data-price-turnstile data-sitekey={siteKey} data-language={lang} data-theme="light"></div>
+
+        <button type="button" class="btn-primary mt-2 w-full" data-price-submit>{t('price.confirm')}</button>
+        <p class="mt-4 rounded-lg empty:hidden" role="status" aria-live="polite" data-price-status></p>
+      </div>
+
+      <!-- Langkah 2: harga -->
+      <div data-price-step="result" hidden>
+        <h3 class="pr-8 text-xl font-extrabold">{t('price.resultTitle')}</h3>
+        <div class="mt-5 grid gap-4" data-price-packages></div>
+        <p class="mt-5 text-sm leading-relaxed text-muted">{t('price.note')}</p>
+        <a href={contactHref} class="btn-primary mt-4 w-full">{t('price.cta')}</a>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-price-gate]');
+  if (root) {
+    const d = root.dataset;
+    const dialog = root.querySelector<HTMLDialogElement>('[data-price-dialog]')!;
+    const stepForm = root.querySelector<HTMLElement>('[data-price-step="form"]')!;
+    const stepResult = root.querySelector<HTMLElement>('[data-price-step="result"]')!;
+    const email = root.querySelector<HTMLInputElement>('[data-price-email]')!;
+    const emailError = root.querySelector<HTMLElement>('[data-price-email-error]')!;
+    const consent = root.querySelector<HTMLInputElement>('[data-price-consent]')!;
+    const widget = root.querySelector<HTMLElement>('[data-price-turnstile]')!;
+    const submit = root.querySelector<HTMLButtonElement>('[data-price-submit]')!;
+    const submitLabel = submit.textContent;
+    const status = root.querySelector<HTMLElement>('[data-price-status]')!;
+    const packagesEl = root.querySelector<HTMLElement>('[data-price-packages]')!;
+
+    type Turnstile = {
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+      getResponse: (id: string) => string | undefined;
+      reset: (id?: string) => void;
+    };
+    const ts = () => (window as Window & { turnstile?: Turnstile }).turnstile;
+    let widgetId: string | null = null;
+    let scriptAdded = false;
+
+    // Turnstile dirender eksplisit setelah dialog terbuka, supaya widget tidak lahir di dalam <dialog> tertutup.
+    const renderTurnstile = () => {
+      if (widgetId !== null) { ts()?.reset(widgetId); return; }
+      const t = ts();
+      if (t) { widgetId = t.render(widget, { sitekey: d.sitekey, language: d.lang, theme: 'light' }); return; }
+      if (!scriptAdded) {
+        scriptAdded = true;
+        const s = document.createElement('script');
+        s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        s.async = true;
+        document.head.append(s);
+      }
+      const poll = setInterval(() => {
+        const t2 = ts();
+        if (t2) { clearInterval(poll); widgetId = t2.render(widget, { sitekey: d.sitekey, language: d.lang, theme: 'light' }); }
+      }, 120);
+      setTimeout(() => clearInterval(poll), 8000);
+    };
+
+    const setStatus = (msg: string, kind: 'ok' | 'error' | 'info') => {
+      status.textContent = msg;
+      status.className = `mt-4 rounded-lg empty:hidden ${msg ? 'p-4 font-semibold' : ''} ${
+        kind === 'ok' ? 'border-2 border-primary-700 bg-mist text-forest' : kind === 'error' ? 'border-2 border-red-700 bg-red-50 text-red-800' : 'text-muted'
+      }`;
+    };
+
+    const open = () => {
+      stepResult.hidden = true;
+      stepForm.hidden = false;
+      setStatus('', 'info');
+      dialog.showModal();
+      renderTurnstile();
+    };
+    root.querySelector('[data-price-open]')!.addEventListener('click', open);
+    root.querySelector('[data-price-close]')!.addEventListener('click', () => dialog.close());
+
+    email.addEventListener('blur', () => { if (email.getAttribute('aria-invalid')) validEmail(); });
+    const validEmail = () => {
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+      email.setAttribute('aria-invalid', String(!ok));
+      emailError.textContent = ok ? '' : d.msgEmail!;
+      return ok;
+    };
+
+    const check =
+      '<svg class="mt-0.5 size-[18px] shrink-0 text-primary-700" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true">' +
+      '<circle cx="10" cy="10" r="8.25" stroke-width="1.25" opacity=".35"/><path d="m6.3 10.2 2.4 2.4 4.9-5.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    const render = (packages: { name: string; price: string; scope: string }[]) => {
+      packagesEl.innerHTML = '';
+      packages.forEach((p, idx) => {
+        const items = p.scope.split('|').map((s) => s.trim()).filter(Boolean);
+        const isCustom = !/\d/.test(p.price); // "Hubungi kami" / "Contact us" tidak punya angka
+        const popular = idx === 1 && !isCustom;
+        const card = document.createElement('div');
+        card.className =
+          'relative overflow-hidden rounded-[var(--radius-card)] border p-5 transition-shadow hover:shadow-md ' +
+          (popular ? 'border-primary-700 bg-mist ring-1 ring-primary-700' : isCustom ? 'border-dashed border-primary-700/40 bg-forest/[0.03]' : 'border-line bg-white');
+        card.innerHTML =
+          (popular ? `<span class="absolute -top-px right-4 rounded-b-md bg-primary-700 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">${esc(d.msgPopular!)}</span>` : '') +
+          `<p class="font-display text-xs font-bold uppercase tracking-[0.08em] text-primary-700">${esc(p.name)}</p>` +
+          `<p class="mt-1.5 font-display text-2xl font-extrabold tabular-nums ${isCustom ? 'text-forest' : 'text-ink'}">${esc(p.price)}</p>` +
+          (items.length
+            ? `<div class="mt-4 h-px bg-line"></div><ul class="mt-4 grid gap-2.5">${items
+                .map((i) => `<li class="flex gap-2.5 text-sm leading-relaxed text-ink">${check}<span>${esc(i)}</span></li>`)
+                .join('')}</ul>`
+            : '');
+        packagesEl.append(card);
+      });
+      stepForm.hidden = true;
+      stepResult.hidden = false;
+    };
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    submit.addEventListener('click', async () => {
+      if (!validEmail()) { email.focus(); return; }
+      if (!consent.checked) { setStatus(d.msgConsent!, 'error'); return; }
+      const token = ts()?.getResponse(widgetId ?? undefined as unknown as string);
+      if (!token) { setStatus(d.msgCaptcha!, 'error'); return; }
+
+      submit.disabled = true;
+      submit.textContent = d.msgSending!;
+      setStatus('', 'info');
+      try {
+        // text/plain (tanpa header custom) agar tidak ada preflight CORS ke Apps Script.
+        const res = await fetch(d.endpoint!, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'pricing', email: email.value.trim(), key: d.key, lang: d.lang, page: location.pathname, token }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success !== true) throw new Error(json.error === 'noprice' ? d.msgNoprice! : d.msgError!);
+        render(json.packages || []);
+      } catch (err) {
+        setStatus((err as Error).message || d.msgError!, 'error');
+      } finally {
+        if (widgetId !== null) ts()?.reset(widgetId); // token sekali pakai
+        submit.disabled = false;
+        submit.textContent = submitLabel;
+      }
+    });
+  }
+</script>
