@@ -44,7 +44,7 @@ const t = useTranslations(lang);
 
   <dialog
     data-price-dialog
-    class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-[var(--radius-card)] border border-line p-0 backdrop:bg-ink/50"
+    class="m-auto max-h-[88vh] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto rounded-[var(--radius-card)] border border-line p-0 backdrop:bg-ink/50"
   >
     <div class="relative p-6 md:p-8">
       <button
@@ -87,7 +87,7 @@ const t = useTranslations(lang);
       <!-- Langkah 2: harga -->
       <div data-price-step="result" hidden>
         <h3 class="pr-8 text-xl font-extrabold">{t('price.resultTitle')}</h3>
-        <div class="mt-5 grid gap-4" data-price-packages></div>
+        <div class="mt-5 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))]" data-price-packages></div>
         <p class="mt-5 text-sm leading-relaxed text-muted">{t('price.note')}</p>
         <a href={contactHref} class="btn-primary mt-4 w-full">{t('price.cta')}</a>
       </div>
@@ -150,6 +150,7 @@ const t = useTranslations(lang);
       stepResult.hidden = true;
       stepForm.hidden = false;
       setStatus('', 'info');
+      dialog.style.width = 'min(32rem, calc(100vw - 2rem))'; // sempit untuk form email
       dialog.showModal();
       renderTurnstile();
     };
@@ -217,14 +218,15 @@ const t = useTranslations(lang);
         card.innerHTML =
           (popular ? `<span class="absolute -top-px right-4 rounded-b-md bg-primary-700 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">${esc(d.msgPopular!)}</span>` : '') +
           `<p class="font-display text-xs font-bold uppercase tracking-[0.08em] text-primary-700">${esc(p.name)}</p>` +
-          `<p class="mt-1.5 font-display text-2xl font-extrabold tabular-nums ${isCustom ? 'text-forest' : 'text-ink'}">${esc(p.price)}</p>` +
+          `<p class="mt-1.5 font-display text-xl font-extrabold leading-tight break-words tabular-nums ${isCustom ? 'text-forest' : 'text-ink'}">${esc(p.price)}</p>` +
           (items.length
             ? `<div class="mt-4 h-px bg-line"></div><ul class="mt-4 grid gap-2.5">${items
-                .map((i) => `<li class="flex gap-2.5 text-sm leading-relaxed text-ink">${check}<span>${esc(i)}</span></li>`)
+                .map((i) => `<li class="flex gap-2.5 text-sm leading-relaxed text-ink">${check}<span class="min-w-0 [overflow-wrap:anywhere]">${esc(i)}</span></li>`)
                 .join('')}</ul>`
             : '');
         packagesEl.append(card);
       });
+      dialog.style.width = 'min(64rem, calc(100vw - 2rem))'; // lebarkan agar paket tampil menyamping
       stepForm.hidden = true;
       stepResult.hidden = false;
     };
