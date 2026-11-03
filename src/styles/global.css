@@ -116,7 +116,7 @@
     @apply border-l-4 border-primary pl-5 text-muted italic;
   }
   .prose-grintec img {
-    @apply h-auto max-w-full rounded-[var(--radius-card)];
+    @apply h-auto max-w-full rounded-[var(--radius-card)] border border-line;
   }
   .prose-grintec code {
     @apply rounded bg-mist px-1.5 py-0.5 text-[0.9em];
