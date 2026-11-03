@@ -40,6 +40,8 @@ const t = useTranslations(lang);
   data-msg-noprice={t('price.noprice')}
   data-msg-popular={t('price.popular')}
   data-msg-view={t('price.view')}
+  data-msg-discuss={t('nav.cta')}
+  data-msg-choose={t('price.choose')}
   data-msg-checking={t('price.emailChecking')}
   data-msg-undeliverable={t('price.emailUndeliverable')}
   data-msg-disposable={t('price.emailDisposable')}
@@ -215,17 +217,21 @@ const t = useTranslations(lang);
       '<circle cx="10" cy="10" r="8.25" stroke-width="1.25" opacity=".35"/><path d="m6.3 10.2 2.4 2.4 4.9-5.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
     type Pkg = { name: string; price: string; scope: string };
-    // price === ''  -> paket berbayar, harga masih terkunci (tampil mask + tombol)
-    // price non-angka (mis. "Hubungi kami") -> paket kontak, tanpa tombol
-    // price berangka -> harga asli sudah terbuka
-    const render = (packages: Pkg[]) => {
+    // Pra-email (unlocked=false): paket berbayar -> mask harga + tombol "Lihat harga";
+    //   paket kontak (harga non-angka, mis. "Hubungi kami") -> tombol "Let's Discuss".
+    //   Semua tombol membuka modal email (tetap minta email, termasuk Custom).
+    // Pasca-email (unlocked=true): harga asli tampil + CTA "Pilih layanan ini" ke kontak.
+    const render = (packages: Pkg[], unlocked: boolean) => {
       packagesEl.innerHTML = '';
       packages.forEach((p, idx) => {
         const items = p.scope.split('|').map((s) => s.trim()).filter(Boolean);
-        const locked = p.price === '';
-        const isCustom = !locked && !/\d/.test(p.price);
+        const locked = !unlocked && p.price === '';
+        const isCustom = !/\d/.test(p.price) && p.price !== ''; // "Hubungi kami" / "Contact us"
         const popular = idx === 1 && !isCustom;
         const priceText = locked ? MASK : p.price;
+        const cta = unlocked
+          ? `<div class="mt-auto pt-5"><a href="${esc(d.contact! + '&package=' + encodeURIComponent(p.name))}" class="btn-primary w-full">${esc(d.msgChoose!)}</a></div>`
+          : `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(isCustom ? d.msgDiscuss! : d.msgView!)}</button></div>`;
         const card = document.createElement('div');
         card.className =
           'relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border p-5 ' +
@@ -239,9 +245,7 @@ const t = useTranslations(lang);
                 .map((i) => `<li class="flex gap-2.5 text-sm leading-relaxed text-ink">${check}<span class="min-w-0 [overflow-wrap:anywhere]">${esc(i)}</span></li>`)
                 .join('')}</ul>`
             : '') +
-          (locked
-            ? `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(d.msgView!)}</button></div>`
-            : '');
+          cta;
         packagesEl.append(card);
       });
       note.hidden = packages.length === 0;
@@ -257,7 +261,7 @@ const t = useTranslations(lang);
           signal: AbortSignal.timeout?.(9000),
         });
         const json = await res.json().catch(() => ({}));
-        if (json.success === true && json.packages?.length) { render(json.packages); return; }
+        if (json.success === true && json.packages?.length) { render(json.packages, false); return; }
       } catch {
         /* jatuh ke fallback */
       }
@@ -294,7 +298,7 @@ const t = useTranslations(lang);
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok || json.success !== true) throw new Error(json.error === 'noprice' ? d.msgNoprice! : d.msgError!);
-        render(json.packages || []); // harga asli menggantikan mask; tombol hilang
+        render(json.packages || [], true); // harga asli + CTA "Pilih layanan ini"
         fallback.hidden = true;
         dialog.close();
       } catch (err) {
