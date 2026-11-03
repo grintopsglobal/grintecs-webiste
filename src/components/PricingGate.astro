@@ -33,6 +33,10 @@ const t = useTranslations(lang);
   data-msg-error={t('price.error')}
   data-msg-noprice={t('price.noprice')}
   data-msg-popular={t('price.popular')}
+  data-msg-checking={t('price.emailChecking')}
+  data-msg-undeliverable={t('price.emailUndeliverable')}
+  data-msg-disposable={t('price.emailDisposable')}
+  data-msg-typo={t('price.emailTypo')}
 >
   <h2 class="text-lg font-bold">{t('sub.pricing')}</h2>
   {caption && <p class="mt-3 leading-relaxed text-muted">{caption}</p>}
@@ -160,6 +164,42 @@ const t = useTranslations(lang);
       return ok;
     };
 
+    // Lapisan tambahan agar email asal-asalan / tidak bisa dikirimi tidak lolos.
+    const DISPOSABLE = new Set(['mailinator.com', 'tempmail.com', 'temp-mail.org', '10minutemail.com', 'guerrillamail.com', 'trashmail.com', 'yopmail.com', 'getnada.com', 'sharklasers.com', 'maildrop.cc', 'dispostable.com', 'fakeinbox.com', 'throwawaymail.com', 'mailnesia.com', 'emailondeck.com', 'spam4.me']);
+    const TYPO: Record<string, string> = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gnail.com': 'gmail.com', 'gmil.com': 'gmail.com', 'gmaill.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.cm': 'gmail.com', 'yaho.com': 'yahoo.com', 'yahooo.com': 'yahoo.com', 'hotmai.com': 'hotmail.com', 'hotmial.com': 'hotmail.com', 'hotmil.com': 'hotmail.com', 'outlok.com': 'outlook.com', 'outloo.com': 'outlook.com', 'iclod.com': 'icloud.com' };
+    const domainOf = () => email.value.trim().split('@')[1]?.toLowerCase() || '';
+
+    // Saran perbaikan typo domain, bisa diklik untuk langsung membetulkan.
+    const showTypo = (fix: string) => {
+      const local = email.value.trim().split('@')[0];
+      email.setAttribute('aria-invalid', 'true');
+      emailError.innerHTML = `${esc(d.msgTypo!)} <button type="button" class="font-bold underline" data-price-fix>${esc(local)}@${esc(fix)}</button>?`;
+      emailError.querySelector('[data-price-fix]')!.addEventListener('click', () => {
+        email.value = `${local}@${fix}`;
+        email.removeAttribute('aria-invalid');
+        emailError.textContent = '';
+        email.focus();
+      });
+    };
+
+    // Domain benar-benar bisa menerima email? Cek MX lalu A via DNS-over-HTTPS Google.
+    // DNS gagal (mis. jaringan) -> jangan blokir, supaya lead asli tidak ikut hilang.
+    const canReceiveMail = async (domain: string) => {
+      try {
+        const mx = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`).then((r) => r.json());
+        if (mx.Answer?.some((a: { type: number }) => a.type === 15)) return true;
+        const a = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`).then((r) => r.json());
+        return Boolean(a.Answer?.length);
+      } catch {
+        return true;
+      }
+    };
+    const emailBad = (msg: string) => {
+      email.setAttribute('aria-invalid', 'true');
+      emailError.textContent = msg;
+      email.focus();
+    };
+
     const check =
       '<svg class="mt-0.5 size-[18px] shrink-0 text-primary-700" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true">' +
       '<circle cx="10" cy="10" r="8.25" stroke-width="1.25" opacity=".35"/><path d="m6.3 10.2 2.4 2.4 4.9-5.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -192,12 +232,24 @@ const t = useTranslations(lang);
 
     submit.addEventListener('click', async () => {
       if (!validEmail()) { email.focus(); return; }
+      const domain = domainOf();
+      if (TYPO[domain]) { showTypo(TYPO[domain]); return; }
+      if (DISPOSABLE.has(domain)) { emailBad(d.msgDisposable!); return; }
       if (!consent.checked) { setStatus(d.msgConsent!, 'error'); return; }
       const token = ts()?.getResponse(widgetId ?? undefined as unknown as string);
       if (!token) { setStatus(d.msgCaptcha!, 'error'); return; }
 
       submit.disabled = true;
       submit.textContent = d.msgSending!;
+      setStatus(d.msgChecking!, 'info');
+      // Pastikan domain email bisa menerima pesan sebelum data dikirim.
+      if (!(await canReceiveMail(domain))) {
+        submit.disabled = false;
+        submit.textContent = submitLabel;
+        setStatus('', 'info');
+        emailBad(d.msgUndeliverable!);
+        return;
+      }
       setStatus('', 'info');
       try {
         // text/plain (tanpa header custom) agar tidak ada preflight CORS ke Apps Script.
