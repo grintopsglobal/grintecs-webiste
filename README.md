@@ -166,6 +166,10 @@ Perilaku: poster tampil lebih dulu (aman untuk LCP). Video baru dimuat lewat scr
 - Artikel dengan `draft: true` tidak tampil.
 - Jika terjemahan satu bahasa belum ada, language switcher mengarah ke halaman daftar bahasa tersebut, bukan 404.
 
+### Our Works (portofolio)
+
+Koleksi **Our Works (Portofolio)** di CMS (`src/content/works/`). Setiap karya punya halaman sendiri di `/works/<slug>/` dan tampil sebagai kartu di section *Our Works* / *Karya Kami* pada halaman layanan, sub-layanan, dan solusi yang dipilih di field relasi. Section disembunyikan bila belum ada karya yang ditautkan. Entry baru default **draft**; matikan draft untuk menerbitkan. Contoh entry dengan placeholder `[...]` ada di `src/content/works/*/contoh-karya.md` (draft, tidak tayang); hapus setelah ada karya sungguhan.
+
 ### Sub-layanan (mis. Phishing Simulation di bawah Cyber Security)
 
 Koleksi **Sub-layanan** di CMS (`src/content/subservices/`). Pilih *Layanan induk*; sub-layanan tampil sebagai kartu di halaman layanan itu dan punya landing page sendiri di `/services/<induk>/<slug>/`. Tidak masuk mega menu atau footer. Field: ringkasan, tagline, alur kerja, yang Anda terima, model harga, FAQ, label tombol CTA (tombolnya membuka form kontak dengan layanan sudah terpilih).

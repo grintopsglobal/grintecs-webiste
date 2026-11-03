@@ -1,7 +1,7 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n/ui';
 
-type Ordered = 'services' | 'subservices' | 'solutions' | 'industries';
+type Ordered = 'services' | 'subservices' | 'solutions' | 'industries' | 'works';
 
 export async function byLang<C extends Ordered>(collection: C, lang: Lang) {
   const items = (await getCollection(collection, (e) => e.id.startsWith(`${lang}/`))) as CollectionEntry<C>[];
@@ -39,7 +39,7 @@ export function findByKey<T extends { id: string; data: { slug: string } }>(item
  * Path padanan untuk language switcher / hreflang, dipasangkan lewat kunci file.
  * Jika terjemahan belum ada, arahkan ke halaman listing bahasa tersebut agar tidak 404.
  */
-export async function alternatesFor(collection: 'services' | 'solutions' | 'industries' | 'insights', key: string) {
+export async function alternatesFor(collection: 'services' | 'solutions' | 'industries' | 'insights' | 'works', key: string) {
   const all = await getCollection(collection);
   const pick = (lang: Lang) => {
     const entry = all.find((e) => e.id === `${lang}/${key}`);
@@ -53,4 +53,10 @@ export async function parentOf(lang: Lang, entry: CollectionEntry<'subservices'>
   const parent = findByKey(await byLang('services', lang), entry.data.parent);
   if (!parent) throw new Error(`Layanan induk "${entry.data.parent}" untuk sub-layanan "${entry.id}" tidak ditemukan.`);
   return parent;
+}
+
+/** Portofolio terbit (bukan draft) yang ditautkan ke satu layanan/sub-layanan/solusi, dicocokkan lewat kunci file atau slug. */
+export async function worksFor(lang: Lang, field: 'services' | 'subservices' | 'solutions', entry: { id: string; data: { slug: string } }) {
+  const key = keyOf(entry);
+  return (await byLang('works', lang)).filter((w) => !w.data.draft && w.data[field].some((v) => v === key || v === entry.data.slug));
 }

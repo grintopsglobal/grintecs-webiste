@@ -4,11 +4,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import PageHeader from '../../../../components/PageHeader.astro';
 import CTA from '../../../../components/CTA.astro';
+import WorksSection from '../../../../components/WorksSection.astro';
 import type { Lang } from '../../../../i18n/ui';
 import { locales } from '../../../../i18n/ui';
 import { bodyHtml } from '../../../../lib/url';
 import { localizePath, useTranslations } from '../../../../i18n/utils';
-import { byLang, getPage, keyOf, parentOf } from '../../../../lib/content';
+import { byLang, getPage, keyOf, parentOf, worksFor } from '../../../../lib/content';
 
 export async function getStaticPaths() {
   const paths = await Promise.all(
@@ -31,6 +32,7 @@ const { data } = entry;
 const parent = await parentOf(lang, entry);
 const parentPath = `/services/${parent.data.slug}/`;
 const home = await getPage(lang, 'home');
+const works = await worksFor(lang, 'subservices', entry);
 
 // Bahasa lain: ke sub-layanan yang sama (dipasangkan lewat kunci file) bila ada terjemahannya, kalau tidak ke layanan induk.
 const all = await getCollection('subservices');
@@ -125,5 +127,6 @@ const contactHref = `${localizePath(lang, '/contact/')}?service=${encodeURICompo
     </div>
   </section>
 
+  <WorksSection lang={lang} items={works} />
   <CTA heading={home.cta.heading} text={home.cta.text} label={data.ctaLabel || home.cta.buttonLabel} href={contactHref} />
 </BaseLayout>

@@ -3,10 +3,11 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHeader from '../../../components/PageHeader.astro';
 import DetailBody from '../../../components/DetailBody.astro';
+import WorksSection from '../../../components/WorksSection.astro';
 import type { Lang } from '../../../i18n/ui';
 import { bodyHtml } from '../../../lib/url';
 import { localizePath, useTranslations } from '../../../i18n/utils';
-import { alternatesFor, byLang, findByKey, keyOf } from '../../../lib/content';
+import { alternatesFor, byLang, findByKey, keyOf, worksFor } from '../../../lib/content';
 import { locales } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
@@ -20,6 +21,7 @@ const lang = Astro.params.lang as Lang;
 const { entry } = Astro.props as { entry: CollectionEntry<'solutions'> };
 const t = useTranslations(lang);
 const services = await byLang('services', lang);
+const works = await worksFor(lang, 'solutions', entry);
 const related = entry.data.relatedServices
   .map((key) => findByKey(services, key))
   .filter((s) => s !== undefined)
@@ -36,4 +38,5 @@ const related = entry.data.relatedServices
   >
     <Fragment set:html={bodyHtml(entry)} />
   </DetailBody>
+  <WorksSection lang={lang} items={works} />
 </BaseLayout>

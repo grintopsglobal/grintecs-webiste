@@ -179,6 +179,35 @@ collections:
       - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
       - { label: Isi, name: body, widget: markdown, i18n: true }
 
+  - name: works
+    label: Our Works (Portofolio)
+    label_singular: Karya
+    folder: src/content/works
+    create: true
+    i18n: true
+    extension: md
+    format: frontmatter
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { label: Judul, name: title, widget: string, i18n: true }
+      - *slug
+      - { label: Draft (belum tayang), name: draft, widget: boolean, default: true, i18n: duplicate, hint: 'Matikan untuk menerbitkan. Pastikan klien sudah setuju kasusnya dipublikasikan.' }
+      - { label: Klien, name: client, widget: string, required: false, i18n: true, hint: 'Boleh disamarkan, mis. "Perusahaan manufaktur, ±500 karyawan".' }
+      - { label: Industri, name: industry, widget: string, required: false, i18n: true }
+      - { label: Tahun, name: year, widget: string, required: false, i18n: duplicate }
+      - { label: Ringkasan, name: summary, widget: text, i18n: true, hint: 'Satu-dua kalimat, tampil di kartu dan meta description.' }
+      - { label: Gambar sampul, name: cover, widget: image, required: false, i18n: duplicate, hint: 'Rasio 8:5 (mis. 1600x1000).' }
+      - { label: Galeri, name: gallery, widget: list, required: false, i18n: true, field: { label: Gambar, name: item, widget: image, i18n: duplicate } }
+      - { label: Hasil, name: outcomes, widget: list, required: false, i18n: true, field: { label: Poin, name: item, widget: string }, hint: 'Angka yang benar-benar terukur saja.' }
+      - { label: Layanan terkait, name: services, widget: relation, collection: services, value_field: '{{slug}}', search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate, hint: 'Karya tampil di section Our Works halaman yang dipilih.' }
+      - { label: Sub-layanan terkait, name: subservices, widget: relation, collection: subservices, value_field: '{{slug}}', search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Solusi terkait, name: solutions, widget: relation, collection: solutions, value_field: '{{slug}}', search_fields: [title], display_fields: [title], multiple: true, required: false, i18n: duplicate }
+      - { label: Urutan, name: order, widget: number, value_type: int, default: 99, i18n: duplicate }
+      - { label: Isi, name: body, widget: markdown, i18n: true, hint: 'Latar, yang dikerjakan, hasil. Sensor nama, domain, dan detail yang bisa mengidentifikasi klien bila belum disetujui.' }
+
   - name: insights
     label: Insights
     label_singular: Artikel

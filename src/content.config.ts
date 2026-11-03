@@ -68,6 +68,27 @@ const solutions = defineCollection({
   }),
 });
 
+// Portofolio ("Our Works"). Ditautkan ke layanan/sub-layanan/solusi lewat kunci file; section tampil hanya bila ada tautan.
+const works = defineCollection({
+  loader: loader('works'),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    client: str,
+    industry: str,
+    year: str,
+    summary: z.string(),
+    cover: str,
+    gallery: list(z.string()),
+    outcomes: list(z.string()),
+    services: list(z.string()),
+    subservices: list(z.string()),
+    solutions: list(z.string()),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
+});
+
 const industries = defineCollection({
   loader: loader('industries'),
   schema: z.object({
@@ -178,4 +199,4 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { services, subservices, solutions, industries, insights, pages, settings };
+export const collections = { services, subservices, solutions, industries, works, insights, pages, settings };

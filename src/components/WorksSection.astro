@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../i18n/ui';
+import { localizePath, useTranslations } from '../i18n/utils';
+import { withBase } from '../lib/url';
+import Stripes from './Stripes.astro';
+
+interface Props {
+  lang: Lang;
+  items: CollectionEntry<'works'>[];
+}
+const { lang, items } = Astro.props;
+const t = useTranslations(lang);
+---
+
+{
+  items.length > 0 && (
+    <section class="border-t border-line bg-mist py-14 md:py-20" aria-labelledby="works-heading">
+      <div class="container-x">
+        <h2 id="works-heading" class="text-2xl font-extrabold md:text-3xl">{t('works.heading')}</h2>
+        <p class="mt-3 max-w-2xl text-lg leading-relaxed text-muted">{t('works.intro')}</p>
+        <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((w) => (
+            <li>
+              <article class="group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
+                {w.data.cover ? (
+                  <img src={withBase(w.data.cover)} alt="" loading="lazy" decoding="async" width="1600" height="1000" class="aspect-[8/5] w-full object-cover" />
+                ) : (
+                  <div class="relative h-32 overflow-hidden bg-forest" aria-hidden="true">
+                    <Stripes id={`work-${w.data.slug}`} class="absolute inset-0 size-full opacity-90" />
+                  </div>
+                )}
+                <div class="flex flex-1 flex-col p-6">
+                  <p class="text-sm font-semibold text-primary-700">{[w.data.client, w.data.industry, w.data.year].filter(Boolean).join(' · ')}</p>
+                  <h3 class="mt-2 text-lg font-bold">
+                    <a href={localizePath(lang, `/works/${w.data.slug}/`)} class="after:absolute after:inset-0 group-hover:underline">{w.data.title}</a>
+                  </h3>
+                  <p class="mt-3 line-clamp-3 leading-relaxed text-muted">{w.data.summary}</p>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}

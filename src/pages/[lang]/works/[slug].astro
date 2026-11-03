@@ -1,0 +1,113 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import CTA from '../../../components/CTA.astro';
+import type { Lang } from '../../../i18n/ui';
+import { locales } from '../../../i18n/ui';
+import { bodyHtml, withBase } from '../../../lib/url';
+import { localizePath, useTranslations } from '../../../i18n/utils';
+import { alternatesFor, byLang, findByKey, getPage, keyOf, parentOf } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(
+    locales.map(async (lang) =>
+      (await byLang('works', lang)).filter((e) => !e.data.draft).map((entry) => ({ params: { lang, slug: entry.data.slug }, props: { entry } })),
+    ),
+  );
+  return paths.flat();
+}
+
+const lang = Astro.params.lang as Lang;
+const { entry } = Astro.props as { entry: CollectionEntry<'works'> };
+const t = useTranslations(lang);
+const { data } = entry;
+const home = await getPage(lang, 'home');
+
+// Tautan ke layanan/sub-layanan/solusi yang terlibat, dengan slug bahasa ini.
+const services = await byLang('services', lang);
+const solutions = await byLang('solutions', lang);
+const subservices = await byLang('subservices', lang);
+const links = [
+  ...data.services.map((k) => findByKey(services, k)).filter((e) => e !== undefined).map((e) => ({ href: localizePath(lang, `/services/${e.data.slug}/`), label: e.data.title })),
+  ...(await Promise.all(
+    data.subservices.map((k) => findByKey(subservices, k)).filter((e) => e !== undefined).map(async (e) => ({ href: localizePath(lang, `/services/${(await parentOf(lang, e)).data.slug}/${e.data.slug}/`), label: e.data.title })),
+  )),
+  ...data.solutions.map((k) => findByKey(solutions, k)).filter((e) => e !== undefined).map((e) => ({ href: localizePath(lang, `/solutions/${e.data.slug}/`), label: e.data.title })),
+];
+const facts = [
+  [t('works.client'), data.client],
+  [t('works.industry'), data.industry],
+  [t('works.year'), data.year],
+].filter(([, v]) => v);
+---
+
+<BaseLayout lang={lang} title={data.title} description={data.summary} image={data.cover} alternates={await alternatesFor('works', keyOf(entry))}>
+  <PageHeader title={data.title} intro={data.summary} image={data.cover}>
+    {
+      facts.length > 0 && (
+        <dl class="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+          {facts.map(([k, v]) => (
+            <div>
+              <dt class="text-sm text-muted">{k}</dt>
+              <dd class="font-semibold">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </PageHeader>
+
+  <section class="container-x grid gap-12 py-14 md:py-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-16">
+    <div>
+      <div class="prose-grintec max-w-[68ch]">
+        <Fragment set:html={bodyHtml(entry)} />
+      </div>
+      {
+        data.gallery.length > 0 && (
+          <div class="mt-12">
+            <h2 class="text-xl font-bold">{t('works.gallery')}</h2>
+            <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+              {data.gallery.map((src) => (
+                <li>
+                  <img src={withBase(src)} alt="" loading="lazy" decoding="async" width="1600" height="1000" class="aspect-[8/5] w-full rounded-[var(--radius-card)] border border-line object-cover" />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+    <aside class="space-y-10 lg:sticky lg:top-28 lg:self-start">
+      {
+        data.outcomes.length > 0 && (
+          <div class="rounded-[var(--radius-card)] border border-line bg-mist p-6">
+            <h2 class="text-lg font-bold">{t('works.outcomes')}</h2>
+            <ul class="mt-4 space-y-3">
+              {data.outcomes.map((item) => (
+                <li class="slash leading-relaxed">{item}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+      {
+        links.length > 0 && (
+          <div>
+            <h2 class="text-lg font-bold">{t('works.related')}</h2>
+            <ul class="mt-3">
+              {links.map((l) => (
+                <li>
+                  <a href={l.href} class="link inline-flex min-h-11 items-center">{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+      <a href={localizePath(lang, '/contact/')} class="btn-primary w-full">{t('common.discussThis')}</a>
+    </aside>
+  </section>
+
+  <CTA heading={home.cta.heading} text={home.cta.text} label={home.cta.buttonLabel} href={localizePath(lang, '/contact/')} />
+</BaseLayout>
