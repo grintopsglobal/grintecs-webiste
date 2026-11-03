@@ -23,9 +23,27 @@ deliverables:
 pricing: Model harga per pengguna atau berlangganan tahunan.
 priceGate: true
 faq:
+  - q: Apakah karyawan diberi tahu sebelumnya?
+    a: Tidak. Supaya hasilnya menggambarkan perilaku yang sebenarnya, jadwal
+      simulasi hanya diketahui tim kecil di pihak Anda, biasanya manajemen atau
+      tim IT.
   - q: Apakah ini mengganggu pekerjaan harian?
     a: Tidak. Kampanye berjalan di latar belakang dan karyawan tetap bekerja seperti
       biasa.
+  - q: Lewat kanal apa saja simulasinya?
+    a: Email, WhatsApp, dan SMS, tergantung paket. Kanal yang termasuk di tiap
+      paket tercantum di kartu paket di bawah.
+  - q: Berapa banyak karyawan yang bisa ikut?
+    a: Paket Starter untuk maksimal 20 karyawan, Business 50 karyawan, dan
+      Enterprise 200 karyawan. Untuk tim yang lebih besar, pilih paket Custom.
+  - q: Apa yang kami terima, dan siapa yang melihat hasilnya?
+    a: Laporan ringkasan eksekutif, metrik tiap kampanye (tingkat buka, klik, dan
+      kirim), daftar pengguna yang rentan, serta rekomendasi perbaikan. Laporan
+      ini hanya diberikan kepada Anda.
+  - q: Apa yang dilakukan setelah simulasi?
+    a: Kami memberi rekomendasi tindak lanjut berdasarkan hasilnya, dengan fokus
+      pada kelompok yang paling sering mengklik atau mengirim data. Kampanye
+      berikutnya akan menunjukkan apakah perilaku tim sudah membaik.
 ctaLabel: Ajukan Uji Dasar Gratis
 ---
 
