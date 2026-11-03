@@ -42,6 +42,7 @@ const t = useTranslations(lang);
   data-msg-view={t('price.view')}
   data-msg-discuss={t('price.discuss')}
   data-msg-choose={t('price.choose')}
+  data-msg-sent={t('price.enquirySent')}
   data-msg-checking={t('price.emailChecking')}
   data-msg-undeliverable={t('price.emailUndeliverable')}
   data-msg-disposable={t('price.emailDisposable')}
@@ -49,7 +50,34 @@ const t = useTranslations(lang);
 >
   <h2 class="text-2xl font-extrabold md:text-3xl">{t('price.resultTitle')}</h2>
 
-  <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))]" data-price-packages></div>
+  <!-- Konfirmasi setelah "Choose this service": tim akan menghubungi -->
+  <div
+    data-price-confirm
+    hidden
+    class="mt-8 flex items-center gap-3 rounded-[var(--radius-card)] border-2 border-primary-700 bg-mist p-5 font-semibold text-forest"
+  >
+    <svg class="size-6 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="10" cy="10" r="8" /><path d="m6.5 10.3 2.3 2.3 4.7-5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    <span data-price-confirm-text></span>
+  </div>
+
+  <!-- Skeleton tampil dulu selagi cakupan dimuat, supaya tidak kosong di awal -->
+  <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))]" data-price-packages>
+    {
+      [0, 1, 2, 3].map(() => (
+        <div class="animate-pulse rounded-[var(--radius-card)] border border-line bg-white p-5" aria-hidden="true">
+          <div class="h-3 w-16 rounded bg-line" />
+          <div class="mt-3 h-6 w-28 rounded bg-line" />
+          <div class="mt-5 h-px bg-line" />
+          <div class="mt-4 space-y-2.5">
+            <div class="h-3 w-full rounded bg-line" />
+            <div class="h-3 w-5/6 rounded bg-line" />
+            <div class="h-3 w-4/6 rounded bg-line" />
+          </div>
+          <div class="mt-6 h-11 w-full rounded-lg bg-line" />
+        </div>
+      ))
+    }
+  </div>
   <p class="mt-6 text-sm leading-relaxed text-muted" data-price-note hidden>{t('price.note')}</p>
 
   <!-- Fallback bila cakupan gagal dimuat: tetap sediakan jalan ke harga -->
@@ -116,7 +144,17 @@ const t = useTranslations(lang);
     const submitLabel = submit.textContent;
     const status = root.querySelector<HTMLElement>('[data-price-status]')!;
     const packagesEl = root.querySelector<HTMLElement>('[data-price-packages]')!;
+    const confirm = root.querySelector<HTMLElement>('[data-price-confirm]')!;
+    const confirmText = root.querySelector<HTMLElement>('[data-price-confirm-text]')!;
     let selectedPkg = ''; // paket yang tombolnya diklik, dikirim ke lead
+
+    // Email calon klien disimpan setelah opt-in, dipakai lagi saat "Choose this service"
+    // supaya tidak perlu mengetik ulang (flow mulus, tanpa form kontak kosong).
+    const STORE = 'grintec_pricing_email';
+    const getEmail = () => { try { return localStorage.getItem(STORE) || ''; } catch { return ''; } };
+    const saveEmail = (v: string) => { try { localStorage.setItem(STORE, v); } catch { /* ignore */ } };
+    const savedEmail = getEmail();
+    if (savedEmail) email.value = savedEmail; // prefill modal
 
     type Turnstile = {
       render: (el: HTMLElement, opts: Record<string, unknown>) => string;
@@ -161,11 +199,33 @@ const t = useTranslations(lang);
     };
     root.querySelector('[data-price-open]')!.addEventListener('click', () => open(''));
     root.querySelector('[data-price-close]')!.addEventListener('click', () => dialog.close());
-    // Tombol "Lihat harga" tiap kartu (dibuat dinamis) -> buka dialog dengan paketnya.
+    // Klik tombol kartu: "Lihat harga" -> buka dialog; "Choose this service" -> catat enquiry.
     packagesEl.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-price-card-open]');
-      if (btn) open(btn.dataset.pkg || '');
+      const target = e.target as HTMLElement;
+      const openBtn = target.closest<HTMLElement>('[data-price-card-open]');
+      if (openBtn) { open(openBtn.dataset.pkg || ''); return; }
+      const chooseBtn = target.closest<HTMLButtonElement>('[data-price-choose]');
+      if (chooseBtn) sendEnquiry(chooseBtn);
     });
+
+    // "Choose this service" / "Let's Discuss" (setelah harga terbuka): catat permintaan
+    // pakai email yang sudah tersimpan, lalu tampilkan pesan. Tanpa pindah ke form kontak.
+    const sendEnquiry = async (btn: HTMLButtonElement) => {
+      const pkg = btn.dataset.pkg || '';
+      const mail = getEmail();
+      if (!mail) { open(pkg); return; } // email hilang (mis. storage dibersihkan) -> minta lagi
+      btn.disabled = true;
+      try {
+        await fetch(d.endpoint!, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'enquiry', email: mail, key: d.key, lang: d.lang, page: location.pathname, service: d.service, sub: d.sub, pkg }),
+        });
+      } catch { /* tetap tampilkan konfirmasi; lead bisa menyusul dari langkah opt-in */ }
+      confirmText.textContent = d.msgSent!;
+      confirm.hidden = false;
+      packagesEl.querySelectorAll<HTMLButtonElement>('[data-price-choose]').forEach((b) => (b.disabled = true));
+      confirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
 
     email.addEventListener('blur', () => { if (email.getAttribute('aria-invalid')) validEmail(); });
     const validEmail = () => {
@@ -220,7 +280,7 @@ const t = useTranslations(lang);
     // Pra-email (unlocked=false): paket berbayar -> mask harga + tombol "Lihat harga";
     //   paket kontak (harga non-angka, mis. "Hubungi kami") -> tombol "Let's Discuss".
     //   Semua tombol membuka modal email (tetap minta email, termasuk Custom).
-    // Pasca-email (unlocked=true): harga asli tampil + CTA "Pilih layanan ini" ke kontak.
+    // Pasca-email (unlocked=true): harga asli tampil + tombol "Pilih layanan ini" -> catat enquiry.
     const render = (packages: Pkg[], unlocked: boolean) => {
       packagesEl.innerHTML = '';
       packages.forEach((p, idx) => {
@@ -231,9 +291,8 @@ const t = useTranslations(lang);
         const priceText = locked ? MASK : p.price;
         // Custom selalu "Let's Discuss"; paket berbayar: "Lihat harga" -> "Pilih layanan ini" setelah terbuka.
         const label = isCustom ? d.msgDiscuss! : unlocked ? d.msgChoose! : d.msgView!;
-        const cta = unlocked
-          ? `<div class="mt-auto pt-5"><a href="${esc(d.contact! + '&package=' + encodeURIComponent(p.name))}" class="btn-primary w-full">${esc(label)}</a></div>`
-          : `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(label)}</button></div>`;
+        const action = unlocked ? 'data-price-choose' : 'data-price-card-open';
+        const cta = `<div class="mt-auto pt-5"><button type="button" ${action} data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(label)}</button></div>`;
         const card = document.createElement('div');
         card.className =
           'relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border p-5 ' +
@@ -267,6 +326,7 @@ const t = useTranslations(lang);
       } catch {
         /* jatuh ke fallback */
       }
+      packagesEl.innerHTML = ''; // buang skeleton
       fallback.hidden = false;
     };
     loadScopes();
@@ -300,7 +360,8 @@ const t = useTranslations(lang);
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok || json.success !== true) throw new Error(json.error === 'noprice' ? d.msgNoprice! : d.msgError!);
-        render(json.packages || [], true); // harga asli + CTA "Pilih layanan ini"
+        saveEmail(email.value.trim()); // untuk dipakai saat "Choose this service"
+        render(json.packages || [], true); // harga asli + tombol "Pilih layanan ini"
         fallback.hidden = true;
         dialog.close();
       } catch (err) {

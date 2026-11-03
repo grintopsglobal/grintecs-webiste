@@ -24,6 +24,8 @@ function doPost(e) {
     if (data.action === 'pricing') return handlePricing_(data, props);
     // Cakupan paket untuk ditampilkan di halaman TANPA harga (harga tetap rahasia sampai email masuk).
     if (data.action === 'scopes') return handleScopes_(data, props);
+    // "Choose this service": email (sudah terverifikasi saat lihat harga) + service/paket -> tab Enquiry.
+    if (data.action === 'enquiry') return handleEnquiry_(data, props);
 
     if (!verifyTurnstile_(data.token, props)) return json_({ success: false, error: 'captcha' });
 
@@ -95,6 +97,40 @@ function handlePricing_(data, props) {
     lock.releaseLock();
   }
   return json_({ success: true, packages: packages });
+}
+
+// "Choose this service" / "Let's Discuss" setelah harga terbuka: catat permintaan
+// kontak ke tab "Enquiry" (email sudah diverifikasi Turnstile di langkah lihat harga).
+// ponytail: tanpa Turnstile di sini demi flow mulus; dibatasi format email + key valid.
+const ENQUIRY_SHEET = 'Enquiry';
+const ENQUIRY_HEADERS = ['Waktu', 'Email', 'Layanan', 'Sub-layanan', 'Paket', 'Bahasa', 'Halaman'];
+
+function handleEnquiry_(data, props) {
+  const email = clean_(data.email, 160);
+  const key = clean_(data.key, 80);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || !key) return json_({ success: false, error: 'invalid' });
+  const lang = clean_(data.lang, 5);
+  const page = clean_(data.page, 200);
+  const service = clean_(data.service, 160);
+  const sub = clean_(data.sub, 160);
+  const pkg = clean_(data.pkg, 80);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    enquirySheet_(props).appendRow([new Date(), email, service, sub, pkg, lang, page].map(safeCell_));
+  } finally {
+    lock.releaseLock();
+  }
+  return json_({ success: true });
+}
+
+function enquirySheet_(props) {
+  const sh = ss_(props).getSheetByName(ENQUIRY_SHEET) || ss_(props).insertSheet(ENQUIRY_SHEET);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(ENQUIRY_HEADERS);
+    sh.setFrozenRows(1);
+  }
+  return sh;
 }
 
 // Cakupan tiap paket untuk dirender di halaman. Harga numerik DIHAPUS di sini;
