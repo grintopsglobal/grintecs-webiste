@@ -40,7 +40,7 @@ const t = useTranslations(lang);
   data-msg-noprice={t('price.noprice')}
   data-msg-popular={t('price.popular')}
   data-msg-view={t('price.view')}
-  data-msg-discuss={t('nav.cta')}
+  data-msg-discuss={t('price.discuss')}
   data-msg-choose={t('price.choose')}
   data-msg-checking={t('price.emailChecking')}
   data-msg-undeliverable={t('price.emailUndeliverable')}
@@ -229,9 +229,11 @@ const t = useTranslations(lang);
         const isCustom = !/\d/.test(p.price) && p.price !== ''; // "Hubungi kami" / "Contact us"
         const popular = idx === 1 && !isCustom;
         const priceText = locked ? MASK : p.price;
+        // Custom selalu "Let's Discuss"; paket berbayar: "Lihat harga" -> "Pilih layanan ini" setelah terbuka.
+        const label = isCustom ? d.msgDiscuss! : unlocked ? d.msgChoose! : d.msgView!;
         const cta = unlocked
-          ? `<div class="mt-auto pt-5"><a href="${esc(d.contact! + '&package=' + encodeURIComponent(p.name))}" class="btn-primary w-full">${esc(d.msgChoose!)}</a></div>`
-          : `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(isCustom ? d.msgDiscuss! : d.msgView!)}</button></div>`;
+          ? `<div class="mt-auto pt-5"><a href="${esc(d.contact! + '&package=' + encodeURIComponent(p.name))}" class="btn-primary w-full">${esc(label)}</a></div>`
+          : `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(label)}</button></div>`;
         const card = document.createElement('div');
         card.className =
           'relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border p-5 ' +
