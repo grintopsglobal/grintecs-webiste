@@ -1,9 +1,9 @@
 ---
-// Pricing gate: tombol "Lihat Harga" membuka dialog berisi HANYA form email
-// (email + persetujuan + Turnstile). Setelah email masuk, harga diambil dari
-// Apps Script (tab "Prices") dan dirender langsung di halaman ini, menyamping.
-// Harga tidak pernah ikut dibundel ke HTML statis, jadi benar-benar tersembunyi
-// sampai pengunjung mengisi email. Endpoint & site key sama dengan form kontak.
+// Tabel paket tampil langsung di halaman: nama + cakupan dari Apps Script (tab
+// "Prices"), tetapi HARGA dimask "Rp XXX.XXX" sampai pengunjung mengisi email.
+// Tiap paket berbayar punya tombol "Lihat harga" -> buka dialog berisi HANYA
+// form email (center). Paket yang diklik ikut dikirim agar tercatat di lead.
+// Harga numerik tidak pernah ada di HTML statis maupun di respons "scopes".
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 
@@ -12,11 +12,13 @@ interface Props {
   priceKey: string; // slug sub-layanan, dicocokkan dengan kolom "Key" di tab Prices
   endpoint: string;
   siteKey: string;
-  caption?: string; // model harga ringkas yang tetap boleh tampil (mis. "Berbasis proyek")
+  service: string; // nama layanan induk, mis. "Cyber Security Implementation"
+  sub: string; // nama sub-layanan, mis. "Phishing Simulation"
+  caption?: string; // dipakai sebagai fallback bila cakupan gagal dimuat
   contactHref: string;
 }
 
-const { lang, priceKey, endpoint, siteKey, caption, contactHref } = Astro.props;
+const { lang, priceKey, endpoint, siteKey, service, sub, caption, contactHref } = Astro.props;
 const t = useTranslations(lang);
 ---
 
@@ -27,6 +29,9 @@ const t = useTranslations(lang);
   data-sitekey={siteKey}
   data-key={priceKey}
   data-lang={lang}
+  data-service={service}
+  data-sub={sub}
+  data-contact={contactHref}
   data-msg-email={t('form.invalidEmail')}
   data-msg-consent={t('price.consentRequired')}
   data-msg-captcha={t('form.captcha')}
@@ -34,24 +39,21 @@ const t = useTranslations(lang);
   data-msg-error={t('price.error')}
   data-msg-noprice={t('price.noprice')}
   data-msg-popular={t('price.popular')}
+  data-msg-view={t('price.view')}
   data-msg-checking={t('price.emailChecking')}
   data-msg-undeliverable={t('price.emailUndeliverable')}
   data-msg-disposable={t('price.emailDisposable')}
   data-msg-typo={t('price.emailTypo')}
 >
-  <!-- Sebelum email: ajakan + tombol buka form -->
-  <div data-price-teaser class="mx-auto max-w-2xl rounded-[var(--radius-card)] border border-line bg-white p-8 text-center">
-    <h2 class="text-2xl font-extrabold md:text-3xl">{t('sub.pricing')}</h2>
-    <p class="mx-auto mt-3 max-w-prose leading-relaxed text-muted">{caption || t('price.intro')}</p>
-    <button type="button" class="btn-primary mt-6" data-price-open>{t('price.view')}</button>
-  </div>
+  <h2 class="text-2xl font-extrabold md:text-3xl">{t('price.resultTitle')}</h2>
 
-  <!-- Setelah email: harga tampil di halaman, menyamping -->
-  <div data-price-result hidden>
-    <h2 class="text-2xl font-extrabold md:text-3xl">{t('price.resultTitle')}</h2>
-    <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))]" data-price-packages></div>
-    <p class="mt-6 text-sm leading-relaxed text-muted">{t('price.note')}</p>
-    <a href={contactHref} class="btn-primary mt-6">{t('price.cta')}</a>
+  <div class="mt-8 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(210px,1fr))]" data-price-packages></div>
+  <p class="mt-6 text-sm leading-relaxed text-muted" data-price-note hidden>{t('price.note')}</p>
+
+  <!-- Fallback bila cakupan gagal dimuat: tetap sediakan jalan ke harga -->
+  <div data-price-fallback hidden class="mx-auto max-w-2xl rounded-[var(--radius-card)] border border-line bg-white p-8 text-center">
+    <p class="mx-auto max-w-prose leading-relaxed text-muted">{caption || t('price.intro')}</p>
+    <button type="button" class="btn-primary mt-6" data-price-open>{t('price.view')}</button>
   </div>
 
   <dialog
@@ -97,12 +99,13 @@ const t = useTranslations(lang);
 </section>
 
 <script>
+  const MASK = 'Rp XXX.XXX';
   const root = document.querySelector<HTMLElement>('[data-price-gate]');
   if (root) {
     const d = root.dataset;
     const dialog = root.querySelector<HTMLDialogElement>('[data-price-dialog]')!;
-    const teaser = root.querySelector<HTMLElement>('[data-price-teaser]')!;
-    const result = root.querySelector<HTMLElement>('[data-price-result]')!;
+    const fallback = root.querySelector<HTMLElement>('[data-price-fallback]')!;
+    const note = root.querySelector<HTMLElement>('[data-price-note]')!;
     const email = root.querySelector<HTMLInputElement>('[data-price-email]')!;
     const emailError = root.querySelector<HTMLElement>('[data-price-email-error]')!;
     const consent = root.querySelector<HTMLInputElement>('[data-price-consent]')!;
@@ -111,6 +114,7 @@ const t = useTranslations(lang);
     const submitLabel = submit.textContent;
     const status = root.querySelector<HTMLElement>('[data-price-status]')!;
     const packagesEl = root.querySelector<HTMLElement>('[data-price-packages]')!;
+    let selectedPkg = ''; // paket yang tombolnya diklik, dikirim ke lead
 
     type Turnstile = {
       render: (el: HTMLElement, opts: Record<string, unknown>) => string;
@@ -147,13 +151,19 @@ const t = useTranslations(lang);
       }`;
     };
 
-    const open = () => {
+    const open = (pkg: string) => {
+      selectedPkg = pkg;
       setStatus('', 'info');
       dialog.showModal();
       renderTurnstile();
     };
-    root.querySelector('[data-price-open]')!.addEventListener('click', open);
+    root.querySelector('[data-price-open]')!.addEventListener('click', () => open(''));
     root.querySelector('[data-price-close]')!.addEventListener('click', () => dialog.close());
+    // Tombol "Lihat harga" tiap kartu (dibuat dinamis) -> buka dialog dengan paketnya.
+    packagesEl.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-price-card-open]');
+      if (btn) open(btn.dataset.pkg || '');
+    });
 
     email.addEventListener('blur', () => { if (email.getAttribute('aria-invalid')) validEmail(); });
     const validEmail = () => {
@@ -199,37 +209,61 @@ const t = useTranslations(lang);
       email.focus();
     };
 
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
     const check =
       '<svg class="mt-0.5 size-[18px] shrink-0 text-primary-700" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true">' +
       '<circle cx="10" cy="10" r="8.25" stroke-width="1.25" opacity=".35"/><path d="m6.3 10.2 2.4 2.4 4.9-5.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-    const render = (packages: { name: string; price: string; scope: string }[]) => {
+    type Pkg = { name: string; price: string; scope: string };
+    // price === ''  -> paket berbayar, harga masih terkunci (tampil mask + tombol)
+    // price non-angka (mis. "Hubungi kami") -> paket kontak, tanpa tombol
+    // price berangka -> harga asli sudah terbuka
+    const render = (packages: Pkg[]) => {
       packagesEl.innerHTML = '';
       packages.forEach((p, idx) => {
         const items = p.scope.split('|').map((s) => s.trim()).filter(Boolean);
-        const isCustom = !/\d/.test(p.price); // "Hubungi kami" / "Contact us" tidak punya angka
+        const locked = p.price === '';
+        const isCustom = !locked && !/\d/.test(p.price);
         const popular = idx === 1 && !isCustom;
+        const priceText = locked ? MASK : p.price;
         const card = document.createElement('div');
         card.className =
-          'relative overflow-hidden rounded-[var(--radius-card)] border p-5 transition-shadow hover:shadow-md ' +
+          'relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border p-5 ' +
           (popular ? 'border-primary-700 bg-mist ring-1 ring-primary-700' : isCustom ? 'border-dashed border-primary-700/40 bg-forest/[0.03]' : 'border-line bg-white');
         card.innerHTML =
           (popular ? `<span class="absolute -top-px right-4 rounded-b-md bg-primary-700 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">${esc(d.msgPopular!)}</span>` : '') +
           `<p class="font-display text-xs font-bold uppercase tracking-[0.08em] text-primary-700">${esc(p.name)}</p>` +
-          `<p class="mt-1.5 font-display text-xl font-extrabold leading-tight break-words tabular-nums ${isCustom ? 'text-forest' : 'text-ink'}">${esc(p.price)}</p>` +
+          `<p class="mt-1.5 font-display text-xl font-extrabold leading-tight break-words tabular-nums ${isCustom ? 'text-forest' : locked ? 'text-muted' : 'text-ink'}">${esc(priceText)}</p>` +
           (items.length
             ? `<div class="mt-4 h-px bg-line"></div><ul class="mt-4 grid gap-2.5">${items
                 .map((i) => `<li class="flex gap-2.5 text-sm leading-relaxed text-ink">${check}<span class="min-w-0 [overflow-wrap:anywhere]">${esc(i)}</span></li>`)
                 .join('')}</ul>`
+            : '') +
+          (locked
+            ? `<div class="mt-auto pt-5"><button type="button" data-price-card-open data-pkg="${esc(p.name)}" class="btn-primary w-full">${esc(d.msgView!)}</button></div>`
             : '');
         packagesEl.append(card);
       });
-      dialog.close();
-      teaser.hidden = true;
-      result.hidden = false;
-      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      note.hidden = packages.length === 0;
+      if (packages.length) fallback.hidden = true;
     };
-    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    // Muat cakupan (tanpa harga) untuk render awal. Gagal -> tampilkan fallback.
+    const loadScopes = async () => {
+      try {
+        const res = await fetch(d.endpoint!, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'scopes', key: d.key, lang: d.lang }),
+          signal: AbortSignal.timeout?.(9000),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (json.success === true && json.packages?.length) { render(json.packages); return; }
+      } catch {
+        /* jatuh ke fallback */
+      }
+      fallback.hidden = false;
+    };
+    loadScopes();
 
     submit.addEventListener('click', async () => {
       if (!validEmail()) { email.focus(); return; }
@@ -256,11 +290,13 @@ const t = useTranslations(lang);
         // text/plain (tanpa header custom) agar tidak ada preflight CORS ke Apps Script.
         const res = await fetch(d.endpoint!, {
           method: 'POST',
-          body: JSON.stringify({ action: 'pricing', email: email.value.trim(), key: d.key, lang: d.lang, page: location.pathname, token }),
+          body: JSON.stringify({ action: 'pricing', email: email.value.trim(), key: d.key, lang: d.lang, page: location.pathname, service: d.service, sub: d.sub, pkg: selectedPkg, token }),
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok || json.success !== true) throw new Error(json.error === 'noprice' ? d.msgNoprice! : d.msgError!);
-        render(json.packages || []);
+        render(json.packages || []); // harga asli menggantikan mask; tombol hilang
+        fallback.hidden = true;
+        dialog.close();
       } catch (err) {
         setStatus((err as Error).message || d.msgError!, 'error');
       } finally {

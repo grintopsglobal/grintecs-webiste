@@ -137,6 +137,8 @@ const contactHref = `${localizePath(lang, '/contact/')}?service=${encodeURICompo
         priceKey={data.slug}
         endpoint={settings.form.endpoint!}
         siteKey={settings.form.turnstileSiteKey!}
+        service={parent.data.title}
+        sub={data.title}
         caption={data.pricing}
         contactHref={contactHref}
       />

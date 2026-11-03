@@ -22,6 +22,8 @@ function doPost(e) {
 
     // "Lihat Harga": opt-in email -> catat lead -> kembalikan paket harga (harga tidak pernah ada di HTML situs).
     if (data.action === 'pricing') return handlePricing_(data, props);
+    // Cakupan paket untuk ditampilkan di halaman TANPA harga (harga tetap rahasia sampai email masuk).
+    if (data.action === 'scopes') return handleScopes_(data, props);
 
     if (!verifyTurnstile_(data.token, props)) return json_({ success: false, error: 'captcha' });
 
@@ -68,7 +70,7 @@ function doGet() {
 // Email opt-in dicatat di tab "PricingLeads"; harga dibaca dari tab "Prices"
 // (bisa diedit Pak Dwi tanpa deploy ulang) lalu dikirim balik sebagai JSON.
 const PRICE_LEADS = 'PricingLeads';
-const PRICE_LEADS_HEADERS = ['Waktu', 'Bahasa', 'Email', 'Paket', 'Halaman'];
+const PRICE_LEADS_HEADERS = ['Waktu', 'Email', 'Layanan', 'Sub-layanan', 'Paket', 'Bahasa', 'Halaman'];
 const PRICES_SHEET = 'Prices'; // kolom: Key | Bahasa | Paket | Harga | Cakupan | Urutan
 
 function handlePricing_(data, props) {
@@ -77,6 +79,9 @@ function handlePricing_(data, props) {
   const key = clean_(data.key, 80);
   const lang = clean_(data.lang, 5);
   const page = clean_(data.page, 200);
+  const service = clean_(data.service, 160); // nama layanan induk, mis. "Cyber Security Implementation"
+  const sub = clean_(data.sub, 160); // nama sub-layanan, mis. "Phishing Simulation"
+  const pkg = clean_(data.pkg, 80); // paket yang diklik calon klien, mis. "Starter"
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || !key) return json_({ success: false, error: 'invalid' });
 
   const packages = readPrices_(props, key, lang);
@@ -85,11 +90,23 @@ function handlePricing_(data, props) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    pricingLeadsSheet_(props).appendRow([new Date(), lang, email, key, page].map(safeCell_));
+    pricingLeadsSheet_(props).appendRow([new Date(), email, service, sub, pkg, lang, page].map(safeCell_));
   } finally {
     lock.releaseLock();
   }
   return json_({ success: true, packages: packages });
+}
+
+// Cakupan tiap paket untuk dirender di halaman. Harga numerik DIHAPUS di sini;
+// hanya label non-angka (mis. "Hubungi kami") yang ikut, supaya harga tetap tersembunyi.
+function handleScopes_(data, props) {
+  const packages = readPrices_(props, clean_(data.key, 80), clean_(data.lang, 5));
+  return json_({
+    success: true,
+    packages: packages.map(function (p) {
+      return { name: p.name, scope: p.scope, price: /\d/.test(p.price) ? '' : p.price };
+    }),
+  });
 }
 
 function readPrices_(props, key, lang) {
