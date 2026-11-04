@@ -176,6 +176,7 @@ Koleksi **Sub-layanan** di CMS (`src/content/subservices/`). Pilih *Layanan indu
 
 - Ilustrasi di `public/uploads/subservices/<slug>.webp`, dipotong dari ilustrasi-ilustrasi company profile 2026 (keamanan siber, managed website, data engineering, custom software, halaman penutup). Ganti lewat CMS bila ada ilustrasi khusus (rasio 8:5, latar terang).
 - Sembilan sub-layanan Cyber Security (Phishing Simulation, VAPT, Application/Cloud/Network Security & Hardening, Security Awareness Training, ISO 27001, UU PDP & GDPR, Zero Trust & IAM) memakai konten dari Pak Dwi (30 Okt 2026), dirapikan ringan (kapital judul ke gaya kalimat). Paragraf pengantar di badan halaman ditulis tim web.
+- Lima sub-layanan Custom Software Engineering (Web, Mobile, Desktop, API, Website Development) diminta Pak Dwi (4 Nov 2026) hanya berupa nama; seluruh isinya **draft tim web** yang perlu ditinjau. Belum ada ilustrasi (header memakai pola garis) dan model harga dikosongkan.
 
 ## Domain
 
